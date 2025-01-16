@@ -1,0 +1,14 @@
+# Use an official Python runtime as the base image
+# Note: the slim variant excludes unnecessary tools and libraries, keeping the image lightweight.
+# Using a lightweight version for reduced image size
+FROM python:3.9-slim
+
+# Set the working directory inside the container
+WORKDIR /app
+
+# Copy only the client.py file from the src directory to the container
+COPY src/recommendation_client/client.py .
+
+# Set the entry point to run the client script 
+# This allows passing arguments dynamically during docker run (unlike the commend CMD)
+ENTRYPOINT ["python3", "client.py"]

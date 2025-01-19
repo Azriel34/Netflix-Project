@@ -1,0 +1,18 @@
+# Use an official GCC image as the base
+FROM gcc:latest
+
+# Set working directory
+WORKDIR /app
+
+# Copy source code
+COPY src/recommendation_server/ /app/src/recommendation_server
+COPY data /app/data
+
+# Build the application
+RUN g++ -std=c++20 -o main /app/src/recommendation_server/*.cpp -pthread
+
+# Set the volume for data persistence
+VOLUME /app/data
+
+# Command to run the program
+ENTRYPOINT ["./main"]

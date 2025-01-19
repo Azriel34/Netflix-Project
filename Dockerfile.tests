@@ -1,0 +1,39 @@
+# Use a base image with GCC pre-installed
+FROM gcc:latest
+
+# Install dependencies (CMake, Git, Build-essential, Google Test)
+RUN apt-get update && apt-get install -y \
+    cmake \
+    git \
+    build-essential \
+    wget \
+    unzip \
+    && rm -rf /var/lib/apt/lists/*
+
+# Manually download and extract Google Test
+RUN wget https://github.com/google/googletest/archive/refs/heads/main.zip -O googletest.zip \
+    && unzip googletest.zip \
+    && rm googletest.zip \
+    && mv googletest-main /usr/src/googletest
+
+# Build and install Google Test
+RUN cd /usr/src/googletest && cmake . && make && make install
+
+# Set the working directory for your application
+WORKDIR /app
+
+# Copy all source files except main.cpp
+COPY src /app/src
+
+# Remove main.cpp from /app/src after copying
+RUN rm /app/src/main.cpp
+
+# Copy test files
+COPY tests /app/tests
+
+# Compile the test executable, adding include paths for header files
+RUN g++ -v -std=c++20 -o /app/test_executable /app/tests/*.cpp /app/src/*.cpp -I/app/src -I/usr/local/include -lgtest -lgtest_main -pthread
+
+# Run the tests by default
+CMD ["/app/test_executable"]
+    

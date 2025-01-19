@@ -41,10 +41,6 @@ const createUser = async (req, res) => {
 //call the getUser func from the servicese directory 
 const getUser = async (req, res) => {
     try {
-        const userid = await userService.checkUserHeader(req);
-        if(!userid){
-            return res.status(400).json({ error: 'User ID is required in the header' });
-        }
         // Get user by id from the request parameters
         const { id } = req.params;
         const user = await userService.getUserById(id);

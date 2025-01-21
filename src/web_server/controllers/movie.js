@@ -2,15 +2,20 @@ const movieService = require('../services/movie');
 const userService = require('../services/user');
 const categoryService = require('../services/category');
 const movieListingService = require('../services/movieGetHandler');
+const tokenService = require('../services/token');
 const mongoose = require('mongoose');
 const net = require('net');
 
 //need the user to be connected
 const createMovie = async (req, res) => {
-    const userid = await userService.checkUserHeader(req);
-    if(!userid){
-        return res.status(400).json({ error: 'User ID is required in the header' });
-    } 
+
+    // Check if the user is a manager by validating the JWT
+    const userId = await tokenService.checkJWTManager(req); 
+    // If no userId or not a manager, return an error
+    if(!userId){
+        return res.status(400).json({ error: 'Access restricted to managers only' });
+    }
+
     try {
         if (!req.body.name) {
             return res.status(400).json({ error: 'Name is required' });
@@ -47,26 +52,21 @@ const createMovie = async (req, res) => {
 
 //need the user to be connected
 const getMovies = async (req, res) => { 
-    const userid = await userService.checkUserHeader(req);
-    if(!userid){
-        return res.status(400).json({ error: 'User ID is required in the header' });
-    } 
-    try {
-        // Extract the userID from headers
-        const userID = req.headers['user-id'];
-    
-        // userID is missing
-        if (!userID) {
-          return res.status(400).json({ error: 'User ID is required in the header' });
-        }
+    // Check if the user is a user by validating the JWT
+    const userId = await tokenService.checkJWTUser(req); 
+    // If no userId or not a user, return an error
+    if(!userId){
+        return res.status(400).json({ error: 'Access restricted to users only' });
+    }
 
+    try {
         // Check that the userID is a valid ObjectId
-        if (!mongoose.Types.ObjectId.isValid(userID)) {
+        if (!mongoose.Types.ObjectId.isValid(userId)) {
             return res.status(400).json({ error: 'Invalid User ID format' });
         }
     
         // Get the movies by categories
-        const categories = await movieListingService.getMoviesByCategories(userID);
+        const categories = await movieListingService.getMoviesByCategories(userId);
     
         // Send the result back as a response
         res.status(200).json(categories);
@@ -84,10 +84,12 @@ const getMovies = async (req, res) => {
 
 //need the user to be connected
 const getMovie = async (req, res) => { 
-    const userid = await userService.checkUserHeader(req);
-    if(!userid){
-        return res.status(400).json({ error: 'User ID is required in the header' });
-    } 
+    // Check if the user is a user by validating the JWT
+    const userId = await tokenService.checkJWTUser(req); 
+    // If no userId or not a user, return an error
+    if(!userId){
+        return res.status(400).json({ error: 'Access restricted to users only' });
+    }
     try {
         const movie = await movieService.getMovieById(req.params.id); 
         // Category was not found
@@ -103,10 +105,12 @@ const getMovie = async (req, res) => {
 
 //need the user to be connected
 const replaceMovie = async (req, res) => { 
-    const userid = await userService.checkUserHeader(req);
-    if(!userid){
-        return res.status(400).json({ error: 'User ID is required in the header' });
-    } 
+    // Check if the user is a manager by validating the JWT
+    const userId = await tokenService.checkJWTManager(req); 
+    // If no userId or not a manager, return an error
+    if(!userId){
+        return res.status(400).json({ error: 'Access restricted to managers only' });
+    }
     try {
         if (!req.body.name) {
             return res.status(400).json({ error: 'Name is required' });
@@ -149,10 +153,12 @@ const replaceMovie = async (req, res) => {
 
 //need the user to be connected
 const deleteMovie = async (req, res) => { 
-    const userid = await userService.checkUserHeader(req);
-    if(!userid){
-        return res.status(400).json({ error: 'User ID is required in the header' });
-    } 
+    // Check if the user is a manager by validating the JWT
+    const userId = await tokenService.checkJWTManager(req); 
+    // If no userId or not a manager, return an error
+    if(!userId){
+        return res.status(400).json({ error: 'Access restricted to managers only' });
+    }
     try {
         const movie = await movieService.deleteMovie(req.params.id); 
         if (!movie) { 
@@ -184,10 +190,12 @@ function extractIdsFromRecommendOutput(inputString) {
 
 //need the user to be connected
 const getRecommendedMovies = async (req, res) => { 
-    const userid = await userService.checkUserHeader(req);
-    if(!userid){
-        return res.status(400).json({ error: 'User ID is required in the header' });
-    } 
+    // Check if the user is a user by validating the JWT
+    const userId = await tokenService.checkJWTUser(req); 
+    // If no userId or not a user, return an error
+    if(!userId){
+        return res.status(400).json({ error: 'Access restricted to users only' });
+    }
     const movieid = req.params.id;
     const movie = await movieService.getMovieById(movieid);
     if(!movie){
@@ -212,10 +220,12 @@ const getRecommendedMovies = async (req, res) => {
 
 //need the user to be connected
 const addWatchedMovie = async (req, res) => { 
-    const userid = await userService.checkUserHeader(req);
-    if(!userid){
-        return res.status(400).json({ error: 'User ID is required in the header' });
-    } 
+    // Check if the user is a user by validating the JWT
+    const userId = await tokenService.checkJWTUser(req); 
+    // If no userId or not a user, return an error
+    if(!userId){
+        return res.status(400).json({ error: 'Access restricted to users only' });
+    }
     const movieid = req.params.id;
     const movie = await movieService.getMovieById(movieid);
     if(!movie){
@@ -244,10 +254,12 @@ const addWatchedMovie = async (req, res) => {
 
 //need the user to be connected
 const getSearchedMovies = async (req, res) => { 
-    const userid = await userService.checkUserHeader(req);
-    if(!userid){
-        return res.status(400).json({ error: 'User ID is required in the header' });
-    } 
+    // Check if the user is a user by validating the JWT
+    const userId = await tokenService.checkJWTUser(req); 
+    // If no userId or not a user, return an error
+    if(!userId){
+        return res.status(400).json({ error: 'Access restricted to users only' });
+    }
     const query = req.params.query;
     relevantMovies = [];
     const movies = await movieService.getMovies();

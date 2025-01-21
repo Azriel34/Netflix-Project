@@ -46,6 +46,11 @@ const User = new Schema({
     recommendationId: {
       type: Number,
       required: true
+    },
+    manager: {
+      type: Boolean,
+      required: true,
+      default: false
     }
 }, { versionKey: false});
 

@@ -1,0 +1,230 @@
+.login-page {
+    min-height: 100vh;
+    position: relative;
+    background-color: black;
+  }
+  
+  .login-navbar {
+    padding: 20px 60px;
+    position: relative;
+    z-index: 2;
+  }
+  
+  .netflix-logo {
+    width: 167px;
+    cursor: pointer;
+  }
+  
+  .login-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url('../public/netflix_background.jpg');
+    background-size: cover;
+    background-position: center;
+    opacity: 0.5;
+  }
+  
+  .background-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.4);
+  }
+  
+  .login-content {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    justify-content: center;
+    padding: 0 20px;
+  }
+  
+  .login-input-container {
+    position: relative;
+    margin-bottom: 20px;
+  }
+
+  .floating-label {
+    position: absolute;
+    top: 50%;
+    left: 10px;
+    font-size: 16px;
+    color: #8c8c8c;
+    transform: translateY(-50%);
+    pointer-events: none;
+    transition: all 0.2s ease;
+  }
+  
+  .login-input {
+    width: 100%;
+    padding: 15px;
+    font-size: 16px;
+    border: 1px solid gray;
+    border-radius: 4px;
+    background-color: black;
+    color: white;
+    outline: none;
+  }
+  
+  .login-input::placeholder {
+    color: gray;
+  }
+  
+  .login-input-error {
+    border: 2px solid red;
+  }
+  
+  .login-error-text {
+    color: red;
+    font-size: 14px;
+    margin-top: 5px;
+    text-align: left;
+  }
+
+  .login-form-container {
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 4px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+    min-height: 515px;
+    padding: 60px 68px 40px;
+    width: 450px;
+  }
+  
+  .login-form-container h1 {
+    color: white;
+    font-size: 32px;
+    font-weight: 500;
+    margin-bottom: 28px;
+  }
+  
+  .form-group {
+    margin-bottom: 16px;
+  }
+  
+  .form-group input {
+    background: #333;
+    border: none;
+    border-radius: 4px;
+    color: white;
+    height: 50px;
+    line-height: 50px;
+    padding: 16px 20px;
+    width: 100%;
+    box-sizing: border-box;
+    font-size: 16px;
+  }
+  
+  .form-group input::placeholder {
+    color: #8c8c8c;
+  }
+  
+  .error-message {
+    color: #e87c03;
+    font-size: 13px;
+    margin-top: 6px;
+  }
+  
+  .sign-in-button {
+    background: #e50914;
+    border: none;
+    border-radius: 4px;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 500;
+    margin: 24px 0 12px;
+    padding: 16px;
+    width: 100%;
+  }
+  
+  .sign-in-button:hover {
+    background: #f40612;
+  }
+  
+  .divider {
+    color: #8c8c8c;
+    font-size: 14px;
+    margin: 16px 0;
+    text-align: center;
+  }
+  
+  .code-button {
+    background: #2a2a2a;
+    border: none;
+    border-radius: 4px;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 500;
+    margin: 12px 0;
+    padding: 16px;
+    width: 100%;
+  }
+  
+  .code-button:hover {
+    background: #3a3a3a;
+  }
+  
+  .forgot-password {
+    margin-top: 16px;
+    text-align: center;
+  }
+  
+  .forgot-password a {
+    color: #b3b3b3;
+    font-size: 13px;
+    text-decoration: none;
+  }
+  
+  .forgot-password a:hover {
+    text-decoration: underline;
+  }
+
+  .new-to-netflix {
+    color: grey;
+    font-size: 16px;
+    margin-top: 20px;
+    text-align: left;
+  }
+  
+  .new-to-netflix a {
+    color: white;
+    font-weight: bold;
+    text-decoration: none;
+  }
+  
+  .new-to-netflix a:hover {
+    text-decoration: underline;
+  }
+  .password-toggle {
+    position: absolute;
+    top: 50%;
+    right: 0px;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    color: #8c8c8c;
+  }
+  
+  .password-toggle:hover {
+    color: #e50914;
+  }
+  .floating-label.active {
+    top: 5px;
+    font-size: 12px;
+    color: #e50914;
+  }
+  
+  .password-wrapper {
+  position: relative;
+}

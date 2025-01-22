@@ -1,13 +1,17 @@
 const categoryService = require('../services/category');
 const movieService = require('../services/movie');
-const userService = require('../services/user')
+const tokenService = require('../services/token')
 
 
 const createCategory = async (req, res) => {
-    const userid = await userService.checkUserHeader(req);
-    if(!userid){
-        return res.status(400).json({ error: 'User ID is required in the header' });
+
+    // Check if the user is a manager by validating the JWT
+    const userId = await tokenService.checkJWTManager(req); 
+    // If no userId or not a manager, return an error
+    if(!userId){
+        return res.status(400).json({ error: 'Access restricted to managers only' });
     }
+
     try {
         if (!req.body.name) {
             return res.status(400).json({ error: 'Name is required' });
@@ -50,10 +54,14 @@ const createCategory = async (req, res) => {
 
 
 const getCategories = async (req, res) => {
-    const userid = await userService.checkUserHeader(req);
-    if(!userid){
-        return res.status(400).json({ error: 'User ID is required in the header' });
+    
+    // Check if the user is a user by validating the JWT
+    const userId = await tokenService.checkJWTUser(req); 
+    // If no userId or not a user, return an error
+    if(!userId){
+        return res.status(400).json({ error: 'Access restricted to users only' });
     }
+
     try {
         const categories = await categoryService.getCategories();
         res.json(categories);
@@ -63,9 +71,11 @@ const getCategories = async (req, res) => {
 };
 
 const getCategory = async (req, res) => {
-    const userid = await userService.checkUserHeader(req);
-    if(!userid){
-        return res.status(400).json({ error: 'User ID is required in the header' });
+    // Check if the user is a user by validating the JWT
+    const userId = await tokenService.checkJWTUser(req); 
+    // If no userId or not a user, return an error
+    if(!userId){
+        return res.status(400).json({ error: 'Access restricted to users only' });
     }
     try {
         const category = await categoryService.getCategoryById(req.params.id);
@@ -80,9 +90,11 @@ const getCategory = async (req, res) => {
 };
 
 const updateCategory = async (req, res) => {
-    const userid = await userService.checkUserHeader(req);
-    if(!userid){
-        return res.status(400).json({ error: 'User ID is required in the header' });
+    // Check if the user is a manager by validating the JWT
+    const userId = await tokenService.checkJWTManager(req); 
+    // If no userId or not a manager, return an error
+    if(!userId){
+        return res.status(400).json({ error: 'Access restricted to managers only' });
     }
     try {
         const category = await categoryService.updateCategory(req.params.id, req.body.name, req.body.promoted);
@@ -97,9 +109,11 @@ const updateCategory = async (req, res) => {
 };
 
 const deleteCategory = async (req, res) => {
-    const userid = await userService.checkUserHeader(req);
-    if(!userid){
-        return res.status(400).json({ error: 'User ID is required in the header' });
+    // Check if the user is a manager by validating the JWT
+    const userId = await tokenService.checkJWTManager(req); 
+    // If no userId or not a manager, return an error
+    if(!userId){
+        return res.status(400).json({ error: 'Access restricted to managers only' });
     }
     try {
         const category = await categoryService.getCategoryById(req.params.id);

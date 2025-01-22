@@ -1,5 +1,6 @@
 /* General Styling */
-body, html {
+body,
+html {
   margin: 0;
   padding: 0;
   font-family: Arial, sans-serif;
@@ -13,6 +14,9 @@ body, html {
   color: white;
   display: flex;
   flex-direction: column;
+  overflow-y: auto;
+  float: right;
+  width: -webkit-fill-available;
 }
 
 .homepage-navbar {
@@ -103,14 +107,14 @@ body, html {
   margin: 20px 0;
 }
 
-.homepage-email-input-container {
+.homepage-userName-input-container {
   display: flex;
   justify-content: center;
   margin-top: 20px;
   gap: 10px;
 }
 
-.homepage-email-input {
+.homepage-userName-input {
   width: 350px;
   padding: 15px;
   font-size: 18px;
@@ -121,7 +125,7 @@ body, html {
   color: white;
 }
 
-.homepage-email-input::placeholder {
+.homepage-userName-input::placeholder {
   color: gray;
 }
 
@@ -137,4 +141,19 @@ body, html {
 
 .homepage-get-started-button:hover {
   background-color: #e50914;
+}
+.input-error {
+  border: 1px solid red; /* Highlight input with red border */
+}
+.homepage-error-message {
+  color: red;
+  font-size: 0.9rem;
+  margin-top: 0.3rem;
+  display: flex;
+  align-items: center;
+}
+
+.homepage-error-message::before {
+  content: '❌'; /* Error icon */
+  margin-right: 0.5rem;
 }

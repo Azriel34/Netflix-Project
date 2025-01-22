@@ -21,18 +21,10 @@ mongoose.connect(process.env.CONNECTION_STRING)
     
 const app = express();
 
-app.use(cors());
-
-// Remove unwanted headers
-app.use((req, res, next) => {
-    // Remove the Access-Control-Allow-Origin header
-    res.removeHeader('Access-Control-Allow-Origin');  
-    // Remove the Date header
-    res.removeHeader('Date');  
-    next();
-});
-// Disable the etag header
-app.disable('etag');
+app.use(cors({
+    origin: 'http://localhost:3000', // Frontend URL
+    credentials: true,             // Allow cookies/credentials
+}));
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());

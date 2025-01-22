@@ -2,34 +2,40 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Register.css';
 import { useLocation } from 'react-router-dom';
+import axios from 'axios';
+import { port } from './index';
 
 const SignUp = () => {
     const [formData, setFormData] = useState({
         email: '',
-        phone: '',
-        username: '',
-        password: '',
+        phoneNumber: '',
+        userName: '',
+        passWord: '',
         fullName: '',
         picture: null,
     });
 
+    const [passwordVisible, setPasswordVisible] = useState(false); // New state for password visibility
     const [errors, setErrors] = useState({});
     const navigate = useNavigate();
     const location = useLocation();
-    
+
     useEffect(() => {
         const params = new URLSearchParams(location.search);
-        const emailParam = params.get('email');
-        if (emailParam) {
-          setFormData((prev) => ({ ...prev, email: emailParam }));
+        const userNameParam = params.get('userName');
+        if (userNameParam) {
+            setFormData((prev) => ({ ...prev, userName: userNameParam }));
         }
-      }, [location]);
+    }, [location]);
+
     const handleChange = (e) => {
         const { name, value, files } = e.target;
+
         setFormData((prev) => ({
             ...prev,
-            [name]: files ? files[0] : value,
+            [name]: name === 'picture' && files ? files[0] : value,
         }));
+
         setErrors((prev) => ({
             ...prev,
             [name]: '', // Clear error message for the field being edited
@@ -41,26 +47,46 @@ const SignUp = () => {
         if (!formData.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
             newErrors.email = 'Please enter a valid email.';
         }
-        if (!formData.phone || !/^\d+$/.test(formData.phone)) {
-            newErrors.phone = 'Please enter a valid phone number.';
+        if (!formData.phoneNumber || !/^\d+$/.test(formData.phoneNumber)) {
+            newErrors.phoneNumber = 'Please enter a valid phone number.';
         }
-        if (!formData.username) newErrors.username = 'Username is required.';
+        if (!formData.userName || formData.userName.length < 4 || formData.userName.length > 20) {
+            newErrors.userName = 'Your Username must contain between 4 and 20 characters.';
+        }
         if (!formData.fullName) newErrors.fullName = 'Full name is required.';
-        if (!formData.password || formData.password.length < 4 || formData.password.length > 60) {
-            newErrors.password = 'Password must be between 4 and 60 characters.';
+        if (!formData.passWord || formData.passWord.length < 4 || formData.passWord.length > 60) {
+            newErrors.passWord = 'Password must be between 4 and 60 characters.';
         }
         return newErrors;
     };
 
     const handleSignUp = (e) => {
         e.preventDefault();
+
         const validationErrors = validateForm();
         if (Object.keys(validationErrors).length > 0) {
             setErrors(validationErrors);
-        } else {
-            console.log('Form submitted:', formData);
-            navigate('/welcome');
+            return;
         }
+
+        axios
+            .post(`http://localhost:${port}/api/users/`, formData)
+            .then(() => {
+                alert("User created successfully! You can now sign in.");
+                navigate('/login');
+            })
+            .catch((err) => {
+                if (err.response && err.response.data) {
+                    const { error, message } = err.response.data;
+                    setErrors({ serverError: error || message || "An unexpected error occurred." });
+                } else {
+                    setErrors({ serverError: "An unexpected error occurred. Please try again later." });
+                }
+            });
+    };
+
+    const togglePasswordVisibility = () => {
+        setPasswordVisible(!passwordVisible);
     };
 
     return (
@@ -77,11 +103,16 @@ const SignUp = () => {
             <div className="sign-up-content">
                 <div className="sign-up-form-container">
                     <h1>Sign Up</h1>
+                    {errors.serverError && (
+                        <div className="error-banner">
+                            <p>{errors.serverError}</p>
+                        </div>
+                    )}
                     <form onSubmit={handleSignUp}>
-                        {['email', 'phone', 'username', 'fullName', 'password'].map((field) => (
+                        {['email', 'phoneNumber', 'userName', 'fullName'].map((field) => (
                             <div className="sign-up-form-group" key={field}>
                                 <input
-                                    type={field === 'password' ? 'password' : 'text'}
+                                    type="text"
                                     name={field}
                                     className={`sign-up-input ${errors[field] ? 'sign-up-input-error' : ''}`}
                                     placeholder={capitalizeFirstLetter(field)}
@@ -91,6 +122,24 @@ const SignUp = () => {
                                 {errors[field] && <span className="sign-up-error-message">{errors[field]}</span>}
                             </div>
                         ))}
+                        <div className="sign-up-form-group password-wrapper">
+                            <input
+                                type={passwordVisible ? 'text' : 'password'}
+                                name="passWord"
+                                className={`sign-up-input ${errors.passWord ? 'sign-up-input-error' : ''}`}
+                                placeholder="Password"
+                                value={formData.passWord}
+                                onChange={handleChange}
+                            />
+                            <button
+                                type="button"
+                                className="password-toggle"
+                                onClick={togglePasswordVisibility}
+                            >
+                                {passwordVisible ? '🚫' : '👁️'}
+                            </button>
+                            {errors.passWord && <span className="sign-up-error-message">{errors.passWord}</span>}
+                        </div>
                         <div className="sign-up-form-group">
                             <input
                                 type="file"

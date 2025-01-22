@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import './HomePage.css';
+import {port} from './index'
 
 const HomePage = () => {
-  const [email, setEmail] = useState('');
+  const [userName, setusername] = useState('');
+  const [error, setError] = useState(''); // State for the error message
   const navigate = useNavigate();
 
   const handleSignIn = () => {
@@ -11,11 +14,29 @@ const HomePage = () => {
   };
 
   const handleGetStarted = () => {
-    if (email.endsWith('@gmail.com')) {
-      navigate(`/Login?email=${encodeURIComponent(email)}`);
+    // Validate the username
+    if (!userName || userName.length < 4 || userName.length > 20) {
+      setError('Username must be between 4 and 20 characters.'); // Set error
+      return;
     } else {
-      navigate(`/Register?email=${encodeURIComponent(email)}`);
+      setError(''); // Clear error if valid
     }
+
+    // Check if username exists
+    axios
+      .post(`http://localhost:${port}/api/users/exists`, { userName: userName })
+      .then((response) => {
+
+        console.log(response.data);
+        if (response.data.exists) {
+          navigate(`/Login?userName=${encodeURIComponent(userName)}`);
+        } else {
+          navigate(`/Register?userName=${encodeURIComponent(userName)}`);
+        }
+      })
+      .catch((err) => {
+        console.error('Error checking if user exists:', err);
+      });
   };
 
   return (
@@ -51,15 +72,15 @@ const HomePage = () => {
           Starts at ₪32.90. Cancel anytime.
         </h2>
         <p className="homepage-cta-text">
-          Ready to watch? Enter your email to create or restart your membership.
+          Ready to watch? Enter your username to create or restart your membership.
         </p>
-        <div className="homepage-email-input-container">
+        <div className="homepage-userName-input-container">
           <input
-            type="email"
-            className="homepage-email-input"
-            placeholder="Email address"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            type="text"
+            className={`homepage-userName-input ${error ? 'input-error' : ''}`} // Add error class if needed
+            placeholder="Username"
+            value={userName}
+            onChange={(e) => setusername(e.target.value)}
           />
           <button
             className="homepage-get-started-button"
@@ -68,6 +89,7 @@ const HomePage = () => {
             Get Started &gt;
           </button>
         </div>
+        {error && <div className="homepage-error-message">{error}</div>} {/* Display error */}
       </div>
     </div>
   );

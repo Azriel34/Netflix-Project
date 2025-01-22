@@ -1,5 +1,5 @@
 const userService = require('../services/user');
-const Counter = require('../models/counter'); 
+const Counter = require('../models/counter');
 
 //call the createUser func from the servicese directory 
 const createUser = async (req, res) => {
@@ -50,6 +50,20 @@ const getUser = async (req, res) => {
     } catch (error) {
         // Handle user not found error
         res.status(404).json({error: "User not found"});
-    }}; 
-  
-module.exports = {createUser, getUser};
+    }};
+
+const checkUserExists = async (req, res) => {
+    const { userName } = req.body;
+
+    if (!userName) {
+        return res.status(400).json({ message: 'Username is required.' });
+    }
+
+    const userExists = await userService.getUserByUserName(userName);
+    if (userExists) {
+        return res.status(200).json({ exists: true, message: 'User exists.' });
+    } else {
+        return res.status(200).json({ exists: false, message: 'User does not exist.' });
+    }
+};
+module.exports = {createUser, getUser, checkUserExists };

@@ -89,10 +89,10 @@ body {
     width: 100%;
     padding: 12px 15px;
     font-size: 16px;
-    border: none;
+    border: 1px solid gray;
     border-radius: 4px;
     outline: none;
-    background-color: #333;
+    background-color: black;
     color: white;
     box-sizing: border-box;
 }
@@ -117,6 +117,11 @@ body {
     background-color: transparent;
     color: white;
     padding: 0;
+}
+
+.sign-up-input[type="password"] {
+    background-color: transparent;
+    color: white;
 }
 
 /* Submit button styles */
@@ -166,4 +171,33 @@ body {
     .sign-up-form-container {
         padding: 30px;
     }
+}
+
+.error-banner {
+    background-color: #f8d7da;
+    color: #721c24;
+    padding: 15px;
+    margin-bottom: 15px;
+    border: 1px solid #f5c6cb;
+    border-radius: 4px;
+}
+
+.password-toggle {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    color: #8c8c8c;
+}
+
+.password-toggle:hover {
+    color: #e50914;
+}
+
+.password-wrapper {
+    position: relative;
 }

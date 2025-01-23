@@ -1,202 +1,161 @@
-import React, { useState } from "react";
-import axios from "axios";
-import "./AdminPage.css";
-
-const AdminPage = () => {
-    const [formType, setFormType] = useState("");
-    const [formData, setFormData] = useState({});
-    const [statusMessage, setStatusMessage] = useState("");
+import React, { useState, useEffect } from "react";
+import axios from "./axiosInstance";
+import { jwtDecode } from 'jwt-decode';
+import './AdminPage.css';
 
 
- const handleButtonClick = (type) => {
-        setFormType(type);
-        setFormData({});
-        setStatusMessage("");
-    };
 
-    const handleInputChange = (e) => {
-        const { name, value, type} = e.target;
-        setFormData({
-          ...formData,
-        });
-    };
+const AdminPage = ({ token }) => {
+  const [selectedEntity, setSelectedEntity] = useState("");
+  const [formData, setFormData] = useState({});
+  const [actionType, setActionType] = useState("");
+  const [deleteId, setDeleteId] = useState("");
+  const [userId, setUserId] = useState(null);
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        try {
-          const apiAddress = `http://localhost:5000/api/${formType}`;
-          const header = {
-            headers: { "Content-Type": "multipart/form-data" },
-          };
-          const data = new FormData();
+  // extract the user id from the JWT 
+  useEffect(() => {
+    if (token) {
+      try {
+        const decoded = jwtDecode(token); // decode the jwt
+        setUserId(decoded.userId); // extract the user id 
+      } catch (error) {
+        console.error("Invalid token", error);
+      }
+    }
+  }, [token]);
 
-          for (const key in formData) {
-            data.append(key, formData[key]);
-          }
-
-          await axios.post(apiAddress, data, header);
-      setStatusMessage("Successfully submitted!");
+  const handleFormSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const headers = { "user-id": userId };
+      if (actionType === "create") {
+        await axios.post(`/api/${selectedEntity}`, formData, { headers });
+        alert(`${selectedEntity} created successfully`);
+      } else if (actionType === "edit") {
+        await axios.patch(`/api/${selectedEntity}/${formData.id}`, formData, { headers });
+        alert(`${selectedEntity} updated successfully`);
+      }
     } catch (error) {
       console.error(error);
-      setStatusMessage("Failed to submit. Please try again.");
+      alert("An error occurred");
     }
   };
 
-  const renderFields = () => {
-    switch (formType) {
-      case "user":
-        return (
-          <>
-            <div className="form-group">
-              <label htmlFor="username">Username</label>
-              <input
-                type="text"
-                id="username"
-                name="username"
-                value={formData.username || ""}
-                onChange={handleInputChange}
-                required
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="password">Password</label>
-              <input
-                type="password"
-                id="password"
-                name="password"
-                value={formData.password || ""}
-                onChange={handleInputChange}
-                required
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="email">Email</label>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                value={formData.email || ""}
-                onChange={handleInputChange}
-                required
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="phone">Phone</label>
-              <input
-                type="tel"
-                id="phone"
-                name="phone"
-                value={formData.phone || ""}
-                onChange={handleInputChange}
-                required
-              />
-            </div>
-          </>
-        );
+  const handleDelete = async () => {
+    try {
+      const headers = { "user-id": userId };
+      await axios.delete(`/api/${selectedEntity}/${deleteId}`, { headers });
+      alert(`${selectedEntity} deleted successfully`);
+    } catch (error) {
+      console.error(error);
+      alert("An error occurred while deleting");
+    }
+  };
 
-      case "category":
-        return (
-          <>
-            <div className="form-group">
-              <label htmlFor="name">Category Name</label>
-              <input
-                type="text"
-                id="name"
-                name="name"
-                value={formData.name || ""}
-                onChange={handleInputChange}
-                required
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="promoted">Promoted</label>
-              <input
-                type="checkbox"
-                id="promoted"
-                name="promoted"
-                checked={formData.promoted || false}
-                onChange={handleInputChange}
-              />
-            </div>
-          </>
-        );
-
-      case "movie":
-        return (
-          <>
-            <div className="form-group">
-              <label htmlFor="name">Movie Name</label>
-              <input
-                type="text"
-                id="name"
-                name="name"
-                value={formData.name || ""}
-                onChange={handleInputChange}
-                required
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="categories">Categories</label>
-              <input
-                type="text"
-                id="categories"
-                name="categories"
-                placeholder="Separate with commas"
-                value={formData.categories || ""}
-                onChange={handleInputChange}
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="description">Description</label>
-              <textarea
-                id="description"
-                name="description"
-                value={formData.description || ""}
-                onChange={handleInputChange}
-                required
-              ></textarea>
-            </div>
-            <div className="form-group">
-              <label htmlFor="video">Upload Video</label>
-              <input
-                type="file"
-                id="video"
-                name="video"
-                onChange={(e) =>
-                  setFormData({ ...formData, video: e.target.files[0] })
-                }
-              />
-            </div>
-          </>
-        );
-
-      default:
-        return <p>Please select an option to manage.</p>;
+  const renderFormFields = () => {
+    if (selectedEntity === "users") {
+      return (
+        <>
+          <input
+            type="text"
+            placeholder="Username"
+            onChange={(e) => setFormData({ ...formData, username: e.target.value })}
+          />
+          <input
+            type="password"
+            placeholder="Password"
+            onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+          />
+          <input
+            type="email"
+            placeholder="Email"
+            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+          />
+          <input
+            type="text"
+            placeholder="Phone"
+            onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+          />
+        </>
+      );
+    } else if (selectedEntity === "categories") {
+      return (
+        <>
+          <input
+            type="text"
+            placeholder="Category Name"
+            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+          />
+          <label>
+            Promoted
+            <input
+              type="checkbox"
+              onChange={(e) => setFormData({ ...formData, promoted: e.target.checked })}
+            />
+          </label>
+        </>
+      );
+    } else if (selectedEntity === "movies") {
+      return (
+        <>
+          <input
+            type="text"
+            placeholder="Movie Title"
+            onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+          />
+          <textarea
+            placeholder="Description"
+            onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+          />
+          <input
+            type="file"
+            onChange={(e) => setFormData({ ...formData, video: e.target.files[0] })}
+          />
+        </>
+      );
     }
   };
 
   return (
-    <div className="admin-panel">
-      <h1>Admin Dashboard</h1>
-
-      <div className="buttons">
-        <button onClick={() => handleButtonClick("user")}>Manage Users</button>
-        <button onClick={() => handleButtonClick("category")}>
-          Manage Categories
-        </button>
-        <button onClick={() => handleButtonClick("movie")}>Manage Movies</button>
+    <div>
+      <h1>Admin Panel</h1>
+      <div className="button1-container">
+        <button className="manage-button" onClick={() => setSelectedEntity("users")}>Manage Users</button>
+        <button className="manage-button" onClick={() => setSelectedEntity("categories")}>Manage Categories</button>
+        <button className="manage-button" onClick={() => setSelectedEntity("movies")}>Manage Movies</button>
       </div>
 
-      {formType && (
-        <div className="form-container">
-          <h2>{`Manage ${formType}`}</h2>
-          <form onSubmit={handleSubmit}>
-            {renderFields()}
-            <button type="submit">Submit</button>
-          </form>
-          {statusMessage && <p>{statusMessage}</p>}
+      {selectedEntity && (
+       <div> <h2>Manage {selectedEntity}</h2> 
+        <div className="button2-container">
+          <button onClick={() => setActionType("create")}>Create New</button>
+          {selectedEntity !== "users" && (
+            <button onClick={() => setActionType("edit")}>Edit Existing</button>
+          )}
+          <button onClick={() => setActionType("delete")}>Delete</button>
+        </div>
         </div>
       )}
+
+      {actionType === "delete" && (
+        <div>
+          <input
+            type="text"
+            placeholder={`Enter ${selectedEntity} ID to delete`}
+            onChange={(e) => setDeleteId(e.target.value)}
+          />
+          <button onClick={handleDelete}>Delete</button>
+        </div>
+      )}
+
+ {actionType !== "" && actionType !== "delete" && (
+  <form onSubmit={handleFormSubmit}>
+    {renderFormFields()}
+    <button type="submit">
+      {actionType === "create" ? "Create" : "Update"}
+    </button>
+  </form>
+ )}
     </div>
   );
 };

@@ -28,27 +28,43 @@ const AdminPage = ({ token }) => {
     e.preventDefault();
     try {
       const headers = { "user-id": userId };
+      let response;
+  
       if (actionType === "create") {
-        await axios.post(`/api/${selectedEntity}`, formData, { headers });
-        alert(`${selectedEntity} created successfully`);
+        response = await axios.post(`/api/${selectedEntity}`, formData, { headers });
       } else if (actionType === "edit") {
-        await axios.patch(`/api/${selectedEntity}/${formData.id}`, formData, { headers });
-        alert(`${selectedEntity} updated successfully`);
+        response = await axios.patch(`/api/${selectedEntity}/${formData.id}`, formData, { headers });
       }
+  
+      
+      alert(response.data.message || `${selectedEntity} action completed successfully`);
     } catch (error) {
       console.error(error);
-      alert("An error occurred");
+  
+      
+      if (error.response && error.response.data && error.response.data.message) {
+        alert(`Error: ${error.response.data.message}`);
+      } else {
+        alert("An unexpected error occurred");
+      }
     }
   };
 
   const handleDelete = async () => {
     try {
       const headers = { "user-id": userId };
-      await axios.delete(`/api/${selectedEntity}/${deleteId}`, { headers });
-      alert(`${selectedEntity} deleted successfully`);
+      const response = await axios.delete(`/api/${selectedEntity}/${deleteId}`, { headers });
+  
+      
+      alert(response.data.message || `${selectedEntity} deleted successfully`);
     } catch (error) {
       console.error(error);
-      alert("An error occurred while deleting");
+  
+      if (error.response && error.response.data && error.response.data.message) {
+        alert(`Error: ${error.response.data.message}`);
+      } else {
+        alert("An error occurred while deleting");
+      }
     }
   };
 
@@ -115,7 +131,7 @@ const AdminPage = ({ token }) => {
           <input
             type="text"
             placeholder="Movie Title"
-            onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
           />
           <textarea
             placeholder="Description"

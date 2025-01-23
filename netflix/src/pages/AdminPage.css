@@ -6,6 +6,9 @@ body {
   background-size: cover;
   color: #fff;
 }
+form {
+  display: inline-block;
+}
 
 h1 {
   text-align: center;
@@ -56,6 +59,7 @@ form {
   justify-content: center;  
 }
 
+
 /* Center the content */
 .container {
   display: flex;
@@ -63,6 +67,7 @@ form {
   align-items: center;
   justify-content: center;
   min-height: 100vh;
+  padding: 20px;
 }
 
 /* Buttons */
@@ -78,30 +83,41 @@ button {
   transition: background-color 0.3s ease;
 }
 
+
 button:hover {
   background-color: #f40612;
+  transform: scale(1.05);
 }
+
+
+
 
 /* Form container */
 form {
   background: rgba(0, 0, 0, 0.8);
-  padding: 20px;
+  padding: 30px;
   border-radius: 10px;
   width: 90%;
   max-width: 400px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  justify-content: center;
+  display: flex;
+  flex-direction: column; /* לוודא שהשדות סודרו בעמודה */
+  margin: 0 auto; /* המרכז את הטופס על המסך */
+
 }
 
+ 
+   
 form input,
 form textarea {
   width: 100%;
-  padding: 10px;
-  margin: 10px 0;
+  padding: 12px;
+  margin: 12px 0;
   border: none;
   border-radius: 5px;
   font-size: 1rem;
-  margin-left: auto;
-  margin-right: auto;
+  box-sizing: border-box;
 }
 
 form input[type="file"] {
@@ -116,7 +132,125 @@ form label {
 
 form button {
   width: 100%;
+  padding: 12px;
   margin-top: 20px;
+  background-color: #e50914;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+form input[type="checkbox"] {
+  width: 20px; 
+  height: 20px;
+  appearance: none; 
+  border: 2px solid #fff; 
+  border-radius: 5px; 
+  background-color: #333; /* צבע רקע כהה כשלא מסומן */
+  position: relative;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s; /* אפקט מעבר */
+}
+
+form input[type="checkbox"]:checked {
+  background-color: #e50914; 
+  border-color: #e50914; 
+}
+
+form input[type="checkbox"]:checked::before {
+  content: ''; /* הוספת סימן מחיקה או סימן וי */
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 12px;
+  height: 12px;
+  background-color: #fff; /* סימן וי לבן */
+  clip-path: polygon(0% 50%, 25% 100%, 100% 0%, 75% 25%); /* יצירת צורת וי */
+}
+
+form input[type="checkbox"]:hover {
+  transform: scale(1.1); 
+}
+
+form label {
+  font-size: 1.4rem;
+  margin-top: 10px;
+  display: flex;
+  margin-left: 10px; 
+  color: #fff;
+  align-items: center;
+  gap: 12px;
+  font-weight: bold;
+}
+
+form input[type="file"] {
+  width: 100%; 
+  padding: 15px; 
+  border: 2px solid #fff; 
+  border-radius: 10px; 
+  background-color: #333; 
+  cursor: pointer; 
+  transition: background-color 0.3s ease, transform 0.3s ease; 
+  font-size: 1.2rem;
+}
+
+form input[type="file"]:hover {
+  transform: scale(1.05); 
+}
+
+
+
+form input[type="file"]::file-selector-button:hover {
+  background-color: #f40612; 
+}
+
+form input[type="file"]::before {
+  content: "choose file"; 
+  color: #fff;
+  font-size: 1rem;
+  text-align: center;
+  display: block;
+  margin-bottom: 10px;
+  border: 2px dashed #fff; 
+  padding: 15px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+form input[type="file"]::-webkit-file-upload-button {
+  visibility: hidden;
+}
+
+
+
+.delete-section {
+  background: rgba(0, 0, 0, 0.8);
+  padding: 20px;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 400px;
+  margin: 20px auto; 
+  display: flex;
+  flex-direction: column; 
+  justify-content: center;
+  align-items: center; 
+}
+
+.delete-section input {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  box-sizing: border-box; 
+}
+
+.delete-section button:hover {
+  background-color: #f40612;
+  transform: scale(1.05);
 }
 
 /* Entity Management Buttons */

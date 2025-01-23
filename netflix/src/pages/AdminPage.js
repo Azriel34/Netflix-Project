@@ -55,7 +55,7 @@ const AdminPage = ({ token }) => {
   const renderFormFields = () => {
     if (selectedEntity === "users") {
       return (
-        <>
+        <div className="form1">
           <input
             type="text"
             placeholder="Username"
@@ -76,11 +76,11 @@ const AdminPage = ({ token }) => {
             placeholder="Phone"
             onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
           />
-        </>
+        </div>
       );
     } else if (selectedEntity === "categories") {
       return (
-        <>
+        <div className="form1">
           <input
             type="text"
             placeholder="Category Name"
@@ -93,11 +93,11 @@ const AdminPage = ({ token }) => {
               onChange={(e) => setFormData({ ...formData, promoted: e.target.checked })}
             />
           </label>
-        </>
+        </div>
       );
     } else if (selectedEntity === "movies") {
       return (
-        <>
+        <div className="form1">
           <input
             type="text"
             placeholder="Movie Title"
@@ -109,9 +109,11 @@ const AdminPage = ({ token }) => {
           />
           <input
             type="file"
-            onChange={(e) => setFormData({ ...formData, video: e.target.files[0] })}
+            onChange={(e) => {
+              setFormData({ ...formData, video: e.target.files[0] });
+            }}
           />
-        </>
+        </div>
       );
     }
   };
@@ -126,19 +128,19 @@ const AdminPage = ({ token }) => {
       </div>
 
       {selectedEntity && (
-       <div> <h2>Manage {selectedEntity}</h2> 
-        <div className="button2-container">
-          <button onClick={() => setActionType("create")}>Create New</button>
-          {selectedEntity !== "users" && (
-            <button onClick={() => setActionType("edit")}>Edit Existing</button>
-          )}
-          <button onClick={() => setActionType("delete")}>Delete</button>
-        </div>
+        <div> <h2>Manage {selectedEntity}</h2>
+          <div className="button2-container">
+            <button onClick={() => setActionType("create")}>Create New</button>
+            {selectedEntity !== "users" && (
+              <button onClick={() => setActionType("edit")}>Edit Existing</button>
+            )}
+            <button onClick={() => setActionType("delete")}>Delete</button>
+          </div>
         </div>
       )}
 
       {actionType === "delete" && (
-        <div>
+        <div className="delete-section">
           <input
             type="text"
             placeholder={`Enter ${selectedEntity} ID to delete`}
@@ -148,14 +150,14 @@ const AdminPage = ({ token }) => {
         </div>
       )}
 
- {actionType !== "" && actionType !== "delete" && (
-  <form onSubmit={handleFormSubmit}>
-    {renderFormFields()}
-    <button type="submit">
-      {actionType === "create" ? "Create" : "Update"}
-    </button>
-  </form>
- )}
+      {actionType !== "" && actionType !== "delete" && (
+        <form onSubmit={handleFormSubmit}>
+          <div className="render-form">{renderFormFields()}</div>
+          <button type="submit">
+            {actionType === "create" ? "Create" : "Update"}
+          </button>
+        </form>
+      )}
     </div>
   );
 };

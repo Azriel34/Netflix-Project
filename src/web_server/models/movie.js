@@ -20,6 +20,7 @@ const Movie = new Schema({
         type: String,
         required: false
     },
+    path: { type: String, required: true },
     categories: {
         type: [Schema.Types.ObjectId],
         ref: 'Category',

@@ -36,6 +36,7 @@ app.disable('etag');
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 app.use('/api/movies', movies);
 app.use('/api/users', users);

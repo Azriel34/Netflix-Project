@@ -1,11 +1,12 @@
 const express = require('express'); 
 var router = express.Router(); 
 const movieController = require('../controllers/movie'); 
+const upload = require('../middlewares/upload');
 const wrongCommandController = require('../controllers/WrongCommand');
 
 router.route('/')
   .get(movieController.getMovies)
-  .post(movieController.createMovie)
+  .post(upload.single('video'), movieController.createMovie)
   // Handle all unsupported methods on /api/user
   .all(wrongCommandController.handleWrongCommand);
 

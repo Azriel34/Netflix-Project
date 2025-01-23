@@ -30,9 +30,15 @@ const createMovie = async (req, res) => {
                 return res.status(404).json({ error: 'Category not found' });
             }
         }
+
+        const path = req.file ? req.file.path : null;
+        if (!path) {
+            return res.status(400).json({ error: 'Movie file is required' });
+        }
+
         // Create the movie
         const movie = await movieService.createMovie(req.body.name, req.body.description,
-            req.body.picture, categories);
+            req.body.picture, categories, path);
         
            
         // Apply `categoryService.addMovie` for each movie in parallel

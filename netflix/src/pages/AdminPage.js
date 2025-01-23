@@ -81,6 +81,13 @@ const AdminPage = ({ token }) => {
     } else if (selectedEntity === "categories") {
       return (
         <div className="form1">
+          {actionType === "edit" && (
+        <input
+          type="text"
+          placeholder="Category ID"
+          onChange={(e) => setFormData({ ...formData, id: e.target.value })}
+        />
+      )}
           <input
             type="text"
             placeholder="Category Name"
@@ -98,6 +105,13 @@ const AdminPage = ({ token }) => {
     } else if (selectedEntity === "movies") {
       return (
         <div className="form1">
+          {actionType === "edit" && (
+        <input
+          type="text"
+          placeholder=" MOVIE ID"
+          onChange={(e) => setFormData({ ...formData, id: e.target.value })}
+        />
+      )}
           <input
             type="text"
             placeholder="Movie Title"

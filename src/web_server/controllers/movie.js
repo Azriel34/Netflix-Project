@@ -10,11 +10,11 @@ const net = require('net');
 const createMovie = async (req, res) => {
 
     // Check if the user is a manager by validating the JWT
-    const userId = await tokenService.checkJWTManager(req); 
+   // const userId = await tokenService.checkJWTManager(req); 
     // If no userId or not a manager, return an error
-    if(!userId){
-        return res.status(400).json({ error: 'Access restricted to managers only' });
-    }
+   // if(!userId){
+   //     return res.status(400).json({ error: 'Access restricted to managers only' });
+   // }
 
     try {
         if (!req.body.name) {

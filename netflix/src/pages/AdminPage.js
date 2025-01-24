@@ -29,19 +29,20 @@ const AdminPage = ({ token }) => {
     try {
       const headers = { "user-id": userId };
       let response;
-  
+      console.log(formData);
+
       if (actionType === "create") {
         response = await axios.post(`/api/${selectedEntity}`, formData, { headers });
       } else if (actionType === "edit") {
         response = await axios.patch(`/api/${selectedEntity}/${formData.id}`, formData, { headers });
       }
-  
-      
+
+
       alert(response.data.message || `${selectedEntity} action completed successfully`);
     } catch (error) {
       console.error(error);
-  
-      
+
+
       if (error.response && error.response.data && error.response.data.message) {
         alert(`Error: ${error.response.data.message}`);
       } else {
@@ -54,12 +55,12 @@ const AdminPage = ({ token }) => {
     try {
       const headers = { "user-id": userId };
       const response = await axios.delete(`/api/${selectedEntity}/${deleteId}`, { headers });
-  
-      
+
+
       alert(response.data.message || `${selectedEntity} deleted successfully`);
     } catch (error) {
       console.error(error);
-  
+
       if (error.response && error.response.data && error.response.data.message) {
         alert(`Error: ${error.response.data.message}`);
       } else {
@@ -75,12 +76,17 @@ const AdminPage = ({ token }) => {
           <input
             type="text"
             placeholder="Username"
-            onChange={(e) => setFormData({ ...formData, username: e.target.value })}
+            onChange={(e) => setFormData({ ...formData, userName: e.target.value })}
+          />
+          <input
+            type="text"
+            placeholder="fullName"
+            onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
           />
           <input
             type="password"
             placeholder="Password"
-            onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+            onChange={(e) => setFormData({ ...formData, passWord: e.target.value })}
           />
           <input
             type="email"
@@ -90,7 +96,12 @@ const AdminPage = ({ token }) => {
           <input
             type="text"
             placeholder="Phone"
-            onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+            onChange={(e) => setFormData({ ...formData, phoneNumber: e.target.value })}
+          />
+          <input
+            type="file"
+            accept="image/*"
+            onChange={(e) => setFormData({ ...formData, picture: e.target.files[0] })}
           />
         </div>
       );
@@ -98,12 +109,12 @@ const AdminPage = ({ token }) => {
       return (
         <div className="form1">
           {actionType === "edit" && (
-        <input
-          type="text"
-          placeholder="Category ID"
-          onChange={(e) => setFormData({ ...formData, id: e.target.value })}
-        />
-      )}
+            <input
+              type="text"
+              placeholder="Category ID"
+              onChange={(e) => setFormData({ ...formData, id: e.target.value })}
+            />
+          )}
           <input
             type="text"
             placeholder="Category Name"
@@ -122,12 +133,12 @@ const AdminPage = ({ token }) => {
       return (
         <div className="form1">
           {actionType === "edit" && (
-        <input
-          type="text"
-          placeholder=" MOVIE ID"
-          onChange={(e) => setFormData({ ...formData, id: e.target.value })}
-        />
-      )}
+            <input
+              type="text"
+              placeholder=" MOVIE ID"
+              onChange={(e) => setFormData({ ...formData, id: e.target.value })}
+            />
+          )}
           <input
             type="text"
             placeholder="Movie Title"

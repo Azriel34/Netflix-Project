@@ -5,7 +5,8 @@ const Counter = require('../models/counter');
 const createUser = async (req, res) => {
     try {
         // Creating a new user using the data from the request body
-        const { email, phoneNumber, fullName, passWord, userName, picture} = req.body;
+        const { email, phoneNumber, fullName, passWord, userName} = req.body;
+        const picture = req.file ? req.file.path : null;
         const user = await userService.createUser(email, phoneNumber, fullName, passWord, userName, picture);
         // Send 201 status code, indicating resource creation
         return res.status(201).set('Location', `/api/users/${user._id}`).send();

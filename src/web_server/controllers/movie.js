@@ -47,23 +47,23 @@ const createMovie = async (req, res) => {
 
 //need the user to be connected
 const getMovies = async (req, res) => { 
-    const userid = await userService.checkUserHeader(req);
-    if(!userid){
-        return res.status(400).json({ error: 'User ID is required in the header' });
-    } 
+   // const userid = await userService.checkUserHeader(req);
+   // if(!userid){
+   //     return res.status(400).json({ error: 'User ID is required in the header' });
+  //  } 
     try {
         // Extract the userID from headers
-        const userID = req.headers['user-id'];
+       // const userID = req.headers['user-id'];
     
         // userID is missing
-        if (!userID) {
-          return res.status(400).json({ error: 'User ID is required in the header' });
-        }
+      //  if (!userID) {
+       //   return res.status(400).json({ error: 'User ID is required in the header' });
+       // 
 
         // Check that the userID is a valid ObjectId
-        if (!mongoose.Types.ObjectId.isValid(userID)) {
-            return res.status(400).json({ error: 'Invalid User ID format' });
-        }
+      //  if (!mongoose.Types.ObjectId.isValid(userID)) {
+     //       return res.status(400).json({ error: 'Invalid User ID format' });
+    //    }
     
         // Get the movies by categories
         const categories = await movieListingService.getMoviesByCategories(userID);
@@ -84,10 +84,10 @@ const getMovies = async (req, res) => {
 
 //need the user to be connected
 const getMovie = async (req, res) => { 
-    const userid = await userService.checkUserHeader(req);
-    if(!userid){
-        return res.status(400).json({ error: 'User ID is required in the header' });
-    } 
+   // const userid = await userService.checkUserHeader(req);
+  //  if(!userid){
+  //      return res.status(400).json({ error: 'User ID is required in the header' });
+  //  } 
     try {
         const movie = await movieService.getMovieById(req.params.id); 
         // Category was not found

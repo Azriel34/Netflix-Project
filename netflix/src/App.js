@@ -3,11 +3,12 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import HomePage from './HomePage/HomePage';
 import Login from './Login/Login'
 import Register from './Register/Register';
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import HomeScreen from "./HomeScreen/HomeScreen";
 import CategoriesScreen from "./CategoriesScreen/CategoriesScreen";
 import ManagerScreen from "./ManagerScreen/ManagerScreen";
 import SearchScreen from "./SearchScreen/SearchScreen";
+import MovieDetails from "./MovieDetails/MovieDetails";
 
 function App() {
 
@@ -40,6 +41,7 @@ function App() {
           <Route path="/categories" element={<CategoriesScreen isDarkMode={isDarkMode} toggleMode={toggleMode} />} />
           <Route path="/manager" element={<ManagerScreen isDarkMode={isDarkMode} toggleMode={toggleMode} />} />
           <Route path="/search" element={<SearchScreen isDarkMode={isDarkMode} toggleMode={toggleMode} />} />
+          <Route path="/movie/:movieId" element={<MovieDetails isDarkMode={isDarkMode} toggleMode={toggleMode} />} /> 
         </Routes>
       </div>
     </Router>

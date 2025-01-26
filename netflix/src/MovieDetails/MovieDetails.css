@@ -1,16 +1,16 @@
-.SearchScreen {
+.MovieDetails {
     padding: 20px;
     height: 100vh;
     overflow-y: auto; /* Allows vertical scrolling */
 
   }
   
-  .SearchScreen.light {
+  .MovieDetails.light {
     background-color: #ffffff; 
     color: #000000; 
   }
   
-  .SearchScreen.dark {
+  .MovieDetails.dark {
     background-color: #000000; 
     color: #ffffff; 
   }

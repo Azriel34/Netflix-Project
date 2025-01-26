@@ -13,7 +13,7 @@ function Navbar({ userName, isDarkMode, toggleMode ,jwt}) {
 
   const handleSearchSubmit = (e) => {
     e.preventDefault();
-    navigate(`/search?query=${searchQuery}&jwt=${jwt}`);
+  navigate(`/search?query=${searchQuery}&jwt=${jwt}`);
   };
 
   return (

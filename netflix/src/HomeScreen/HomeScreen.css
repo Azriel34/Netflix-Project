@@ -1,15 +1,58 @@
 .HomeScreen {
-    padding: 20px;
-    height: 100vh;
-  }
-  
-  .HomeScreen.light {
-    background-color: #ffffff; 
-    color: #000000; 
-  }
-  
-  .HomeScreen.dark {
-    background-color: #000000; 
-    color: #ffffff; 
-  }
-  
+  padding: 20px;
+  height: 100vh;
+  overflow-y: auto; /* Ensures content scrolls if it exceeds the height */
+}
+
+.HomeScreen.light {
+  background-color: #ffffff;
+  color: #000000;
+}
+
+.HomeScreen.dark {
+  background-color: #000000;
+  color: #ffffff;
+}
+
+/* Category Tile Styling */
+.category-tile {
+  margin-bottom: 2rem; /* Add space between categories */
+}
+
+.category-tile h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem; /* Space between category title and movies */
+}
+
+/* Movies Container */
+.movies-container {
+  display: flex; /* Align movies horizontally */
+  flex-wrap: wrap; /* Wrap to the next line if space is insufficient */
+  gap: 1rem; /* Space between movie cards */
+  align-items: flex-start; /* Align cards to the top */
+}
+
+/* Individual Movie Card */
+.movie-card {
+  background-color: #f4f4f4; /* Light background for the card */
+  border-radius: 8px; /* Smooth corners */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  padding: 1rem;
+  text-align: center;
+  width: 150px; /* Fixed width for consistent card sizes */
+}
+
+.movie-card img {
+  max-width: 100%; /* Ensure the image fits within the card */
+  border-radius: 4px; /* Rounded corners for the image */
+}
+
+.movie-card h3 {
+  font-size: 1rem;
+  margin: 0.5rem 0; /* Space around the movie name */
+}
+
+.movie-card p {
+  font-size: 0.875rem;
+  color: #666; /* Subtle text color */
+}

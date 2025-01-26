@@ -24,11 +24,11 @@ function ManagerScreen({ isDarkMode, toggleMode }) {
             return response.json().then(err => {
               // Check specific error messages
               if (err.error === "Internal server error") {
-                setPermissionError("Good");
+                console.log("Good");
               } else if (err.error === "Access restricted to managers only") {
-                setPermissionError("You don't have permission to be here, please sign in");
+                setPermissionError("You don't have permission to be here, please sign in as a manager");
               } else {
-                setPermissionError(err.message || "You don't have permission to be here, please sign in");
+                setPermissionError(err.message || "You don't have permission to be here, please sign in as a manager");
               }
             });
           }

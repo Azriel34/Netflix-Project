@@ -1,7 +1,10 @@
 .CategoriesScreen {
     padding: 20px;
     height: 100vh;
+    overflow-y: auto; /* Allows vertical scrolling */
+
   }
+ 
   
   .CategoriesScreen.light {
     background-color: #ffffff;

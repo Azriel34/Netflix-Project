@@ -1,0 +1,15 @@
+.HomeScreen {
+    padding: 20px;
+    height: 100vh;
+  }
+  
+  .HomeScreen.light {
+    background-color: #ffffff; 
+    color: #000000; 
+  }
+  
+  .HomeScreen.dark {
+    background-color: #000000; 
+    color: #ffffff; 
+  }
+  

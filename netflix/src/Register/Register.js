@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import './Register.css';
 import { useLocation } from 'react-router-dom';
 import axios from 'axios';
-import { port } from './index';
+import { port } from '../index';
 
 const SignUp = () => {
     const [formData, setFormData] = useState({

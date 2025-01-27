@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "./axiosInstance";
-import { jwtDecode } from 'jwt-decode';
+//import { jwtDecode } from 'jwt-decode';
 import './AdminPage.css';
 
 
@@ -13,16 +13,16 @@ const AdminPage = ({ token }) => {
   const [userId, setUserId] = useState(null);
 
   // extract the user id from the JWT 
-  useEffect(() => {
-    if (token) {
-      try {
-        const decoded = jwtDecode(token); // decode the jwt
-        setUserId(decoded.userId); // extract the user id 
-      } catch (error) {
-        console.error("Invalid token", error);
-      }
-    }
-  }, [token]);
+  // useEffect(() => {
+  //   if (token) {
+  //     try {
+  //       const decoded = jwtDecode(token); // decode the jwt
+  //       setUserId(decoded.userId); // extract the user id 
+  //     } catch (error) {
+  //       console.error("Invalid token", error);
+  //     }
+  //   }
+  // }, [token]);
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
@@ -144,6 +144,20 @@ const AdminPage = ({ token }) => {
             placeholder="Movie Title"
             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
           />
+          <input
+            type="text"
+            placeholder="Enter category ID"
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' && e.target.value.trim() !== '') {
+                e.preventDefault();
+                setFormData((prevFormData) => ({
+                  ...prevFormData,
+                  categories: [...(prevFormData.categories || []), e.target.value],
+                }));
+                e.target.value = '';
+              }
+            }}
+          />
           <textarea
             placeholder="Description"
             onChange={(e) => setFormData({ ...formData, description: e.target.value })}
@@ -175,7 +189,9 @@ const AdminPage = ({ token }) => {
             {selectedEntity !== "users" && (
               <button onClick={() => setActionType("edit")}>Edit Existing</button>
             )}
-            <button onClick={() => setActionType("delete")}>Delete</button>
+            {selectedEntity !== "users" && (
+        <button onClick={() => setActionType("delete")}>Delete</button>
+      )}
           </div>
         </div>
       )}

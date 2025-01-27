@@ -38,9 +38,14 @@ const createMovie = async (req, res) => {
             return res.status(400).json({ error: 'Movie file is required' });
         }
 
+        const image = req.savedFilePath ? req.savedFilePath : null;
+        if (!image) {
+            return res.status(400).json({ error: 'Movie poster is required' });
+        }
+
         // Create the movie
         const movie = await movieService.createMovie(req.body.name, req.body.description,
-            req.body.picture, categories, path);
+            image, categories, path);
         
            
         // Apply `categoryService.addMovie` for each movie in parallel

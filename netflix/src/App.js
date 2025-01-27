@@ -1,12 +1,12 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import VideoPage from '../src/pages/VideoPage';
+import VideoPage from './pages/VideoPage';
 
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/api/movies/:id" element={<VideoPage />} />
+        <Route path="movies/:id/watch" element={<VideoPage />} />
       </Routes>
     </Router>
   );

@@ -4,6 +4,7 @@ const categoryService = require('../services/category');
 const movieListingService = require('../services/movieGetHandler');
 const mongoose = require('mongoose');
 const net = require('net');
+import {fs} from 'fs';
 
 //need the user to be connected
 const createMovie = async (req, res) => {
@@ -71,7 +72,6 @@ const getMovies = async (req, res) => {
         // Send the result back as a response
         res.status(200).json(categories);
       } catch (error) {
-
         // Check if the error is "User not found"
         if (error.message === 'User not found') {
             return res.status(404).json({ error: 'User not found' });
@@ -100,6 +100,21 @@ const getMovie = async (req, res) => {
         res.status(500).json({ error: 'Internal server error' });
     }
 }; 
+
+const getMovieFile = async (req, res) => {
+    try {
+        const movieDetails = await movieService.getMovieById(req.params.id);
+        const path = movieDetails.path;
+        if (fs.existstSync(path)) {
+            res.sendFile(path);
+        } else {
+            return res.status(404).json({ error: 'Movie not found' });
+        }
+    } catch (error) {
+        res.status(500).json({ error: 'Error while trying to get movie file' });
+    }
+};
+
 
 //need the user to be connected
 const replaceMovie = async (req, res) => { 
@@ -344,5 +359,6 @@ module.exports = {
     deleteMovie,
     getRecommendedMovies,
     addWatchedMovie,
-    getSearchedMovies
+    getSearchedMovies,
+    getMovieFile
 };

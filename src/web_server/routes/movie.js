@@ -29,6 +29,10 @@ router.route('/search/:query')
   // Handle all unsupported methods on /api/user
   .all(wrongCommandController.handleWrongCommand);
 
+//returns movie file by id
+router.route('/:id/file')
+  .get(movieController.getMovieFile)
+
 // Handle any undefined routes
 router.use('*', wrongCommandController.handleWrongPage);
 

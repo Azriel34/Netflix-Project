@@ -55,5 +55,19 @@ const getUser = async (req, res) => {
         // Handle user not found error
         res.status(404).json({error: "User not found"});
     }}; 
+
+    const getProfilePicture = async (req, res) => {
+        try {
+            const userDetails = await userService.getUser(req.params.id);
+            const path = userDetails.picture;
+            if (fs.existstSync(path)) {
+                res.sendFile(path);
+            } else {
+                return res.status(404).json({ error: 'profile picture not found' });
+            }
+        } catch (error) {
+            res.status(500).json({ error: 'Error while trying to get profile picture' });
+        }
+    };
   
 module.exports = {createUser, getUser};

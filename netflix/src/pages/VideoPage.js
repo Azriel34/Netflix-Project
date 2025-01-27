@@ -13,12 +13,12 @@ const  VideoPage = () => {
 useEffect(() => {
     const loadMovie = async () => {
         try{
-            const response = await axios.get(`/api/movies/${id}`,  { 
+            const response = await axios.get(`/api/movies/${id}/file`,  { 
                 headers: {
                 "Content-Type": "application/json",
               },
         });
-        setVideoPath(response.data.path);
+        setVideoPath(response.data.path.replace('/app', ''));
     } catch(error) {
         serError("failed to load movie");
     }
@@ -37,9 +37,9 @@ useEffect(() => {
 
       return(
         <div>
-            <h1>video view</h1>
+            <h1>video viewer1</h1>
             <video controls width ="600">
-                <source src={`http://localhost:3000/${videoPath}`} type="video/mp4"/>
+                <source src={`http://localhost:5000/api/movies/${id}.mp4/file`} type="video/mp4"/>
                 Your browser does not support the video tag.
             </video>
         </div>

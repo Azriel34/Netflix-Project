@@ -17,6 +17,10 @@ router.route('/:id')
     // Handle all unsupported methods on /api/user
     .all(wrongCommandController.handleWrongCommand);
 
+//returns profile picture file by id
+router.route('/:id/picture')
+  .get(movieController.getProfilePicture)
+
 // Handle any undefined routes
 router.use('*', wrongCommandController.handleWrongPage);
 

@@ -6,7 +6,7 @@ const createUser = async (req, res) => {
     try {
         // Creating a new user using the data from the request body
         const { email, phoneNumber, fullName, passWord, userName} = req.body;
-        const picture = req.file ? req.file.path : null;
+        const picture = req.savedFilePath ? req.savedFilePath : null;
         const user = await userService.createUser(email, phoneNumber, fullName, passWord, userName, picture);
         // Send 201 status code, indicating resource creation
         return res.status(201).set('Location', `/api/users/${user._id}`).send();
@@ -52,5 +52,19 @@ const getUser = async (req, res) => {
         // Handle user not found error
         res.status(404).json({error: "User not found"});
     }}; 
+
+    const getProfilePicture = async (req, res) => {
+        try {
+            const userDetails = await userService.getUser(req.params.id);
+            const path = userDetails.picture;
+            if (fs.existstSync(path)) {
+                res.sendFile(path);
+            } else {
+                return res.status(404).json({ error: 'profile picture not found' });
+            }
+        } catch (error) {
+            res.status(500).json({ error: 'Error while trying to get profile picture' });
+        }
+    };
   
-module.exports = {createUser, getUser};
+module.exports = {createUser, getUser, getProfilePicture};

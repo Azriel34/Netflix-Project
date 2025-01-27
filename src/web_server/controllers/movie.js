@@ -5,6 +5,8 @@ const movieListingService = require('../services/movieGetHandler');
 const tokenService = require('../services/token');
 const mongoose = require('mongoose');
 const net = require('net');
+const fs = require('fs');
+
 
 //need the user to be connected
 const createMovie = async (req, res) => {
@@ -31,14 +33,19 @@ const createMovie = async (req, res) => {
             }
         }
 
-        const path = req.file ? req.file.path : null;
+        const path = req.savedFilePath ? req.savedFilePath : null;
         if (!path) {
             return res.status(400).json({ error: 'Movie file is required' });
         }
 
+        const image = req.savedFilePath ? req.savedFilePath : null;
+        if (!image) {
+            return res.status(400).json({ error: 'Movie poster is required' });
+        }
+
         // Create the movie
         const movie = await movieService.createMovie(req.body.name, req.body.description,
-            req.body.picture, categories, path);
+            image, categories, path);
         
            
         // Apply `categoryService.addMovie` for each movie in parallel
@@ -58,18 +65,23 @@ const createMovie = async (req, res) => {
 
 //need the user to be connected
 const getMovies = async (req, res) => { 
-    // Check if the user is a user by validating the JWT
-    const userId = await tokenService.checkJWTUser(req); 
-    // If no userId or not a user, return an error
-    if(!userId){
-        return res.status(400).json({ error: 'Access restricted to users only' });
-    }
-
+   // const userid = await userService.checkUserHeader(req);
+   // if(!userid){
+   //     return res.status(400).json({ error: 'User ID is required in the header' });
+  //  } 
     try {
+        // Extract the userID from headers
+       // const userID = req.headers['user-id'];
+    
+        // userID is missing
+      //  if (!userID) {
+       //   return res.status(400).json({ error: 'User ID is required in the header' });
+       // 
+
         // Check that the userID is a valid ObjectId
-        if (!mongoose.Types.ObjectId.isValid(userId)) {
-            return res.status(400).json({ error: 'Invalid User ID format' });
-        }
+      //  if (!mongoose.Types.ObjectId.isValid(userID)) {
+     //       return res.status(400).json({ error: 'Invalid User ID format' });
+    //    }
     
         // Get the movies by categories
         const categories = await movieListingService.getMoviesByCategories(userId);
@@ -77,7 +89,6 @@ const getMovies = async (req, res) => {
         // Send the result back as a response
         res.status(200).json(categories);
       } catch (error) {
-
         // Check if the error is "User not found"
         if (error.message === 'User not found') {
             return res.status(404).json({ error: 'User not found' });
@@ -90,12 +101,10 @@ const getMovies = async (req, res) => {
 
 //need the user to be connected
 const getMovie = async (req, res) => { 
-    // Check if the user is a user by validating the JWT
-    const userId = await tokenService.checkJWTUser(req); 
-    // If no userId or not a user, return an error
-    if(!userId){
-        return res.status(400).json({ error: 'Access restricted to users only' });
-    }
+   // const userid = await userService.checkUserHeader(req);
+  //  if(!userid){
+  //      return res.status(400).json({ error: 'User ID is required in the header' });
+  //  } 
     try {
         const movie = await movieService.getMovieById(req.params.id); 
         // Category was not found
@@ -108,6 +117,53 @@ const getMovie = async (req, res) => {
         res.status(500).json({ error: 'Internal server error' });
     }
 }; 
+const getMovieFile = async (req, res) => {
+    try {
+        const movieDetails = await movieService.getMovieById(req.params.id);
+        const videoPath = movieDetails.path;
+        
+        if (!fs.existsSync(videoPath)) {
+            return res.status(404).json({ error: 'Movie not found' });
+          }
+
+          const videoSize = fs.statSync(videoPath).size;
+
+        const range = req.headers.range;
+    if (!range) {
+      return res.sendFile(videoPath);
+    }
+
+    const parts = range.replace(/bytes=/, "").split("-"); 
+    const start = parseInt(parts[0], 10);
+    const end = parts[1] ? parseInt(parts[1], 10) : videoSize - 1; 
+
+   
+    if (start >= videoSize || end >= videoSize) {
+      return res.status(416).send('Requested range not satisfiable');
+    }
+
+    const chunkSize = (end - start) + 1; 
+
+    
+    const videoStream = fs.createReadStream(videoPath, { start, end });
+
+    
+    const head = {
+      'Content-Range': `bytes ${start}-${end}/${videoSize}`,
+      'Accept-Ranges': 'bytes',
+      'Content-Length': chunkSize,
+      'Content-Type': 'video/mp4',
+    };
+
+    res.writeHead(206, head); 
+    videoStream.pipe(res);
+
+       
+    } catch (error) {
+        res.status(500).json({ error: 'Error while trying to get movie file' });
+    }
+};
+
 
 //need the user to be connected
 const replaceMovie = async (req, res) => { 
@@ -362,5 +418,6 @@ module.exports = {
     deleteMovie,
     getRecommendedMovies,
     addWatchedMovie,
-    getSearchedMovies
+    getSearchedMovies,
+    getMovieFile
 };

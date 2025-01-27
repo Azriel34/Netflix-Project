@@ -2,16 +2,22 @@ const movieService = require('../services/movie');
 const userService = require('../services/user');
 const categoryService = require('../services/category');
 const movieListingService = require('../services/movieGetHandler');
+const tokenService = require('../services/token');
 const mongoose = require('mongoose');
 const net = require('net');
-import {fs} from 'fs';
+const fs = require('fs');
+
 
 //need the user to be connected
 const createMovie = async (req, res) => {
-    const userid = await userService.checkUserHeader(req);
-    if(!userid){
-        return res.status(400).json({ error: 'User ID is required in the header' });
-    } 
+
+    // Check if the user is a manager by validating the JWT
+   // const userId = await tokenService.checkJWTManager(req); 
+    // If no userId or not a manager, return an error
+   // if(!userId){
+   //     return res.status(400).json({ error: 'Access restricted to managers only' });
+   // }
+
     try {
         if (!req.body.name) {
             return res.status(400).json({ error: 'Name is required' });
@@ -26,9 +32,15 @@ const createMovie = async (req, res) => {
                 return res.status(404).json({ error: 'Category not found' });
             }
         }
+
+        const path = req.savedFilePath ? req.savedFilePath : null;
+        if (!path) {
+            return res.status(400).json({ error: 'Movie file is required' });
+        }
+
         // Create the movie
         const movie = await movieService.createMovie(req.body.name, req.body.description,
-            req.body.picture, categories);
+            req.body.picture, categories, path);
         
            
         // Apply `categoryService.addMovie` for each movie in parallel
@@ -67,7 +79,7 @@ const getMovies = async (req, res) => {
     //    }
     
         // Get the movies by categories
-        const categories = await movieListingService.getMoviesByCategories(userID);
+        const categories = await movieListingService.getMoviesByCategories(userId);
     
         // Send the result back as a response
         res.status(200).json(categories);
@@ -100,12 +112,13 @@ const getMovie = async (req, res) => {
         res.status(500).json({ error: 'Internal server error' });
     }
 }; 
-
 const getMovieFile = async (req, res) => {
     try {
         const movieDetails = await movieService.getMovieById(req.params.id);
         const path = movieDetails.path;
-        if (fs.existstSync(path)) {
+
+        if (fs.existsSync(path)) {
+            res.setHeader('Content-Type', 'video/mp4');  
             res.sendFile(path);
         } else {
             return res.status(404).json({ error: 'Movie not found' });
@@ -118,10 +131,12 @@ const getMovieFile = async (req, res) => {
 
 //need the user to be connected
 const replaceMovie = async (req, res) => { 
-    const userid = await userService.checkUserHeader(req);
-    if(!userid){
-        return res.status(400).json({ error: 'User ID is required in the header' });
-    } 
+    // Check if the user is a manager by validating the JWT
+    const userId = await tokenService.checkJWTManager(req); 
+    // If no userId or not a manager, return an error
+    if(!userId){
+        return res.status(400).json({ error: 'Access restricted to managers only' });
+    }
     try {
         if (!req.body.name) {
             return res.status(400).json({ error: 'Name is required' });
@@ -164,10 +179,12 @@ const replaceMovie = async (req, res) => {
 
 //need the user to be connected
 const deleteMovie = async (req, res) => { 
-    const userid = await userService.checkUserHeader(req);
-    if(!userid){
-        return res.status(400).json({ error: 'User ID is required in the header' });
-    } 
+    // Check if the user is a manager by validating the JWT
+    const userId = await tokenService.checkJWTManager(req); 
+    // If no userId or not a manager, return an error
+    if(!userId){
+        return res.status(400).json({ error: 'Access restricted to managers only' });
+    }
     try {
         const movie = await movieService.deleteMovie(req.params.id); 
         if (!movie) { 
@@ -199,10 +216,12 @@ function extractIdsFromRecommendOutput(inputString) {
 
 //need the user to be connected
 const getRecommendedMovies = async (req, res) => { 
-    const userid = await userService.checkUserHeader(req);
-    if(!userid){
-        return res.status(400).json({ error: 'User ID is required in the header' });
-    } 
+    // Check if the user is a user by validating the JWT
+    const userId = await tokenService.checkJWTUser(req); 
+    // If no userId or not a user, return an error
+    if(!userId){
+        return res.status(400).json({ error: 'Access restricted to users only' });
+    }
     const movieid = req.params.id;
     const movie = await movieService.getMovieById(movieid);
     if(!movie){
@@ -227,10 +246,12 @@ const getRecommendedMovies = async (req, res) => {
 
 //need the user to be connected
 const addWatchedMovie = async (req, res) => { 
-    const userid = await userService.checkUserHeader(req);
-    if(!userid){
-        return res.status(400).json({ error: 'User ID is required in the header' });
-    } 
+    // Check if the user is a user by validating the JWT
+    const userId = await tokenService.checkJWTUser(req); 
+    // If no userId or not a user, return an error
+    if(!userId){
+        return res.status(400).json({ error: 'Access restricted to users only' });
+    }
     const movieid = req.params.id;
     const movie = await movieService.getMovieById(movieid);
     if(!movie){
@@ -259,10 +280,12 @@ const addWatchedMovie = async (req, res) => {
 
 //need the user to be connected
 const getSearchedMovies = async (req, res) => { 
-    const userid = await userService.checkUserHeader(req);
-    if(!userid){
-        return res.status(400).json({ error: 'User ID is required in the header' });
-    } 
+    // Check if the user is a user by validating the JWT
+    const userId = await tokenService.checkJWTUser(req); 
+    // If no userId or not a user, return an error
+    if(!userId){
+        return res.status(400).json({ error: 'Access restricted to users only' });
+    }
     const query = req.params.query;
     relevantMovies = [];
     const movies = await movieService.getMovies();

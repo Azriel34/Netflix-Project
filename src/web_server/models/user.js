@@ -39,13 +39,18 @@ const User = new Schema({
       default: []
     },
     picture: {
-      type: Number,
-      required: true,
+      type: String,
+      required: false,
       default: 0
     },
     recommendationId: {
       type: Number,
       required: true
+    },
+    manager: {
+      type: Boolean,
+      required: true,
+      default: false
     }
 }, { versionKey: false});
 

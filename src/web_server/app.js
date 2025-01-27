@@ -10,6 +10,7 @@ const movies = require('./routes/movie');
 const wrongCommand = require('./routes/WrongCommand');
 const path = require('path');
 
+
 //the configrution should include a RECOMMENDATION_IP and a RECOMMENDATION_PORT
 require('custom-env').env(process.env.NODE_ENV, './config');
 
@@ -22,7 +23,10 @@ mongoose.connect(process.env.CONNECTION_STRING)
     
 const app = express();
 
-app.use(cors());
+app.use(cors({
+    origin: 'http://localhost:3000', // Frontend URL
+    credentials: true,             // Allow cookies/credentials
+}));
 
 // Remove unwanted headers
 app.use((req, res, next) => {
@@ -37,8 +41,7 @@ app.disable('etag');
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
-app.use('/uploads', express.static(path.join(__dirname, 'app/uploads')));
-
+app.use('uploads', express.static(path.join(__dirname, 'uploads')));
 
 app.use('/api/movies', movies);
 app.use('/api/users', users);

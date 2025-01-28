@@ -6,7 +6,10 @@ const wrongCommandController = require('../controllers/WrongCommand');
 
 router.route('/')
   .get(movieController.getMovies)
-  .post(upload.single('video'), upload.single('poster'), movieController.createMovie)
+  .post(upload.fields([
+    { name: 'video', maxCount: 1 },  
+    { name: 'poster', maxCount: 1 },  
+  ]), movieController.createMovie)
   // Handle all unsupported methods on /api/user
   .all(wrongCommandController.handleWrongCommand);
 

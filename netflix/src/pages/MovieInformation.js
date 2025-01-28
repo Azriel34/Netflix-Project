@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useParams, useNavigate } from "react";
 import axios from "./axiosInstance";
 
 
@@ -7,7 +7,8 @@ const MovieInformation = ({token}) => {
     const {id} = useParams();
     const[videoDescription, setvideoDescription] = useState('');
     const[recoIds, setrecoIds] = useState([]);
-    const[recoName, setrecoName] =useState([]);
+    const[recoNames, setrecoNames] =useState([]);
+    const[Error, serError ] = ('');
     const navigate = useNavigate();
 
 
@@ -28,11 +29,10 @@ const MovieInformation = ({token}) => {
             }
         });
         
-        const ids = recommendations.map((movie) => movie._id);
-        const names = recommendations.map((movie) => movie.name);
-        setrecoPosters(posters);
+        const ids = reco.map((movie) => movie._id);
+        const names = reco.map((movie) => movie.name);
         setrecoIds(ids);
-        setrecoName(names);
+        setrecoNames(names);
         setVideoName(response.data.name);
         setvideoDescription(response.data.name);
     } catch(error) {

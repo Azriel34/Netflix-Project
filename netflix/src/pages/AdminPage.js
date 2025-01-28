@@ -27,7 +27,7 @@ const AdminPage = ({ token }) => {
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     try {
-      const headers = { "user-id": userId };
+      const headers = { Authorization: `Bearer ${token}`, };
       let response;
       console.log(formData);
 
@@ -101,7 +101,7 @@ const AdminPage = ({ token }) => {
           <input
             type="file"
             accept="image/*"
-            onChange={(e) => setFormData({ ...formData, picture: e.target.files[0] })}
+            onChange={(e) => setFormData({ ...formData, image: e.target.files[0] })}
           />
         </div>
       );

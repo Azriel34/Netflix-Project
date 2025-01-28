@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 
 const createMovie = async (name, description, image, categories, path) => {
     const movie = new Movie({ name: name, description: description, image:image, categories: categories, path: path});
-    if (picture) movie.picture = picture;
+    if (image) movie.image = image;
     movie.recommendationId = await counterService.getNextRecommendationId('moviesCounter');
     return await movie.save();
 };

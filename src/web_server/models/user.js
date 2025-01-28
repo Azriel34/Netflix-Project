@@ -38,7 +38,7 @@ const User = new Schema({
       ref: 'Movie',
       default: []
     },
-    picture: {
+    image: {
       type: String,
       required: false,
       default: 0

@@ -1,13 +1,15 @@
 const userService = require('../services/user');
 const Counter = require('../models/counter'); 
+const path = require('path');
+
 
 //call the createUser func from the servicese directory 
 const createUser = async (req, res) => {
     try {
         // Creating a new user using the data from the request body
         const { email, phoneNumber, fullName, passWord, userName} = req.body;
-        const picture = req.savedFilePath ? req.savedFilePath : null;
-        const user = await userService.createUser(email, phoneNumber, fullName, passWord, userName, picture);
+        const image = req.savedImagePath ? req.savedImagePath : null;
+        const user = await userService.createUser(email, phoneNumber, fullName, passWord, userName, image);
         // Send 201 status code, indicating resource creation
         return res.status(201).set('Location', `/api/users/${user._id}`).send();
     } catch (error) {
@@ -56,7 +58,7 @@ const getUser = async (req, res) => {
     const getProfilePicture = async (req, res) => {
         try {
             const userDetails = await userService.getUser(req.params.id);
-            const path = userDetails.picture;
+             const path = path.resolve('uploads', 'images', userDetails.image);
             if (fs.existstSync(path)) {
                 res.sendFile(path);
             } else {

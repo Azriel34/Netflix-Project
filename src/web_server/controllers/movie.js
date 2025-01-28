@@ -6,6 +6,8 @@ const tokenService = require('../services/token');
 const mongoose = require('mongoose');
 const net = require('net');
 const fs = require('fs');
+const path = require('path');
+
 
 
 //need the user to be connected
@@ -120,46 +122,45 @@ const getMovie = async (req, res) => {
 const getMovieFile = async (req, res) => {
     try {
         const movieDetails = await movieService.getMovieById(req.params.id);
-        const videoPath = movieDetails.path;
         
+        const videoPath =  path.resolve('uploads', 'videos', movieDetails.path);
+        
+
         if (!fs.existsSync(videoPath)) {
             return res.status(404).json({ error: 'Movie not found' });
-          }
-
-          const videoSize = fs.statSync(videoPath).size;
+        }
+        
+        const videoSize = fs.statSync(videoPath).size;
 
         const range = req.headers.range;
-    if (!range) {
-      return res.sendFile(videoPath);
-    }
+        if (!range) {
+            return res.sendFile(videoPath);
+        }
 
-    const parts = range.replace(/bytes=/, "").split("-"); 
-    const start = parseInt(parts[0], 10);
-    const end = parts[1] ? parseInt(parts[1], 10) : videoSize - 1; 
+        const parts = range.replace(/bytes=/, "").split("-");
+        const start = parseInt(parts[0], 10);
+        const end = parts[1] ? parseInt(parts[1], 10) : videoSize - 1;
 
-   
-    if (start >= videoSize || end >= videoSize) {
-      return res.status(416).send('Requested range not satisfiable');
-    }
+        if (start >= videoSize || end >= videoSize) {
+            return res.status(416).send('Requested range not satisfiable');
+        }
 
-    const chunkSize = (end - start) + 1; 
+        const chunkSize = (end - start) + 1;
 
-    
-    const videoStream = fs.createReadStream(videoPath, { start, end });
+        const videoStream = fs.createReadStream(videoPath, { start, end });
 
-    
-    const head = {
-      'Content-Range': `bytes ${start}-${end}/${videoSize}`,
-      'Accept-Ranges': 'bytes',
-      'Content-Length': chunkSize,
-      'Content-Type': 'video/mp4',
-    };
+        const head = {
+            'Content-Range': `bytes ${start}-${end}/${videoSize}`,
+            'Accept-Ranges': 'bytes',
+            'Content-Length': chunkSize,
+            'Content-Type': 'video/mp4',
+        };
 
-    res.writeHead(206, head); 
-    videoStream.pipe(res);
+        res.writeHead(206, head);
+        videoStream.pipe(res);
 
-       
     } catch (error) {
+        console.error('Error while trying to get movie file:', error);  
         res.status(500).json({ error: 'Error while trying to get movie file' });
     }
 };
@@ -168,7 +169,7 @@ const getMoviePoster = async(req, res) => {
     
             try {
                 const MovieDetails = await movieService.getMovieById(req.params.id);
-                const path = MovieDetails.image;
+                const path = path.resolve('uploads', 'posters', movieDetails.path);
                 if (fs.existstSync(path)) {
                     res.sendFile(path);
                 } else {

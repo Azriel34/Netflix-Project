@@ -168,6 +168,12 @@ const AdminPage = ({ token }) => {
               setFormData({ ...formData, video: e.target.files[0] });
             }}
           />
+          <input
+            type="file"
+            placeholder="Movie poster"
+            accept="image/*"
+            onChange={(e) => setFormData({ ...formData, poster: e.target.files[0] })}
+          />
         </div>
       );
     }

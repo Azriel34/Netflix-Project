@@ -9,7 +9,6 @@ function App() {
       <Routes>
         <Route path="movies/:id/watch" element={<VideoPage />} />
         <Route path="managementPanel" element={<AdminPage />} />
-        <Route path="movies/:id/info" element={<MovieInformation />} />
       </Routes>
     </Router>
   );

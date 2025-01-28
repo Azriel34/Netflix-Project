@@ -12,8 +12,12 @@ const storage = multer.diskStorage({
     const fileName = `${file.fieldname}-${uniqueSuffix}${path.extname(file.originalname)}`;
     cb(null, fileName);
 
-    
-    req.savedFilePath = `/app/uploads/${fileName}`;
+    if (file.fieldname === 'video') {
+      req.savedVideoPath = `/app/uploads/${fileName}`;
+    } else if (file.fieldname === 'image') {
+      req.savedImagePath = `/app/uploads/${fileName}`;
+    } else {req.savedPosterPath = `/app/uploads/${fileName}`;}
+
   },
 });
 

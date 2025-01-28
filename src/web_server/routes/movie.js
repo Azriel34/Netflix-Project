@@ -6,7 +6,7 @@ const wrongCommandController = require('../controllers/WrongCommand');
 
 router.route('/')
   .get(movieController.getMovies)
-  .post(upload.single('video'), upload.single('image'), movieController.createMovie)
+  .post(upload.single('video'), upload.single('poster'), movieController.createMovie)
   // Handle all unsupported methods on /api/user
   .all(wrongCommandController.handleWrongCommand);
 
@@ -32,7 +32,11 @@ router.route('/search/:query')
 
 //returns movie file by id
 router.route('/:id/file')
-  .get(movieController.getMovieFile)
+  .get(movieController.getMovieFile);
+
+//returns movie poster by id
+  router.route('/:id/poster')
+  .get(movieController.getMoviePoster)
 
 // Handle any undefined routes
 router.use('*', wrongCommandController.handleWrongPage);

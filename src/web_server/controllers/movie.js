@@ -33,12 +33,12 @@ const createMovie = async (req, res) => {
             }
         }
 
-        const path = req.savedFilePath ? req.savedFilePath : null;
+        const path = req.savedVideoPath ? req.savedVideoPath : null;
         if (!path) {
             return res.status(400).json({ error: 'Movie file is required' });
         }
 
-        const image = req.savedFilePath ? req.savedFilePath : null;
+        const image = req.savedPosterPath ? req.savedPosterPath : null;
         if (!image) {
             return res.status(400).json({ error: 'Movie poster is required' });
         }
@@ -163,6 +163,22 @@ const getMovieFile = async (req, res) => {
         res.status(500).json({ error: 'Error while trying to get movie file' });
     }
 };
+
+const getMoviePoster = async(req, res) => {
+    
+            try {
+                const MovieDetails = await movieService.getMovieById(req.params.id);
+                const path = MovieDetails.image;
+                if (fs.existstSync(path)) {
+                    res.sendFile(path);
+                } else {
+                    return res.status(404).json({ error: 'Movie poster not found' });
+                }
+            } catch (error) {
+                res.status(500).json({ error: 'Error while trying to get movie poster' });
+            }
+        };
+
 
 
 //need the user to be connected
@@ -419,5 +435,6 @@ module.exports = {
     getRecommendedMovies,
     addWatchedMovie,
     getSearchedMovies,
-    getMovieFile
+    getMovieFile,
+    getMoviePoster
 };

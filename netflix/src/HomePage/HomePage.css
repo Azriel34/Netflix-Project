@@ -16,7 +16,7 @@ html {
   flex-direction: column;
   overflow-y: auto;
   float: right;
-  width: -webkit-fill-available;
+  width: 100%;
 }
 
 .homepage-navbar {

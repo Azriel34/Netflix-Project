@@ -1,0 +1,18 @@
+.CategoriesScreen {
+    padding: 20px;
+    height: 100vh;
+    overflow-y: auto; /* Allows vertical scrolling */
+
+  }
+ 
+  
+  .CategoriesScreen.light {
+    background-color: #ffffff;
+    color: #000000; 
+  }
+  
+  .CategoriesScreen.dark {
+    background-color: #000000; 
+    color: #ffffff; 
+  }
+  

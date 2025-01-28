@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import './Login.css';
 import axios from 'axios';
-import { port } from './index'
+import { port } from '../index'
 
 const Login = () => {
   const [userName, setUserName] = useState('');
@@ -80,7 +80,7 @@ const Login = () => {
         // On successful login, navigate to the welcome page
         const cookie = response.data.token; // Get the cookie
         console.log(cookie)
-        navigate('/welcome', { state: { cookie } }); // Pass the cookie as state
+        navigate(`/home?jwt=${cookie}`); // Pass the cookie as state
       })
       .catch((err) => {
         if (err.response && err.response.data && err.response.data.error) {

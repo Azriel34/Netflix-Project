@@ -1,4 +1,3 @@
-/* General styles for the Sign-Up Page */
 body {
     margin: 0;
     font-family: 'Arial', sans-serif;
@@ -10,9 +9,7 @@ body {
     min-height: 100vh;
     position: relative;
     overflow-y: auto;
-    float: right;
     width: -webkit-fill-available;
-    height: 100px;
 }
 
 /* Navbar styles */
@@ -37,7 +34,7 @@ body {
     left: 0;
     right: 0;
     bottom: 0;
-    background-image: url('../public/netflix_background.jpg');
+    background-image: url('../../public/netflix_background.jpg');
     /* Ensure correct path */
     background-size: cover;
     background-position: center;
@@ -61,14 +58,15 @@ body {
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    min-height: 100vh; /* Ensure it stretches vertically */
 }
 
 .sign-up-form-container {
     background-color: rgba(0, 0, 0, 0.7);
     border-radius: 8px;
     padding: 40px;
-    width: 90%;
-    max-width: 400px;
+    width: 100%; /* Allow it to take up the full width */
+    max-width: 500px; /* Increase max-width if you want a wider form */
     box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.7);
 }
 
@@ -160,16 +158,9 @@ body {
 
 /* Mobile responsiveness */
 @media screen and (max-width: 600px) {
-    .sign-up-navbar {
-        padding: 10px 30px;
-    }
-
-    .sign-up-logo {
-        width: 120px;
-    }
-
     .sign-up-form-container {
-        padding: 30px;
+        padding: 20px;
+        width: 90%; /* Make the form width more flexible */
     }
 }
 

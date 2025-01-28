@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './HomePage.css';
-import {port} from './index'
+import {port} from '../index'
 
 const HomePage = () => {
   const [userName, setusername] = useState('');

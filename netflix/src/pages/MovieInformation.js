@@ -10,7 +10,7 @@ const MovieInformation = ({token}) => {
     const[recoPosters, setrecoPosters] = useState([]);
     const[recoIds, setrecoIds] = useState([]);
     const[recoName, setrecoName] =useState([]);
-
+    const navigate = useNavigate();
 
 
     useEffect(() => {
@@ -19,11 +19,13 @@ const MovieInformation = ({token}) => {
             const response = await axios.get(`/api/movies/${id}`,  { 
                 headers: {
                 "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`
               },
         });
 
         const reco = await axios.get(`/api/movies/${id}`, {
             headers: {
+                "Content-Type": "application/json",
                 Authorization: `Bearer ${token}`
             }
         });
@@ -39,15 +41,41 @@ const MovieInformation = ({token}) => {
         serError("failed to get movie info");
     }
 
-    }
-}, [id]
+    };
+    setMovieInfo();
+}, [id, token]
 
     );
 return (
-    <div>
-        <h1>{}</h1>
+    <div className="movie-info">
+        <h1 className="movie-title">{videoName}</h1>
+
+        <div className="movie-poster">
+        <img
+          src={`http://localhost:5000/api/movies/${id}/file`}
+          alt={`${videoName} Poster`}
+        />
+      </div>
+      <p className="movie-description">{videoDescription}</p>
+
+      <h2 className="recommendation-title">Recommended Movies</h2>
+      <div className="recommendations-container">
+        {recoIds.map((movieId, index) => (
+          <div
+            key={movieId}
+            className="recommendation-item"
+            onClick={() => navigate(`/movies/${movieId}/watch`)}
+          >
+            <img
+              src={`http://localhost:5000/api/movies/${movieId}/file`}
+              alt={`${recoNames[index]} Poster`}
+            />
+            <p>{recoNames[index]}</p>
+          </div>
+        ))}
+      </div>
     </div>
+  );
+};
 
-)
-
-}
+export default MovieInformation;

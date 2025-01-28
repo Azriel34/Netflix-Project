@@ -6,8 +6,6 @@ const MovieInformation = ({token}) => {
     const[videoName, setVideoName] = useState('');
     const {id} = useParams();
     const[videoDescription, setvideoDescription] = useState('');
-    const[videoPoster, setvideoPoster]= useState('');
-    const[recoPosters, setrecoPosters] = useState([]);
     const[recoIds, setrecoIds] = useState([]);
     const[recoName, setrecoName] =useState([]);
     const navigate = useNavigate();
@@ -29,9 +27,9 @@ const MovieInformation = ({token}) => {
                 Authorization: `Bearer ${token}`
             }
         });
-        const posters = reco.recommendedmovies.map(movie => movie.poster);
-        const ids = reco.recommendedmovies.map(movie => movie.id);
-        const names =reco.recommendedmovies.map(movie => movie.name);
+        
+        const ids = recommendations.map((movie) => movie._id);
+        const names = recommendations.map((movie) => movie.name);
         setrecoPosters(posters);
         setrecoIds(ids);
         setrecoName(names);

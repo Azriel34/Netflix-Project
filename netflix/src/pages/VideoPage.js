@@ -37,12 +37,14 @@ useEffect(() => {
     //   }
 
       return(
+        <div className="video-page"> 
         <div className="video-container">
             <h1>{videoName}</h1>
             <video controls >
                 <source src={`http://localhost:5000/api/movies/${id}/file`} type="video/mp4"/>
                 Your browser does not support the video tag.
             </video>
+        </div>
         </div>
       );
     };

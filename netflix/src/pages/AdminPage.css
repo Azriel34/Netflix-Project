@@ -22,6 +22,35 @@ body::after {
 form {
   display: inline-block;
 }
+.sign-up-form-group.password-wrapper {
+  position: relative; 
+}
+
+.password-toggle {
+  position: absolute;
+  top: 20%;
+  right: 10px;
+  transform: translateY(-50%); 
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 20px;
+  color: #555; 
+  width: 20px; 
+  height: 20px; 
+  padding: 0; 
+  display: flex; 
+  justify-content: center; 
+  align-items: center; 
+}
+
+.password-toggle:hover {
+  background: transparent; 
+}
+
+.password-toggle:focus {
+  outline: none; 
+}
 
 h1 {
   text-align: center;
@@ -70,6 +99,8 @@ form {
   flex-direction: column;   
   align-items: center;    
   justify-content: center;  
+  max-height: 80vh; /* מגביל את גובה הטופס ל-80% מגובה המסך */
+  overflow-y: auto;
 }
 
 
@@ -173,14 +204,14 @@ form input[type="checkbox"]:checked {
 }
 
 form input[type="checkbox"]:checked::before {
-  content: ''; /* הוספת סימן מחיקה או סימן וי */
+  content: ''; 
   position: absolute;
   top: 2px;
   left: 2px;
   width: 12px;
   height: 12px;
-  background-color: #fff; /* סימן וי לבן */
-  clip-path: polygon(0% 50%, 25% 100%, 100% 0%, 75% 25%); /* יצירת צורת וי */
+  background-color: #fff; 
+  clip-path: polygon(0% 50%, 25% 100%, 100% 0%, 75% 25%); 
 }
 
 form input[type="checkbox"]:hover {

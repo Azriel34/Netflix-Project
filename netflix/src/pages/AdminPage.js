@@ -11,6 +11,12 @@ const AdminPage = ({ token }) => {
   const [actionType, setActionType] = useState("");
   const [deleteId, setDeleteId] = useState("");
   const [userId, setUserId] = useState(null);
+  const [passwordVisible, setPasswordVisible] = useState(false);
+  const [errors, setErrors] = useState({});
+
+  useEffect(() => {
+    setFormData({});
+  }, [selectedEntity]);
 
   // extract the user id from the JWT 
   // useEffect(() => {
@@ -51,6 +57,24 @@ const AdminPage = ({ token }) => {
     }
   };
 
+  const validateForm = () => {
+    const newErrors = {};
+    if (!formData.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+        newErrors.email = 'Please enter a valid email.';
+    }
+    if (!formData.phoneNumber || !/^\d+$/.test(formData.phoneNumber)) {
+        newErrors.phoneNumber = 'Please enter a valid phone number.';
+    }
+    if (!formData.userName || formData.userName.length < 8 || formData.userName.length > 20) {
+        newErrors.userName = 'Your Username must contain between 8 and 20 characters.';
+    }
+    if (!formData.fullName) newErrors.fullName = 'Full name is required.';
+    if (!formData.passWord || formData.passWord.length < 4 || formData.passWord.length > 60) {
+        newErrors.passWord = 'Password must be between 4 and 60 characters.';
+    }
+    return newErrors;
+};
+
   const handleDelete = async () => {
     try {
       const headers = { "user-id": userId };
@@ -69,6 +93,19 @@ const AdminPage = ({ token }) => {
     }
   };
 
+  const handleRemoveFile = (fieldName) => {
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [fieldName]: null, 
+      [`${fieldName}Preview`]: null,
+    }));
+  };
+
+  const togglePasswordVisibility = () => {
+    setPasswordVisible(!passwordVisible);
+};
+  
+
   const renderFormFields = () => {
     if (selectedEntity === "users") {
       return (
@@ -83,11 +120,22 @@ const AdminPage = ({ token }) => {
             placeholder="fullName"
             onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
           />
-          <input
-            type="password"
-            placeholder="Password"
-            onChange={(e) => setFormData({ ...formData, passWord: e.target.value })}
-          />
+           <div className="sign-up-form-group password-wrapper">
+            <input
+              type={passwordVisible ? "text" : "password"} 
+              placeholder="Password"
+              value={formData.passWord || ""} 
+              onChange={(e) => setFormData({ ...formData, passWord: e.target.value })} 
+            />
+            <button
+              type="button"
+              className="password-toggle"
+              onClick={togglePasswordVisibility} 
+            >
+              {passwordVisible ? '🚫' : '👁️'} 
+            </button>
+            {errors.passWord && <span className="sign-up-error-message">{errors.passWord}</span>} 
+          </div>
           <input
             type="email"
             placeholder="Email"
@@ -135,7 +183,7 @@ const AdminPage = ({ token }) => {
           {actionType === "edit" && (
             <input
               type="text"
-              placeholder=" MOVIE ID"
+              placeholder="MOVIE ID"
               onChange={(e) => setFormData({ ...formData, id: e.target.value })}
             />
           )}
@@ -168,61 +216,86 @@ const AdminPage = ({ token }) => {
               setFormData({ ...formData, video: e.target.files[0] });
             }}
           />
-          <input
-            type="file"
-            placeholder="Movie poster"
-            accept="image/*"
-            onChange={(e) => setFormData({ ...formData, poster: e.target.files[0] })}
-          />
+         <input
+  type="file"
+  placeholder="Movie poster"
+  accept="image/*"
+  onChange={(e) => {
+    const file = e.target.files[0];
+    setFormData({ ...formData, poster: file });
+
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        posterPreview: reader.result,
+      }));
+    };
+    if (file) {
+      reader.readAsDataURL(file);
+    }
+  }}
+/>
+{formData.posterPreview && (
+  <div style={{ marginTop: '10px' }}>
+    <img
+      src={formData.posterPreview}
+      alt="Movie poster preview"
+      style={{ width: '150px', height: 'auto' }}
+    />
+    <button onClick={() => handleRemoveFile('poster')} style={{ marginLeft: '10px' }}>X</button>
+  </div>
+)}
         </div>
       );
     }
   };
+  
 
-  return (
-    <div>
-      <h1>Admin Panel</h1>
-      <div className="button1-container">
-        <button className="manage-button" onClick={() => setSelectedEntity("users")}>Manage Users</button>
-        <button className="manage-button" onClick={() => setSelectedEntity("categories")}>Manage Categories</button>
-        <button className="manage-button" onClick={() => setSelectedEntity("movies")}>Manage Movies</button>
-      </div>
+          return (
+          <div>
+            <h1>Admin Panel</h1>
+            <div className="button1-container">
+              <button className="manage-button" onClick={() => setSelectedEntity("users")}>Manage Users</button>
+              <button className="manage-button" onClick={() => setSelectedEntity("categories")}>Manage Categories</button>
+              <button className="manage-button" onClick={() => setSelectedEntity("movies")}>Manage Movies</button>
+            </div>
 
-      {selectedEntity && (
-        <div> <h2>Manage {selectedEntity}</h2>
-          <div className="button2-container">
-            <button onClick={() => setActionType("create")}>Create New</button>
-            {selectedEntity !== "users" && (
-              <button onClick={() => setActionType("edit")}>Edit Existing</button>
+            {selectedEntity && (
+              <div> <h2>Manage {selectedEntity}</h2>
+                <div className="button2-container">
+                  <button onClick={() => setActionType("create")}>Create New</button>
+                  {selectedEntity !== "users" && (
+                    <button onClick={() => setActionType("edit")}>Edit Existing</button>
+                  )}
+                  {selectedEntity !== "users" && (
+                    <button onClick={() => setActionType("delete")}>Delete</button>
+                  )}
+                </div>
+              </div>
             )}
-            {selectedEntity !== "users" && (
-        <button onClick={() => setActionType("delete")}>Delete</button>
-      )}
+
+            {actionType === "delete" && (
+              <div className="delete-section">
+                <input
+                  type="text"
+                  placeholder={`Enter ${selectedEntity} ID to delete`}
+                  onChange={(e) => setDeleteId(e.target.value)}
+                />
+                <button onClick={handleDelete}>Delete</button>
+              </div>
+            )}
+
+            {actionType !== "" && actionType !== "delete" && (
+              <form onSubmit={handleFormSubmit}>
+                <div className="render-form">{renderFormFields()}</div>
+                <button type="submit">
+                  {actionType === "create" ? "Create" : "Update"}
+                </button>
+              </form>
+            )}
           </div>
-        </div>
-      )}
-
-      {actionType === "delete" && (
-        <div className="delete-section">
-          <input
-            type="text"
-            placeholder={`Enter ${selectedEntity} ID to delete`}
-            onChange={(e) => setDeleteId(e.target.value)}
-          />
-          <button onClick={handleDelete}>Delete</button>
-        </div>
-      )}
-
-      {actionType !== "" && actionType !== "delete" && (
-        <form onSubmit={handleFormSubmit}>
-          <div className="render-form">{renderFormFields()}</div>
-          <button type="submit">
-            {actionType === "create" ? "Create" : "Update"}
-          </button>
-        </form>
-      )}
-    </div>
-  );
+          );
 };
 
-export default AdminPage;
+          export default AdminPage;

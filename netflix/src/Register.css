@@ -1,0 +1,203 @@
+/* General styles for the Sign-Up Page */
+body {
+    margin: 0;
+    font-family: 'Arial', sans-serif;
+    background-color: black;
+    color: white;
+}
+
+.sign-up-page {
+    min-height: 100vh;
+    position: relative;
+    overflow-y: auto;
+    float: right;
+    width: -webkit-fill-available;
+    height: 100px;
+}
+
+/* Navbar styles */
+.sign-up-navbar {
+    padding: 20px 60px;
+    position: relative;
+    z-index: 10;
+    /* Keep navbar above other elements */
+    display: flex;
+    justify-content: flex-start;
+}
+
+.sign-up-logo {
+    width: 150px;
+    cursor: pointer;
+}
+
+/* Background styles */
+.sign-up-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url('../public/netflix_background.jpg');
+    /* Ensure correct path */
+    background-size: cover;
+    background-position: center;
+    opacity: 0.5;
+    z-index: -1;
+    /* Keep the background behind content */
+}
+
+.sign-up-overlay {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.1);
+    z-index: -2;
+}
+
+/* Form content styles */
+.sign-up-content {
+    padding: 40px 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.sign-up-form-container {
+    background-color: rgba(0, 0, 0, 0.7);
+    border-radius: 8px;
+    padding: 40px;
+    width: 90%;
+    max-width: 400px;
+    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.7);
+}
+
+.sign-up-form-container h1 {
+    margin: 0;
+    margin-bottom: 30px;
+    font-size: 2rem;
+    font-weight: bold;
+    text-align: center;
+}
+
+/* Form styles */
+.sign-up-form-group {
+    margin-bottom: 20px;
+}
+
+.sign-up-input {
+    width: 100%;
+    padding: 12px 15px;
+    font-size: 16px;
+    border: 1px solid gray;
+    border-radius: 4px;
+    outline: none;
+    background-color: black;
+    color: white;
+    box-sizing: border-box;
+}
+
+.sign-up-input:focus {
+    border: 2px solid #e50914;
+}
+
+/* Error styles */
+.sign-up-input-error {
+    border: 2px solid #e50914;
+}
+
+.sign-up-error-message {
+    color: #e50914;
+    font-size: 13px;
+    margin-top: 6px;
+}
+
+/* File input */
+.sign-up-input[type="file"] {
+    background-color: transparent;
+    color: white;
+    padding: 0;
+}
+
+.sign-up-input[type="password"] {
+    background-color: transparent;
+    color: white;
+}
+
+/* Submit button styles */
+.sign-up-button {
+    width: 100%;
+    padding: 15px;
+    font-size: 16px;
+    font-weight: bold;
+    color: white;
+    background-color: #e50914;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.sign-up-button:hover {
+    background-color: #f6121d;
+}
+
+/* Sign-in redirect message */
+.sign-up-already-signed-in {
+    margin-top: 20px;
+    font-size: 22px;
+    text-align: center;
+}
+
+.sign-up-already-signed-in a {
+    color: #e50914;
+    text-decoration: none;
+}
+
+.sign-up-already-signed-in a:hover {
+    text-decoration: underline;
+}
+
+/* Mobile responsiveness */
+@media screen and (max-width: 600px) {
+    .sign-up-navbar {
+        padding: 10px 30px;
+    }
+
+    .sign-up-logo {
+        width: 120px;
+    }
+
+    .sign-up-form-container {
+        padding: 30px;
+    }
+}
+
+.error-banner {
+    background-color: #f8d7da;
+    color: #721c24;
+    padding: 15px;
+    margin-bottom: 15px;
+    border: 1px solid #f5c6cb;
+    border-radius: 4px;
+}
+
+.password-toggle {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    color: #8c8c8c;
+}
+
+.password-toggle:hover {
+    color: #e50914;
+}
+
+.password-wrapper {
+    position: relative;
+}

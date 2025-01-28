@@ -5,6 +5,12 @@ var router = express.Router();
 const userController = require('../controllers/user');
 const wrongCommandController = require('../controllers/WrongCommand');
 
+// Check if a user exists by username
+router.route('/exists')
+  .post(userController.checkUserExists)
+  // Handle unsupported methods
+  .all(wrongCommandController.handleWrongCommand);
+
 //Send api/user to createUser() in controllers
 router.route('/')
 	.post(userController.createUser)
@@ -16,6 +22,7 @@ router.route('/:id')
 	.get(userController.getUser)
     // Handle all unsupported methods on /api/user
     .all(wrongCommandController.handleWrongCommand);
+
 
 // Handle any undefined routes
 router.use('*', wrongCommandController.handleWrongPage);

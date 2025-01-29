@@ -94,12 +94,43 @@ h2 {
   flex-direction: row;      
 }
 
+.file-input-wrapper {
+  position: relative;
+  display: inline-block;
+  width: 300px; 
+  margin-top: 10px;
+}
+
+.video-input-wrapper {
+  position: relative;
+  display: inline-block;
+  width: 300px; 
+}
+
+.remove-file-btn {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: #888;
+  font-size: 16px;
+  padding: 0; 
+  line-height: 1; 
+  width: auto; 
+  height: auto; 
+}
+
+
+
 form {
   display: flex;
   flex-direction: column;   
   align-items: center;    
   justify-content: center;  
-  max-height: 80vh; /* מגביל את גובה הטופס ל-80% מגובה המסך */
+  max-height: 80vh; 
   overflow-y: auto;
 }
 
@@ -146,8 +177,8 @@ form {
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
   justify-content: center;
   display: flex;
-  flex-direction: column; /* לוודא שהשדות סודרו בעמודה */
-  margin: 0 auto; /* המרכז את הטופס על המסך */
+  flex-direction: column; 
+  margin: 0 auto; 
 
 }
 
@@ -168,11 +199,7 @@ form input[type="file"] {
   padding: 5px;
 }
 
-form label {
-  font-size: 1rem;
-  margin-top: 10px;
-  display: block;
-}
+
 
 form button {
   width: 100%;
@@ -192,10 +219,10 @@ form input[type="checkbox"] {
   appearance: none; 
   border: 2px solid #fff; 
   border-radius: 5px; 
-  background-color: #333; /* צבע רקע כהה כשלא מסומן */
+  background-color: #333; 
   position: relative;
   cursor: pointer;
-  transition: background-color 0.3s, transform 0.3s; /* אפקט מעבר */
+  transition: background-color 0.3s, transform 0.3s; 
 }
 
 form input[type="checkbox"]:checked {
@@ -218,16 +245,7 @@ form input[type="checkbox"]:hover {
   transform: scale(1.1); 
 }
 
-form label {
-  font-size: 1.4rem;
-  margin-top: 10px;
-  display: flex;
-  margin-left: 10px; 
-  color: #fff;
-  align-items: center;
-  gap: 12px;
-  font-weight: bold;
-}
+
 
 form input[type="file"] {
   width: 100%; 
@@ -238,6 +256,7 @@ form input[type="file"] {
   cursor: pointer; 
   transition: background-color 0.3s ease, transform 0.3s ease; 
   font-size: 1.2rem;
+
 }
 
 form input[type="file"]:hover {
@@ -245,13 +264,13 @@ form input[type="file"]:hover {
 }
 
 
-
 form input[type="file"]::file-selector-button:hover {
   background-color: #f40612; 
 }
 
+
 form input[type="file"]::before {
-  content: "choose file"; 
+  content: ""; 
   color: #fff;
   font-size: 1rem;
   text-align: center;
@@ -261,11 +280,13 @@ form input[type="file"]::before {
   padding: 15px;
   border-radius: 10px;
   cursor: pointer;
+  opacity: 0.5;
 }
 
 form input[type="file"]::-webkit-file-upload-button {
   visibility: hidden;
 }
+
 
 
 

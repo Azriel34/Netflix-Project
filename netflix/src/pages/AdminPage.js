@@ -148,9 +148,34 @@ const AdminPage = ({ token }) => {
           />
           <input
             type="file"
+            placeholder="Profile picturer"
             accept="image/*"
-            onChange={(e) => setFormData({ ...formData, image: e.target.files[0] })}
+            onChange={(e) => {
+              const file = e.target.files[0];
+              setFormData({ ...formData, image: file });
+          
+              const reader = new FileReader();
+              reader.onloadend = () => {
+                setFormData((prevFormData) => ({
+                  ...prevFormData,
+                  imagePreview: reader.result,
+                }));
+              };
+              if (file) {
+                reader.readAsDataURL(file);
+              }
+            }}
           />
+          {formData.imagePreview && (
+  <div className="file-input-wrapper" style={{ marginTop: '10px' }}>
+    <img
+      src={formData.imagePreview}
+      alt="profile picture preview"
+      style={{ width: '150px', height: 'auto' }}
+    />
+    <button type="button" aria-label="Remove file" onClick={() => handleRemoveFile('image')}  className="remove-file-btn" style={{ marginLeft: '10px' }}>❌</button>
+  </div>
+)}
         </div>
       );
     } else if (selectedEntity === "categories") {
@@ -212,10 +237,17 @@ const AdminPage = ({ token }) => {
           />
           <input
             type="file"
+             accept="video/*"
             onChange={(e) => {
               setFormData({ ...formData, video: e.target.files[0] });
             }}
           />
+          {formData.video && (
+        <div className="video-input-wrapper" style={{ marginTop: '10px' }}>
+          <span>{formData.video.name}</span>
+          <button type="button" aria-label="Remove file" className="remove-video-btn"  onClick={() => handleRemoveFile('video')} style={{ marginLeft: '10px' }}>❌</button>
+          </div>
+)}
          <input
   type="file"
   placeholder="Movie poster"
@@ -237,13 +269,13 @@ const AdminPage = ({ token }) => {
   }}
 />
 {formData.posterPreview && (
-  <div style={{ marginTop: '10px' }}>
+  <div className="file-input-wrapper" style={{ marginTop: '10px' }}>
     <img
       src={formData.posterPreview}
       alt="Movie poster preview"
       style={{ width: '150px', height: 'auto' }}
     />
-    <button onClick={() => handleRemoveFile('poster')} style={{ marginLeft: '10px' }}>X</button>
+    <button type="button" aria-label="Remove file" className="remove-file-btn"  onClick={() => handleRemoveFile('poster')} style={{ marginLeft: '10px' }}>❌</button>
   </div>
 )}
         </div>

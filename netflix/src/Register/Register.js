@@ -14,7 +14,7 @@ const SignUp = () => {
         fullName: '',
         picture: null,
     });
-
+    const [imagePreview, setImagePreview] = useState(null);
     const [passwordVisible, setPasswordVisible] = useState(false); // New state for password visibility
     const [errors, setErrors] = useState({});
     const navigate = useNavigate();
@@ -31,16 +31,26 @@ const SignUp = () => {
     const handleChange = (e) => {
         const { name, value, files } = e.target;
 
-        setFormData((prev) => ({
-            ...prev,
-            [name]: name === 'picture' && files ? files[0] : value,
-        }));
+        if (name === 'picture' && files && files[0]) {
+            const file = files[0];
+            setFormData((prev) => ({ ...prev, image: file }));
+
+            // Generate a preview URL
+            const imageUrl = URL.createObjectURL(file);
+            setImagePreview(imageUrl);
+        } else {
+            setFormData((prev) => ({
+                ...prev,
+                [name]: value,
+            }));
+        }
 
         setErrors((prev) => ({
             ...prev,
-            [name]: '', // Clear error message for the field being edited
+            [name]: '',
         }));
     };
+
 
     const validateForm = () => {
         const newErrors = {};
@@ -147,7 +157,16 @@ const SignUp = () => {
                                 className="sign-up-input"
                                 onChange={handleChange}
                             />
+                            {imagePreview && (
+                                <img
+                                    src={imagePreview}
+                                    alt="Preview"
+                                    className="image-preview"
+                                    style={{ width: '100px', height: '100px', marginTop: '10px', borderRadius: '5px' }}
+                                />
+                            )}
                         </div>
+
                         <button type="submit" className="sign-up-button">
                             Sign Up
                         </button>

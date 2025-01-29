@@ -192,3 +192,7 @@ body {
 .password-wrapper {
     position: relative;
 }
+.image-preview {
+    display: block;
+    border: 2px solid #e50914;
+}

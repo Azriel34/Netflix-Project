@@ -2,9 +2,9 @@ const Movie = require('../models/movie');
 const counterService = require('./counter');
 const mongoose = require('mongoose');
 
-const createMovie = async (name, description, image, categories, path) => {
-    const movie = new Movie({ name: name, description: description, image:image, categories: categories, path: path});
-    if (image) movie.image = image;
+const createMovie = async (name, description, poster, categories, path) => {
+    const movie = new Movie({ name: name, description: description, poster:poster, categories: categories, path: path});
+    if (poster) movie.poster = poster;
     movie.recommendationId = await counterService.getNextRecommendationId('moviesCounter');
     return await movie.save();
 };

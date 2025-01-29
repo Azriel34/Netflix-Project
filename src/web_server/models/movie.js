@@ -18,7 +18,7 @@ const Movie = new Schema({
     },
     poster: {
         type: String,
-        required: false
+        required: true
     },
     path: { type: String, required: true },
     categories: {

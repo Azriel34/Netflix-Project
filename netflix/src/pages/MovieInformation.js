@@ -1,79 +1,118 @@
-import React, { useState, useEffect, useParams, useNavigate } from "react";
+import React, { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import axios from "./axiosInstance";
+import './MovieInformation.css';
 
 
-const MovieInformation = ({token}) => {
-    const[videoName, setVideoName] = useState('');
-    const {id} = useParams();
-    const[videoDescription, setvideoDescription] = useState('');
-    const[recoIds, setrecoIds] = useState([]);
-    const[recoNames, setrecoNames] =useState([]);
-    const[Error, serError ] = ('');
-    const navigate = useNavigate();
+const MovieInformation = ({ token }) => {
+  const [videoName, setVideoName] = useState("");
+  const [videoDescription, setVideoDescription] = useState("");
+  const [recoMovies, setRecoMovies] = useState([]);
+  const [recommendationError, setRecommendationError] = useState(null);
+  const [error, setError] = useState(null);
+  const { id } = useParams();
+  const navigate = useNavigate();
 
-
-    useEffect(() => {
-        const setMovieInfo = async () => {
-        try{
-            const response = await axios.get(`/api/movies/${id}`,  { 
-                headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`
-              },
+  useEffect(() => {
+    const fetchMovieInfo = async () => {
+      try {
+       
+        const movieResponse = await axios.get(`/api/movies/${id}`, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
         });
 
-        const reco = await axios.get(`/api/movies/${id}`, {
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`
-            }
-        });
-        
-        const ids = reco.map((movie) => movie._id);
-        const names = reco.map((movie) => movie.name);
-        setrecoIds(ids);
-        setrecoNames(names);
-        setVideoName(response.data.name);
-        setvideoDescription(response.data.name);
-    } catch(error) {
-        serError("failed to get movie info");
-    }
-
+        setVideoName(movieResponse.data.name);
+        setVideoDescription(movieResponse.data.description);
+      } catch (err) {
+        setError("Failed to fetch movie information");
+      }
     };
-    setMovieInfo();
-}, [id, token]
 
-    );
-return (
-    <div className="movie-info">
-        <h1 className="movie-title">{videoName}</h1>
+    const fetchRecommendations = async () => {
+      try {
+        
+        const recoResponse = await axios.get(`/api/movies/${id}/recommendations`, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
 
-        <div className="movie-poster">
-        <img
-          src={`http://localhost:5000/api/movies/${id}/file`}
-          alt={`${videoName} Poster`}
-        />
-      </div>
-      <p className="movie-description">{videoDescription}</p>
+        setRecoMovies(recoResponse.data);
+      } catch (err) {
+        setRecommendationError("Failed to fetch movie recommendations");
+      }
+    };
 
-      <h2 className="recommendation-title">Recommended Movies</h2>
-      <div className="recommendations-container">
-        {recoIds.map((movieId, index) => (
-          <div
-            key={movieId}
-            className="recommendation-item"
-            onClick={() => navigate(`/movies/${movieId}/watch`)}
-          >
-            <img
-              src={`http://localhost:5000/api/movies/${movieId}/file`}
-              alt={`${recoNames[index]} Poster`}
-            />
-            <p>{recoNames[index]}</p>
-          </div>
-        ))}
+    fetchMovieInfo();
+    fetchRecommendations();
+  }, [id, token]);
+
+  return (
+    <div className="movie-info-page">
+      <div className="movie-info">
+        {error ? (
+          <p className="error">{error}</p>
+        ) : (
+          <>
+            <div className="movie-details">
+              <div className="movie-poster">
+                <img
+                  src={`http://localhost:5000/api/movies/${id}/poster`}
+                  alt={`${videoName} Poster`}
+                />
+              </div>
+              <div className="movie-description">
+                <h1 className="movie-title">{videoName}</h1>
+                <p>{videoDescription}</p>
+                
+                <button
+                  className="play-movie-button"
+                  onClick={async () => {
+                    try {
+                      
+                      await axios.post(`/api/movies/${id}/recommendations`, null, {
+                        headers: {
+                          "Content-Type": "application/json",
+                          Authorization: `Bearer ${token}`,
+                        },
+                      });
+                      
+                      navigate(`/movies/${id}/watch`);
+                    } catch (error) {
+                      console.error("Failed to send recommendation request:", error);
+                    }
+                  }}
+                >
+                  Play Movie
+                </button>
+              </div>
+            </div>
+            <h2 className="recommendation-title">Recommended Movies</h2>
+            {recommendationError && <p className="error">{recommendationError}</p>}
+            <div className="recommendations-container">
+              {recoMovies.map((movie) => (
+                <div
+                  key={movie._id}
+                  className="recommendation-item"
+                  onClick={() => navigate(`/movies/${movie._id}/watch`)}
+                >
+                  <img
+                    src={`http://localhost:5000/api/movies/${movie._id}/poster`}
+                    alt={`${movie.name} Poster`}
+                  />
+                  <p>{movie.name}</p>
+                </div>
+              ))}
+            </div>
+          </>
+        )}
       </div>
     </div>
   );
-};
+  };
 
 export default MovieInformation;

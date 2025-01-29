@@ -5,8 +5,9 @@ const movieListingService = require('../services/movieGetHandler');
 const tokenService = require('../services/token');
 const mongoose = require('mongoose');
 const net = require('net');
-const fs = require('fs');
 const path = require('path');
+const fs = require('fs');
+
 
 
 
@@ -40,14 +41,14 @@ const createMovie = async (req, res) => {
             return res.status(400).json({ error: 'Movie file is required' });
         }
 
-        const image = req.savedPosterPath ? req.savedPosterPath : null;
-        if (!image) {
+        const poster = req.savedPosterPath ? req.savedPosterPath : null;
+        if (!poster) {
             return res.status(400).json({ error: 'Movie poster is required' });
         }
 
         // Create the movie
         const movie = await movieService.createMovie(req.body.name, req.body.description,
-            image, categories, path);
+            poster, categories, path);
         
            
         // Apply `categoryService.addMovie` for each movie in parallel
@@ -165,20 +166,26 @@ const getMovieFile = async (req, res) => {
     }
 };
 
-const getMoviePoster = async(req, res) => {
-    
-            try {
-                const MovieDetails = await movieService.getMovieById(req.params.id);
-                const path = path.resolve('uploads', 'posters', movieDetails.path);
-                if (fs.existstSync(path)) {
-                    res.sendFile(path);
-                } else {
-                    return res.status(404).json({ error: 'Movie poster not found' });
-                }
-            } catch (error) {
-                res.status(500).json({ error: 'Error while trying to get movie poster' });
-            }
-        };
+const getMoviePoster = async (req, res) => {
+    try {
+        const MovieDetails = await movieService.getMovieById(req.params.id);
+        console.log("debug1");
+        console.log(MovieDetails);
+
+        const posterPath = path.resolve('uploads', 'posters', MovieDetails.poster);
+        console.log("debug2");
+
+        if (fs.existsSync(posterPath)) { 
+            console.log("debug3");
+            res.sendFile(posterPath);
+        } else {
+            return res.status(404).json({ error: 'Movie poster not found' });
+        }
+    } catch (error) {
+        console.error('Error while trying to get movie poster:', error); 
+        res.status(500).json({ error: 'Error while trying to get movie poster' });
+    }
+};
 
 
 
@@ -270,11 +277,15 @@ function extractIdsFromRecommendOutput(inputString) {
 //need the user to be connected
 const getRecommendedMovies = async (req, res) => { 
     // Check if the user is a user by validating the JWT
-    const userId = await tokenService.checkJWTUser(req); 
-    // If no userId or not a user, return an error
-    if(!userId){
-        return res.status(400).json({ error: 'Access restricted to users only' });
+    //const userId = await tokenService.checkJWTUser(req); 
+    const userid = req.headers['userid'];
+    if (!userid) {
+        return res.status(400).json({ error: 'User ID is required in the headers' });
     }
+    // If no userId or not a user, return an error
+   // if(!userId){
+   //     return res.status(400).json({ error: 'Access restricted to users only' });
+  //  }
     const movieid = req.params.id;
     const movie = await movieService.getMovieById(movieid);
     if(!movie){

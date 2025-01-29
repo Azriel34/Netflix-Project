@@ -9,7 +9,7 @@ const wrongCommandController = require('../controllers/WrongCommand');
 
 //Send api/user to createUser() in controllers
 router.route('/')
-	.post(upload.single('picture'), userController.createUser)
+	.post(upload.single('image'), userController.createUser)
     // Handle all unsupported methods on /api/user
     .all(wrongCommandController.handleWrongCommand);
 

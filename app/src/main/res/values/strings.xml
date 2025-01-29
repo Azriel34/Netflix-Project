@@ -1,3 +1,20 @@
 <resources>
     <string name="app_name">netflix_android</string>
+    <string name="sign_up_now">Sign up now.</string>
+    <string name="new_to_netflix">New to Netflix? </string>
+    <string name="sign_in">Sign In</string>
+    <string name="password">Password</string>
+    <string name="username">Username</string>
+    <string name="unlimited_movies_ntv_shows_and_more">Unlimited movies,\nTV shows, and more</string>
+    <string name="starts_at_32_90_cancel_anytime">Starts at ₪32.90. Cancel anytime.</string>
+    <string name="ready_to_watch_enter_your_username_to_create_or_restart_your_membership">Ready to watch? Enter your username to create or restart your membership.</string>
+    <string name="get_started"><![CDATA[Get Started >]]></string>
+    <string name="netflix_logo">Netflix Logo</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="email">Email</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="full_name">Full Name</string>
+    <string name="already_signed_in">Already signed in? </string>
+    <string name="sign_in_now">Sign in now.</string>
+    <string name="choose_profile_picture">Choose Profile Picture</string>
 </resources>

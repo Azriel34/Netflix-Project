@@ -39,6 +39,7 @@
         android:padding="24dp"
         app:layout_constraintBottom_toBottomOf="@+id/backgroundImage"
         app:layout_constraintTop_toTopOf="@+id/backgroundImage"
+        app:layout_constraintVertical_bias="0.81"
         tools:layout_editor_absoluteX="0dp">
 
         <TextView
@@ -155,6 +156,29 @@
                 android:hint="@string/password"
                 android:inputType="textPassword"
                 android:textColor="@android:color/white" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/password_repeat_layout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:textColorHint="#8c8c8c"
+            app:boxBackgroundColor="#333333"
+            app:boxStrokeColor="#e50914"
+            app:passwordToggleEnabled="true"
+            app:passwordToggleTint="@android:color/white">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/password_repeat_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/repeat_password"
+                android:inputType="textPassword"
+                android:textColor="@android:color/white" />
+
         </com.google.android.material.textfield.TextInputLayout>
 
         <LinearLayout
@@ -169,9 +193,9 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:backgroundTint="@color/netflix_red"
                 android:padding="12dp"
                 android:text="@string/choose_profile_picture"
-                android:backgroundTint="@color/netflix_red"
                 android:textColor="@android:color/white" />
 
             <ImageView
@@ -179,8 +203,8 @@
                 android:layout_width="0dp"
                 android:layout_height="100dp"
                 android:layout_weight="1"
-                android:scaleType="centerCrop"
                 android:background="@android:color/darker_gray"
+                android:scaleType="centerCrop"
                 android:visibility="gone" />
         </LinearLayout>
 
@@ -189,9 +213,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
+            android:backgroundTint="@color/netflix_red"
             android:padding="12dp"
             android:text="@string/sign_up"
-            android:backgroundTint="@color/netflix_red"
             android:textColor="@android:color/white"
             android:textStyle="bold" />
 
@@ -217,4 +241,4 @@
                 android:textSize="16sp" />
         </LinearLayout>
     </LinearLayout>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

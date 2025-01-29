@@ -17,4 +17,5 @@
     <string name="already_signed_in">Already signed in? </string>
     <string name="sign_in_now">Sign in now.</string>
     <string name="choose_profile_picture">Choose Profile Picture</string>
+    <string name="repeat_password">repeat password</string>
 </resources>

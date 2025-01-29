@@ -35,8 +35,8 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class RegisterActivity extends AppCompatActivity {
-    private TextInputLayout emailLayout, phoneLayout, usernameLayout, fullnameLayout, passwordLayout;
-    private TextInputEditText emailInput, phoneInput, usernameInput, fullnameInput, passwordInput;
+    private TextInputLayout emailLayout, phoneLayout, usernameLayout, fullnameLayout, passwordLayout, passwordRepeatLayout;
+    private TextInputEditText emailInput, phoneInput, usernameInput, fullnameInput, passwordInput, passwordRepeatInput;
     private Button signupButton, uploadPictureButton;
     private TextView errorBanner, signinLink;
     private ImageView netflixLogo;
@@ -75,6 +75,7 @@ public class RegisterActivity extends AppCompatActivity {
         usernameLayout = findViewById(R.id.username_layout);
         fullnameLayout = findViewById(R.id.fullname_layout);
         passwordLayout = findViewById(R.id.password_layout);
+        passwordRepeatLayout = findViewById(R.id.password_repeat_layout);
 
         // Initialize EditTexts
         emailInput = findViewById(R.id.email_input);
@@ -82,6 +83,7 @@ public class RegisterActivity extends AppCompatActivity {
         usernameInput = findViewById(R.id.username_input);
         fullnameInput = findViewById(R.id.fullname_input);
         passwordInput = findViewById(R.id.password_input);
+        passwordRepeatInput = findViewById(R.id.password_repeat_input);
 
         // Initialize Buttons and TextViews
         signupButton = findViewById(R.id.signup_button);
@@ -147,6 +149,12 @@ public class RegisterActivity extends AppCompatActivity {
         String password = Objects.requireNonNull(passwordInput.getText()).toString();
         if (!isValidPassword(password)) {
             passwordLayout.setError("Password must be between 4 and 60 characters");
+            isValid = false;
+        }
+
+        String repeatedPassword = Objects.requireNonNull(passwordRepeatInput.getText()).toString();
+        if (!repeatedPassword.equals(password)) {
+            passwordLayout.setError("Repeated Password does not match password, please repeat the same password");
             isValid = false;
         }
 

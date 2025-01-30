@@ -1,42 +1,89 @@
 import React, { useState, useEffect } from "react";
 import axios from "./axiosInstance";
+import Navbar from "../Navbar/Navbar";
 //import { jwtDecode } from 'jwt-decode';
 import './AdminPage.css';
 
 
 
-const AdminPage = ({ token }) => {
+const AdminPage = ( { isDarkMode, toggleMode } ) => {
+  const [permissionError, setPermissionError] = useState(null);
   const [selectedEntity, setSelectedEntity] = useState("");
   const [formData, setFormData] = useState({});
   const [actionType, setActionType] = useState("");
   const [deleteId, setDeleteId] = useState("");
-  const [userId, setUserId] = useState(null);
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [errors, setErrors] = useState({});
+
+  const queryJwtParams = new URLSearchParams(window.location.search);
+  const jwt = queryJwtParams.get('jwt');
+
+  useEffect(() => {
+    if (jwt) {
+      // Fetch request with the Authorization header
+      fetch(`http://localhost:5000/api/categories/0`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${jwt}`,
+        },
+      })
+        .then((response) => {
+          if (!response.ok) {
+            // Handle non-OK responses
+            return response.json().then((err) => {
+              if (err.error === "Access restricted to managers only") {
+                setPermissionError("You don't have permission to be here, please sign in as a manager");
+              } else {
+                setPermissionError(err.message || "You don't have permission to be here, please sign in as a manager");
+              }
+            });
+          }
+          // If response is OK, clear any permission errors
+          setPermissionError(null);
+        })
+        .catch(() => {
+          setPermissionError("An error occurred while checking your permission.");
+        });
+    } else {
+      setPermissionError("You don't have permission to be here, please sign in");
+    }
+  }, [jwt]);
+
+const validateForm = () => {
+  const newErrors = {};
+  if (!formData.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      newErrors.email = 'Please enter a valid email.';
+  }
+  if (!formData.phoneNumber || !/^\d+$/.test(formData.phoneNumber)) {
+      newErrors.phoneNumber = 'Please enter a valid phone number.';
+  }
+  if (!formData.userName || formData.userName.length < 8 || formData.userName.length > 20) {
+      newErrors.userName = 'Your Username must contain between 8 and 20 characters.';
+  }
+  if (!formData.fullName) newErrors.fullName = 'Full name is required.';
+  if (!formData.passWord || formData.passWord.length < 4 || formData.passWord.length > 60) {
+      newErrors.passWord = 'Password must be between 4 and 60 characters.';
+  }
+  return newErrors;
+};
+
 
   useEffect(() => {
     setFormData({});
   }, [selectedEntity]);
 
-  // extract the user id from the JWT 
-  // useEffect(() => {
-  //   if (token) {
-  //     try {
-  //       const decoded = jwtDecode(token); // decode the jwt
-  //       setUserId(decoded.userId); // extract the user id 
-  //     } catch (error) {
-  //       console.error("Invalid token", error);
-  //     }
-  //   }
-  // }, [token]);
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
+    const validationErrors = validateForm();
+    setErrors(validationErrors);
+     
+    // If no errors
+    if (Object.keys(validationErrors).length === 0) {
     try {
-      const headers = { Authorization: `Bearer ${token}`, };
+      const headers = { Authorization: `Bearer ${jwt}`, };
       let response;
-      console.log(formData);
-
+      
       if (actionType === "create") {
         response = await axios.post(`/api/${selectedEntity}`, formData, { headers });
       } else if (actionType === "edit") {
@@ -47,37 +94,20 @@ const AdminPage = ({ token }) => {
       alert(response.data.message || `${selectedEntity} action completed successfully`);
     } catch (error) {
       console.error(error);
-
-
+      
       if (error.response && error.response.data && error.response.data.message) {
         alert(`Error: ${error.response.data.message}`);
       } else {
         alert("An unexpected error occurred");
       }
     }
+  }
   };
 
-  const validateForm = () => {
-    const newErrors = {};
-    if (!formData.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-        newErrors.email = 'Please enter a valid email.';
-    }
-    if (!formData.phoneNumber || !/^\d+$/.test(formData.phoneNumber)) {
-        newErrors.phoneNumber = 'Please enter a valid phone number.';
-    }
-    if (!formData.userName || formData.userName.length < 8 || formData.userName.length > 20) {
-        newErrors.userName = 'Your Username must contain between 8 and 20 characters.';
-    }
-    if (!formData.fullName) newErrors.fullName = 'Full name is required.';
-    if (!formData.passWord || formData.passWord.length < 4 || formData.passWord.length > 60) {
-        newErrors.passWord = 'Password must be between 4 and 60 characters.';
-    }
-    return newErrors;
-};
-
+  
   const handleDelete = async () => {
     try {
-      const headers = { "user-id": userId };
+      const headers = { Authorization: `Bearer ${jwt}` };
       const response = await axios.delete(`/api/${selectedEntity}/${deleteId}`, { headers });
 
 
@@ -115,11 +145,13 @@ const AdminPage = ({ token }) => {
             placeholder="Username"
             onChange={(e) => setFormData({ ...formData, userName: e.target.value })}
           />
+           {errors.userName && <span className="error-message">{errors.userName}</span>}
           <input
             type="text"
             placeholder="fullName"
             onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
           />
+           {errors.fullName && <span className="error-message">{errors.fullName}</span>}
            <div className="sign-up-form-group password-wrapper">
             <input
               type={passwordVisible ? "text" : "password"} 
@@ -141,11 +173,13 @@ const AdminPage = ({ token }) => {
             placeholder="Email"
             onChange={(e) => setFormData({ ...formData, email: e.target.value })}
           />
+           {errors.email && <span className="error-message">{errors.email}</span>}
           <input
             type="text"
             placeholder="Phone"
             onChange={(e) => setFormData({ ...formData, phoneNumber: e.target.value })}
           />
+           {errors.phoneNumber && <span className="error-message">{errors.phoneNumber}</span>}
           <input
             type="file"
             placeholder="Profile picturer"
@@ -284,50 +318,67 @@ const AdminPage = ({ token }) => {
   };
   
 
-          return (
-          <div>
-            <h1>Admin Panel</h1>
-            <div className="button1-container">
-              <button className="manage-button" onClick={() => setSelectedEntity("users")}>Manage Users</button>
-              <button className="manage-button" onClick={() => setSelectedEntity("categories")}>Manage Categories</button>
-              <button className="manage-button" onClick={() => setSelectedEntity("movies")}>Manage Movies</button>
-            </div>
-
-            {selectedEntity && (
-              <div> <h2>Manage {selectedEntity}</h2>
-                <div className="button2-container">
-                  <button onClick={() => setActionType("create")}>Create New</button>
-                  {selectedEntity !== "users" && (
-                    <button onClick={() => setActionType("edit")}>Edit Existing</button>
-                  )}
-                  {selectedEntity !== "users" && (
-                    <button onClick={() => setActionType("delete")}>Delete</button>
-                  )}
-                </div>
-              </div>
-            )}
-
-            {actionType === "delete" && (
-              <div className="delete-section">
-                <input
-                  type="text"
-                  placeholder={`Enter ${selectedEntity} ID to delete`}
-                  onChange={(e) => setDeleteId(e.target.value)}
-                />
-                <button onClick={handleDelete}>Delete</button>
-              </div>
-            )}
-
-            {actionType !== "" && actionType !== "delete" && (
-              <form onSubmit={handleFormSubmit}>
-                <div className="render-form">{renderFormFields()}</div>
-                <button type="submit">
-                  {actionType === "create" ? "Create" : "Update"}
-                </button>
-              </form>
-            )}
+  return (
+    <div className={`ManagerScreen ${isDarkMode ? "dark" : "light"}`}>
+      {/* include Navbar and pass the necessary props */}
+      <Navbar isDarkMode={isDarkMode} toggleMode={toggleMode} jwt={jwt} />
+  
+      {/* conditional rendering based on permission error */}
+      {permissionError ? (
+        <h1>{permissionError}</h1>
+      ) : (
+        <div>
+          <h1>Admin Panel</h1>
+          <div className="button1-container">
+            <button className="manage-button" onClick={() => setSelectedEntity("users")}>
+              Manage Users
+            </button>
+            <button className="manage-button" onClick={() => setSelectedEntity("categories")}>
+              Manage Categories
+            </button>
+            <button className="manage-button" onClick={() => setSelectedEntity("movies")}>
+              Manage Movies
+            </button>
           </div>
-          );
-};
+  
+          {selectedEntity && (
+            <div>
+              <h2>Manage {selectedEntity}</h2>
+              <div className="button2-container">
+                <button onClick={() => setActionType("create")}>Create New</button>
+                {selectedEntity !== "users" && (
+                  <button onClick={() => setActionType("edit")}>Edit Existing</button>
+                )}
+                {selectedEntity !== "users" && (
+                  <button onClick={() => setActionType("delete")}>Delete</button>
+                )}
+              </div>
+            </div>
+          )}
+  
+          {actionType === "delete" && (
+            <div className="delete-section">
+              <input
+                type="text"
+                placeholder={`Enter ${selectedEntity} ID to delete`}
+                onChange={(e) => setDeleteId(e.target.value)}
+              />
+              <button onClick={handleDelete}>Delete</button>
+            </div>
+          )}
+  
+          {actionType !== "" && actionType !== "delete" && (
+            <form onSubmit={handleFormSubmit}>
+              <div className="render-form">{renderFormFields()}</div>
+              <button type="submit">
+                {actionType === "create" ? "Create" : "Update"}
+              </button>
+            </form>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
 
           export default AdminPage;

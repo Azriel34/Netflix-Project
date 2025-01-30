@@ -1,10 +1,13 @@
 const userService = require('../services/user');
 const Counter = require('../models/counter'); 
 const path = require('path');
+const mongoose = require('mongoose');
+const net = require('net');
 
 
 //call the createUser func from the servicese directory 
 const createUser = async (req, res) => {
+    
     try {
         // Creating a new user using the data from the request body
         const { email, phoneNumber, fullName, passWord, userName} = req.body;

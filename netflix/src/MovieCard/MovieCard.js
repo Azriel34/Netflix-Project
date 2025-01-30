@@ -7,13 +7,17 @@ const MovieCard = ({ movie }) => {
 
   // Handle click event to navigate to movie details
   const handleClick = () => {
-    navigate(`/movie/${movie._id}`); // Use the movie ID to navigate to the details page
+    navigate(`/movie/${movie._id}/info`); // Use the movie ID to navigate to the details page
   };
 
   return (
     <div className="movie-card" onClick={handleClick}> {/* Add onClick handler */}
       <h3 className="movie-title">{movie.name}</h3>
-      <p className="movie-description">{movie.description}</p>
+      <img 
+        src={`http://localhost:5000/api/movies/${movie._id}/poster`} 
+        alt={`${movie.name} poster`} 
+        className="movie-poster"
+      />
     </div>
   );
 };

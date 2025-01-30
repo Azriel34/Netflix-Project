@@ -2,9 +2,12 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "./axiosInstance";
 import './MovieInformation.css';
+import { useLocation } from "react-router-dom";
+import Navbar from "../Navbar/Navbar";
 
 
-const MovieInformation = ({ token }) => {
+
+const MovieInformation = ({ isDarkMode, toggleMode }) => {
   const [videoName, setVideoName] = useState("");
   const [videoDescription, setVideoDescription] = useState("");
   const [recoMovies, setRecoMovies] = useState([]);
@@ -12,6 +15,10 @@ const MovieInformation = ({ token }) => {
   const [error, setError] = useState(null);
   const { id } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const searchQuery = queryParams.get("query"); 
+  const jwt = queryParams.get("jwt"); 
 
   useEffect(() => {
     const fetchMovieInfo = async () => {
@@ -20,7 +27,7 @@ const MovieInformation = ({ token }) => {
         const movieResponse = await axios.get(`/api/movies/${id}`, {
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${jwt}`,
           },
         });
 
@@ -37,7 +44,7 @@ const MovieInformation = ({ token }) => {
         const recoResponse = await axios.get(`/api/movies/${id}/recommendations`, {
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${jwt}`,
           },
         });
 
@@ -49,10 +56,10 @@ const MovieInformation = ({ token }) => {
 
     fetchMovieInfo();
     fetchRecommendations();
-  }, [id, token]);
+  }, [id, jwt]);
 
   return (
-    <div className="movie-info-page">
+    <div className={`movie-info-page ${isDarkMode ? "dark" : "light"}`}>
       <div className="movie-info">
         {error ? (
           <p className="error">{error}</p>
@@ -74,10 +81,10 @@ const MovieInformation = ({ token }) => {
                   onClick={async () => {
                     try {
                       
-                      await axios.post(`/api/movies/${id}/recommendations`, null, {
+                      await axios.post(`/api/movies/${id}/recommend`, null, {
                         headers: {
                           "Content-Type": "application/json",
-                          Authorization: `Bearer ${token}`,
+                          Authorization: `Bearer ${jwt}`,
                         },
                       });
                       
@@ -98,7 +105,7 @@ const MovieInformation = ({ token }) => {
                 <div
                   key={movie._id}
                   className="recommendation-item"
-                  onClick={() => navigate(`/movies/${movie._id}/watch`)}
+                  onClick={() => navigate(`/movies/${movie._id}/info`)}
                 >
                   <img
                     src={`http://localhost:5000/api/movies/${movie._id}/poster`}

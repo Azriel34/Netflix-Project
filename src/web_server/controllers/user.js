@@ -68,5 +68,20 @@ const getUser = async (req, res) => {
             res.status(500).json({ error: 'Error while trying to get profile picture' });
         }
     };
-  
-module.exports = {createUser, getUser, getProfilePicture};
+    
+
+    const checkUserExists = async (req, res) => {
+        const { userName } = req.body;
+    
+        if (!userName) {
+            return res.status(400).json({ message: 'Username is required.' });
+        }
+    
+        const userExists = await userService.getUserByUserName(userName);
+        if (userExists) {
+            return res.status(200).json({ exists: true, message: 'User exists.' });
+        } else {
+            return res.status(200).json({ exists: false, message: 'User does not exist.' });
+        }
+    };
+module.exports = {createUser, getUser, getProfilePicture, checkUserExists};

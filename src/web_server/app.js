@@ -28,16 +28,7 @@ app.use(cors({
     credentials: true,             // Allow cookies/credentials
 }));
 
-// Remove unwanted headers
-app.use((req, res, next) => {
-    // Remove the Access-Control-Allow-Origin header
-    res.removeHeader('Access-Control-Allow-Origin');  
-    // Remove the Date header
-    res.removeHeader('Date');  
-    next();
-});
-// Disable the etag header
-app.disable('etag');
+
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());

@@ -7,6 +7,12 @@ const upload = require('../middlewares/upload');
 const userController = require('../controllers/user');
 const wrongCommandController = require('../controllers/WrongCommand');
 
+// Check if a user exists by username
+router.route('/exists')
+  .post(userController.checkUserExists)
+  // Handle unsupported methods
+  .all(wrongCommandController.handleWrongCommand);
+
 //Send api/user to createUser() in controllers
 router.route('/')
 	.post(upload.single('image'), userController.createUser)

@@ -310,6 +310,7 @@ const getRecommendedMovies = async (req, res) => {
 
 //need the user to be connected
 const addWatchedMovie = async (req, res) => { 
+    console.log("hey")
     // Check if the user is a user by validating the JWT
     const userId = await tokenService.checkJWTUser(req); 
     // If no userId or not a user, return an error

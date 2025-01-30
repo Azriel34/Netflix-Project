@@ -1,0 +1,14 @@
+.ManagerScreen {
+    padding: 20px;
+    height: 100vh;
+  }
+  
+  .ManagerScreen.light {
+    background-color: #ffffff; 
+    color: #000000;
+  }
+  
+  .ManagerScreen.dark {
+    background-color: #000000; 
+    color: #ffffff; 
+  }

@@ -60,7 +60,7 @@ public class HomePageActivity extends AppCompatActivity {
     }
     public void checkUserExists(String userName) {
         OkHttpClient client = new OkHttpClient();
-        String url = "http://10.0.0.2:4000/api/users/exists"; // Change to your backend
+        String url = "http://10.0.2.2:3001/api/users/exists"; // Change to your backend
 
         JSONObject jsonObject = new JSONObject();
         try {

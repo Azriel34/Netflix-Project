@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Define your styles here -->
+    <style name="RedNavigationView" parent="Widget.MaterialComponents.NavigationView">
+        <item name="android:background">@drawable/nav_drawer_background</item>
+        <item name="itemTextColor">@color/white</item>
+        <item name="itemIconTint">@color/white</item>
+        <item name="itemBackground">@drawable/button_background</item>
+        <item name="itemTextAppearance">@style/NavMenuTextAppearance</item>
+    </style>
+
+    <style name="NavMenuTextAppearance" parent="TextAppearance.MaterialComponents.Body1">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:padding">16dp</item>
+    </style>
+</resources>

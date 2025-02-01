@@ -21,6 +21,9 @@
             android:name=".RegisterActivity"
             android:exported="false" />
         <activity
+            android:name=".AfterLoginActivity"
+            android:label="After Login" />
+        <activity
             android:name=".LoginActivity"
             android:exported="false" />
         <activity

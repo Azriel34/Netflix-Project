@@ -29,6 +29,7 @@ const createMovie = async (req, res) => {
             return res.status(400).json({ error: 'Description is required' });
         }
         const categories = req.body.categories ?? []; 
+        console.log(req.body);
         for (const category of categories) {
             result = await categoryService.getCategoryById(category);
             if(!result){
@@ -70,6 +71,7 @@ const createMovie = async (req, res) => {
 const getMovies = async (req, res) => { 
     // Check if the user is a user by validating the JWT
     const userId = await tokenService.checkJWTUser(req); 
+
     // If no userId or not a user, return an error
     if(!userId){
         return res.status(400).json({ error: 'Access restricted to users only' });
@@ -99,7 +101,7 @@ const getMovies = async (req, res) => {
 }; 
 //need the user to be connected
 const getMovie = async (req, res) => { 
-   const userid = await userService.checkUserHeader(req);
+   const userid = await tokenService.checkJWTUser(req);
    if(!userid){
        return res.status(400).json({ error: 'User ID is required in the header' });
    } 
@@ -270,6 +272,7 @@ function extractIdsFromRecommendOutput(inputString) {
 const getRecommendedMovies = async (req, res) => { 
     // Check if the user is a user by validating the JWT
     const userId = await tokenService.checkJWTUser(req); 
+    console.log("userid:", userId);
    
     //If no userId or not a user, return an error
    if(!userId){
@@ -280,21 +283,43 @@ const getRecommendedMovies = async (req, res) => {
     if(!movie){
         return res.status(404).json({ errors: ['Movie not found'] });
     }
-    const userRecId = await userService.getRecommendationId(userid);
+    const userRecId = await userService.getRecommendationId(userId);
     const movieRecId = await movieService.getRecommendationId(movieid);
+    console.log("userrecid:", userRecId);
+    console.log("movierecid:", movieRecId);
     const command = "GET "+userRecId+" "+movieRecId;
-    const output = await workWithRecommendationServer(command);
-    //analyzing the output
-    stts = Number(output.split(" ")[0]);
-    if(stts != 200){
-        res.status(stts).end();
+    try {
+        const output = await workWithRecommendationServer(command);
+        console.log(output);
+        
+        // Analyzing the output
+        const stts = Number(output.split(" ")[0]);
+        console.log(stts);
+
+        // Check if stts is a valid HTTP status code
+        if (isNaN(stts) || stts < 100 || stts > 599) {
+            // If the status code is invalid, return 500 (Internal Server Error)
+            return res.status(500).json({ error: 'Invalid response from recommendation server' });
+        }
+
+        if (stts !== 200) {
+            // Return the status code received from the recommendation server
+            return res.status(stts).end();
+        }
+
+        const idList = extractIdsFromRecommendOutput(output);
+
+        const movieList = await Promise.all(idList.map(async (id) => {
+            const movie = await movieService.getMovieByRecommendationId(id);  
+            return movie; 
+        }));
+
+        res.status(200).json(movieList);
+        
+    } catch (error) {
+        console.error('Error while fetching recommendations:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
     }
-    const idList = extractIdsFromRecommendOutput(output);
-    const movieList = await Promise.all(idList.map(async (id) => {
-        const movie = await movieService.getMovieByRecommendationId(id);  
-        return movie; 
-    }));
-    res.status(200).json(movieList);
 }; 
 
 //need the user to be connected
@@ -302,6 +327,7 @@ const addWatchedMovie = async (req, res) => {
     
     // Check if the user is a user by validating the JWT
     const userId = await tokenService.checkJWTUser(req); 
+    console.log(userId);
     // If no userId or not a user, return an error
     if(!userId){
         return res.status(400).json({ error: 'Access restricted to users only' });
@@ -312,13 +338,14 @@ const addWatchedMovie = async (req, res) => {
         return res.status(404).json({ errors: ['Movie not found'] });
     }
     try{
-        await userService.addMovie(userid, movieid);
+        await userService.addMovie(userId, movieid);
     }   
     catch (err) {
         throw err; 
     }
-    const userRecId = await userService.getRecommendationId(userid);
+    const userRecId = await userService.getRecommendationId(userId);
     const movieRecId = await movieService.getRecommendationId(movieid);
+    console.log("userrecid:", userRecId);
     const recommendCommandBody = " "+userRecId+
     " "+movieRecId; 
     const postResponse = await workWithRecommendationServer("POST"+recommendCommandBody);

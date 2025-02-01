@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "./axiosInstance";
 import Navbar from "../Navbar/Navbar";
-//import { jwtDecode } from 'jwt-decode';
+import { jwtDecode } from 'jwt-decode';
 import './AdminPage.css';
 
 
@@ -10,6 +10,7 @@ const AdminPage = ( { isDarkMode, toggleMode } ) => {
   const [permissionError, setPermissionError] = useState(null);
   const [selectedEntity, setSelectedEntity] = useState("");
   const [formData, setFormData] = useState({});
+  const [inputValue, setInputValue] = useState("");
   const [actionType, setActionType] = useState("");
   const [deleteId, setDeleteId] = useState("");
   const [passwordVisible, setPasswordVisible] = useState(false);
@@ -18,36 +19,41 @@ const AdminPage = ( { isDarkMode, toggleMode } ) => {
   const queryJwtParams = new URLSearchParams(window.location.search);
   const jwt = queryJwtParams.get('jwt');
 
-  useEffect(() => {
-    if (jwt) {
-      // Fetch request with the Authorization header
-      fetch(`http://localhost:5000/api/categories/0`, {
-        method: 'DELETE',
-        headers: {
-          'Authorization': `Bearer ${jwt}`,
-        },
-      })
-        .then((response) => {
-          if (!response.ok) {
-            // Handle non-OK responses
-            return response.json().then((err) => {
-              if (err.error === "Access restricted to managers only") {
-                setPermissionError("You don't have permission to be here, please sign in as a manager");
-              } else {
-                setPermissionError(err.message || "You don't have permission to be here, please sign in as a manager");
-              }
-            });
+  // Check permission when jwt is available
+    useEffect(() => {
+      if (jwt) {
+        // Fetch request with the Authorization header
+        fetch(`http://localhost:5000/api/categories/0`, {
+          method: 'DELETE',
+          headers: {
+            'Authorization': `Bearer ${jwt}`
           }
-          // If response is OK, clear any permission errors
-          setPermissionError(null);
         })
-        .catch(() => {
-          setPermissionError("An error occurred while checking your permission.");
-        });
-    } else {
-      setPermissionError("You don't have permission to be here, please sign in");
-    }
-  }, [jwt]);
+          .then(response => {
+            if (!response.ok) {
+              // Handle non-OK responses
+              return response.json().then(err => {
+                // Check specific error messages
+                if (err.error === "Internal server error") {
+                  console.log("Good");
+                } else if (err.error === "Access restricted to managers only") {
+                  setPermissionError("You don't have permission to be here, please sign in as a manager");
+                } else {
+                  setPermissionError(err.message || "You don't have permission to be here, please sign in as a manager");
+                }
+              });
+            }
+            // If response is OK, clear any permission errors
+            setPermissionError(null);
+          })
+          .catch(() => {
+            setPermissionError("An error occurred while checking your permission.");
+          });
+      } else {
+        setPermissionError("You don't have permission to be here, please sign in");
+      }
+    }, [jwt]);
+  
 
 const validateForm = () => {
   const newErrors = {};
@@ -71,18 +77,30 @@ const validateForm = () => {
   useEffect(() => {
     setFormData({});
   }, [selectedEntity]);
-
+   
 
   const handleFormSubmit = async (e) => {
+      const validationErrors = validateForm();
+      if (selectedEntity === "users") {
+      setErrors(validationErrors);
+      }
+      console.log(errors);
     e.preventDefault();
-    const validationErrors = validateForm();
-    setErrors(validationErrors);
-     
     // If no errors
-    if (Object.keys(validationErrors).length === 0) {
+    if (Object.keys(validationErrors).length === 0 || selectedEntity === "categories" || selectedEntity === "movies" ) {
     try {
-      const headers = { Authorization: `Bearer ${jwt}`, };
+      const headers1 = { Authorization: `Bearer ${jwt}`,
+      'Content-Type': 'application/json'
+     };
+     const headers2 = { Authorization: `Bearer ${jwt}`,
+    };
+      const headers = selectedEntity ==="movies"? headers2:headers1;
       let response;
+      const filteredData = Object.fromEntries(
+        Object.entries(formData).filter(([_, value]) => 
+          Array.isArray(value) ? value.length > 0 : value
+        )
+      );
       
       if (actionType === "create") {
         response = await axios.post(`/api/${selectedEntity}`, formData, { headers });
@@ -134,7 +152,9 @@ const validateForm = () => {
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
 };
-  
+
+
+
 
   const renderFormFields = () => {
     if (selectedEntity === "users") {
@@ -252,19 +272,37 @@ const validateForm = () => {
             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
           />
           <input
-            type="text"
-            placeholder="Enter category ID"
-            onKeyDown={(e) => {
-              if (e.key === 'Enter' && e.target.value.trim() !== '') {
-                e.preventDefault();
-                setFormData((prevFormData) => ({
-                  ...prevFormData,
-                  categories: [...(prevFormData.categories || []), e.target.value],
-                }));
-                e.target.value = '';
-              }
-            }}
-          />
+  type="text"
+  placeholder="Enter category ID and press enter"
+  value={inputValue} 
+  onChange={(e) => setInputValue(e.target.value)} 
+  onKeyDown={(e) => {
+    if (e.key === 'Enter' && inputValue.trim() !== '') {
+      e.preventDefault();
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        categories: [...(prevFormData.categories || []), inputValue],
+      }));
+      setInputValue(""); 
+    }
+  }}
+/>
+<ul>
+  {formData.categories?.map((category, index) => (
+    <li key={index}>
+      {category} 
+      <button type="button" onClick={() => {
+        setFormData((prevFormData) => ({
+          ...prevFormData,
+          categories: prevFormData.categories.filter((_, i) => i !== index),
+        }));
+      }}>
+        ❌
+      </button>
+    </li>
+  ))}
+</ul>
+
           <textarea
             placeholder="Description"
             onChange={(e) => setFormData({ ...formData, description: e.target.value })}
@@ -320,8 +358,9 @@ const validateForm = () => {
 
   return (
     <div className={`ManagerScreen ${isDarkMode ? "dark" : "light"}`}>
-      {/* include Navbar and pass the necessary props */}
-      <Navbar isDarkMode={isDarkMode} toggleMode={toggleMode} jwt={jwt} />
+       {/* Include Navbar and pass the necessary props */}
+       <Navbar isDarkMode={isDarkMode} toggleMode={toggleMode} jwt={jwt} />
+      
   
       {/* conditional rendering based on permission error */}
       {permissionError ? (

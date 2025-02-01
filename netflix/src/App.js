@@ -45,7 +45,7 @@ function App() {
           <Route path="/manager" element={<AdminPage isDarkMode={isDarkMode} toggleMode={toggleMode} />} />
           <Route path="/search" element={<SearchScreen isDarkMode={isDarkMode} toggleMode={toggleMode} />} />
           <Route path="/movie/:id/info" element={<MovieInformation isDarkMode={isDarkMode} toggleMode={toggleMode} />} /> 
-          <Route path="/movie/:id/watch" element={<MovieInformation isDarkMode={isDarkMode} toggleMode={toggleMode} />} />
+          <Route path="/movie/:id/watch" element={<VideoPage isDarkMode={isDarkMode} toggleMode={toggleMode} />} />
         </Routes>
       </div>
     </Router>

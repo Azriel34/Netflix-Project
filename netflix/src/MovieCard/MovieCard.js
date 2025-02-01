@@ -4,6 +4,7 @@ import "./MovieCard.css"; // If you have a separate CSS for MovieCard component
 
 const MovieCard = ({ movie }) => {
   const navigate = useNavigate(); // Initialize useNavigate hook
+  console.log(movie);
 
   // Handle click event to navigate to movie details
   const handleClick = () => {

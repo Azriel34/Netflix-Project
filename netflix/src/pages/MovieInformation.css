@@ -59,9 +59,10 @@
 .movie-description {
   flex: 1; 
   font-size: 2.2em;
-  line-height: 2.6;
+  line-height: 2.2;
   margin-top: -15px;
   margin-bottom: 30px;
+  color: #ffffff;
 }
 
 

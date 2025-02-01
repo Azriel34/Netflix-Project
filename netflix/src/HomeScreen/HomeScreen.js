@@ -54,6 +54,8 @@ function HomeScreen({ isDarkMode, toggleMode }) {
         method: "GET",
         headers: {
           Authorization: `Bearer ${jwt}`,
+          'Content-Type': 'application/json'
+          
         },
       })
         .then((response) => response.json())
@@ -67,6 +69,7 @@ function HomeScreen({ isDarkMode, toggleMode }) {
                       method: "GET",
                       headers: {
                         Authorization: `Bearer ${jwt}`,
+                        'Content-Type': 'application/json'
                       },
                     }).then((res) => res.json())
                   )
@@ -113,7 +116,7 @@ function HomeScreen({ isDarkMode, toggleMode }) {
                     {category.movies.map((movie) => (
                       <Link
                         key={movie._id}
-                        to={`/movie/${movie._id}?jwt=${jwt}`} // Pass the JWT token in the URL
+                        to={`/movie/${movie._id}/info?jwt=${jwt}`} // Pass the JWT token in the URL
                       >
                         <MovieCard movie={movie} />
                       </Link>

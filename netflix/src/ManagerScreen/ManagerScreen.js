@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import "./ManagerScreen.css";
+import "../pages/AdminPage.css";
 import Navbar from "../Navbar/Navbar"; // Make sure this path is correct
 import { port } from '../index';
+import  AdminPage from "../pages/AdminPage";
 
 function ManagerScreen({ isDarkMode, toggleMode }) {
   const [permissionError, setPermissionError] = useState(null); // State to store permission error message
@@ -52,10 +53,7 @@ function ManagerScreen({ isDarkMode, toggleMode }) {
       {permissionError ? (
         <h1>{permissionError}</h1>
       ) : (
-        <>
-          <h1>Welcome to the Manager Panel</h1>
-          <p>You have access to manager functionalities.</p>
-        </>
+        <div> <AdminPage /></div> 
       )}
     </div>
   );

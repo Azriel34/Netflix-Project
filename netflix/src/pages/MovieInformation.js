@@ -41,7 +41,7 @@ const MovieInformation = ({ isDarkMode, toggleMode }) => {
     const fetchRecommendations = async () => {
       try {
         
-        const recoResponse = await axios.get(`/api/movies/${id}/recommendations`, {
+        const recoResponse = await axios.get(`/api/movies/${id}/recommend`, {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${jwt}`,

@@ -7,6 +7,7 @@ const mongoose = require('mongoose');
 const net = require('net');
 const path = require('path');
 const fs = require('fs');
+const { Console } = require('console');
 
 
 
@@ -272,7 +273,7 @@ function extractIdsFromRecommendOutput(inputString) {
 const getRecommendedMovies = async (req, res) => { 
     // Check if the user is a user by validating the JWT
     const userId = await tokenService.checkJWTUser(req); 
-    console.log("userid:", userId);
+    
    
     //If no userId or not a user, return an error
    if(!userId){
@@ -290,11 +291,11 @@ const getRecommendedMovies = async (req, res) => {
     const command = "GET "+userRecId+" "+movieRecId;
     try {
         const output = await workWithRecommendationServer(command);
-        console.log(output);
+        
         
         // Analyzing the output
         const stts = Number(output.split(" ")[0]);
-        console.log(stts);
+        
 
         // Check if stts is a valid HTTP status code
         if (isNaN(stts) || stts < 100 || stts > 599) {
@@ -327,7 +328,7 @@ const addWatchedMovie = async (req, res) => {
     
     // Check if the user is a user by validating the JWT
     const userId = await tokenService.checkJWTUser(req); 
-    console.log(userId);
+    
     // If no userId or not a user, return an error
     if(!userId){
         return res.status(400).json({ error: 'Access restricted to users only' });
@@ -339,19 +340,19 @@ const addWatchedMovie = async (req, res) => {
     }
     try{
         await userService.addMovie(userId, movieid);
+       
     }   
     catch (err) {
         throw err; 
     }
     const userRecId = await userService.getRecommendationId(userId);
     const movieRecId = await movieService.getRecommendationId(movieid);
-    console.log("userrecid:", userRecId);
     const recommendCommandBody = " "+userRecId+
     " "+movieRecId; 
     const postResponse = await workWithRecommendationServer("POST"+recommendCommandBody);
     //if the user already in the system
     if(Number(postResponse.split(" ")[0]) != 201){
-        await workWithRecommendationServer("PATCH"+recommendCommandBody);
+        const patchResponse = await workWithRecommendationServer("PATCH"+recommendCommandBody);
         //the patch has to succeed
     }
     //even if the user wasnt in the recommend system nothing was created

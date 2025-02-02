@@ -58,6 +58,7 @@ const MovieInformation = ({ isDarkMode, toggleMode }) => {
     fetchRecommendations();
   }, [id, jwt]);
 
+ const validRecoMovies = recoMovies.filter(movie => movie !== null);
   return (
     <div className={`movie-info-page ${isDarkMode ? "dark" : "light"}`}>
       <div className="movie-info">
@@ -81,14 +82,14 @@ const MovieInformation = ({ isDarkMode, toggleMode }) => {
                   onClick={async () => {
                     try {
                       
-                      await axios.post(`/api/movies/${id}/recommend`, null, {
+                      await axios.post(`/api/movies/${id}/recommend`, {}, {
                         headers: {
                           "Content-Type": "application/json",
                           Authorization: `Bearer ${jwt}`,
                         },
                       });
                       
-                      navigate(`/movies/${id}/watch`);
+                      navigate(`/movie/${id}/watch?jwt=${jwt}`);
                     } catch (error) {
                       console.error("Failed to send recommendation request:", error);
                     }
@@ -99,21 +100,27 @@ const MovieInformation = ({ isDarkMode, toggleMode }) => {
               </div>
             </div>
             <h2 className="recommendation-title">Recommended Movies</h2>
-            {recommendationError && <p className="error">{recommendationError}</p>}
+{console.log("RecoMovies:", recoMovies)}  // בדיקה בלוג
+{recommendationError && <p className="error">{recommendationError}</p>}
             <div className="recommendations-container">
-              {recoMovies.map((movie) => (
-                <div
-                  key={movie._id}
-                  className="recommendation-item"
-                  onClick={() => navigate(`/movies/${movie._id}/info`)}
-                >
-                  <img
-                    src={`http://localhost:5000/api/movies/${movie._id}/poster`}
-                    alt={`${movie.name} Poster`}
-                  />
-                  <p>{movie.name}</p>
-                </div>
-              ))}
+            {validRecoMovies.length > 0 ? (
+  validRecoMovies.map((movie) => (
+    <div
+      key={movie._id}
+      className="recommendation-item"
+      onClick={() => navigate(`/movie/${movie._id}/info?jwt=${jwt}`)}
+    >
+      <img
+        src={`http://localhost:5000/api/movies/${movie._id}/poster`}
+        alt={`${movie.name} Poster`}
+      />
+      <p>{movie.name}</p>
+    </div>
+  ))
+) : (
+  <p>No recommendations available.</p>
+)
+              }
             </div>
           </>
         )}

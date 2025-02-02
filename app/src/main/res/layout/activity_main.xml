@@ -11,9 +11,31 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/movieIdEditText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="32dp" />
+
+    <EditText
+        android:id="@+id/movieIdEditText"
+        android:layout_width="0dp"   <!-- match_parent -->
+    android:layout_height="wrap_content"
+    android:hint="Enter movie ID"
+    android:inputType="text"
+    app:layout_constraintTop_toBottomOf="@id/TextView"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    android:layout_marginTop="16dp" />
+
+    <Button
+        android:id="@+id/nextPageButton"
+        android:layout_width="0dp"  <!-- match_parent -->
+    android:layout_height="wrap_content"
+    android:text="Go to Movie Details"
+    app:layout_constraintTop_toBottomOf="@id/movieIdEditText"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    android:layout_marginTop="16dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

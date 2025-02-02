@@ -12,6 +12,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Netflix_android"
         tools:targetApi="31">
+        <activity android:name=".pages.MovieWatchActivity" />
+        <activity android:name=".pages.MovieDetailActivity" />
         <activity
             android:name=".MainActivity"
             android:exported="true">

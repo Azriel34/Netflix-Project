@@ -24,7 +24,16 @@
             android:name=".AfterLoginActivity"
             android:label="After Login" />
         <activity
+            android:name=".ManagerActivity"
+            android:exported="false" />
+        <activity
             android:name=".LoginActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SearchActivity"
+            android:exported="false" />
+        <activity
+            android:name=".CategoriesActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"

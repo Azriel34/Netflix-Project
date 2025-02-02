@@ -1,10 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Define your styles here -->
+    <!-- Light Mode Navigation View -->
     <style name="RedNavigationView" parent="Widget.MaterialComponents.NavigationView">
         <item name="android:background">@drawable/nav_drawer_background</item>
-        <item name="itemTextColor">@color/white</item>
-        <item name="itemIconTint">@color/white</item>
+        <item name="itemTextColor">@color/black</item> <!-- Black text for light mode -->
+        <item name="itemIconTint">@color/black</item> <!-- Black icons for light mode -->
         <item name="itemBackground">@drawable/button_background</item>
         <item name="itemTextAppearance">@style/NavMenuTextAppearance</item>
     </style>

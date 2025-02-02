@@ -12,17 +12,16 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import android.widget.RelativeLayout;
 
-public class AfterLoginActivity extends AppCompatActivity {
+public class CategoriesActivity extends AppCompatActivity {
 
     private DrawerLayout drawerLayout;
     private FloatingActionButton fab;
     private NavigationView navView;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_after_login);
+        setContentView(R.layout.activity_categories);
 
         // Retrieve the username from the Intent
         String username = getIntent().getStringExtra("USERNAME");
@@ -43,13 +42,12 @@ public class AfterLoginActivity extends AppCompatActivity {
 
 
 
-
-        // Reference to the Switch and layout
         Switch switchToggle = findViewById(R.id.switch_toggle);
         RelativeLayout layout = findViewById(R.id.layout);
 
+        // Get the shared preferences to retrieve the saved switch state
         SharedPreferences preferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
-        boolean switchState = preferences.getBoolean("switch_state", false);
+        boolean switchState = preferences.getBoolean("switch_state", false);  // Default to false (unchecked)
         switchToggle.setChecked(switchState);
 
         // Set initial background color and Switch color based on the switch state
@@ -68,7 +66,6 @@ public class AfterLoginActivity extends AppCompatActivity {
 
 
 
-
         // Set the username dynamically in the navigation drawer header
         setUsernameInNavHeader(username);
 
@@ -77,24 +74,24 @@ public class AfterLoginActivity extends AppCompatActivity {
 
             if (id == R.id.nav_logout) {
                 // Navigate to HomePageActivity and close this activity
-                Intent intent = new Intent(AfterLoginActivity.this, HomePageActivity.class);
+                Intent intent = new Intent(CategoriesActivity.this, HomePageActivity.class);
                 startActivity(intent);
                 finish(); // Close the current activity
                 return true;
             } else if (id == R.id.nav_manager) { // Navigate to ManagerActivity with data
-                Intent intent = new Intent(AfterLoginActivity.this, ManagerActivity.class);
+                Intent intent = new Intent(CategoriesActivity.this, ManagerActivity.class);
                 intent.putExtra("USERNAME", username);
                 intent.putExtra("jwt", getIntent().getStringExtra("jwt")); // Get JWT from Intent
                 startActivity(intent);
                 return true;
             } else if (id == R.id.nav_home) { // Navigate to ManagerActivity with data
-                Intent intent = new Intent(AfterLoginActivity.this, AfterLoginActivity.class);
+                Intent intent = new Intent(CategoriesActivity.this, AfterLoginActivity.class);
                 intent.putExtra("USERNAME", username);
                 intent.putExtra("jwt", getIntent().getStringExtra("jwt")); // Get JWT from Intent
                 startActivity(intent);
                 return true;
             } else if (id == R.id.nav_categories) { // Navigate to ManagerActivity with data
-                Intent intent = new Intent(AfterLoginActivity.this, CategoriesActivity.class);
+                Intent intent = new Intent(CategoriesActivity.this, CategoriesActivity.class);
                 intent.putExtra("USERNAME", username);
                 intent.putExtra("jwt", getIntent().getStringExtra("jwt")); // Get JWT from Intent
                 startActivity(intent);
@@ -103,6 +100,18 @@ public class AfterLoginActivity extends AppCompatActivity {
             return false;
         });
     }
+
+    private void setUsernameInNavHeader(String username) {
+        // Access the header view
+        View headerView = navView.getHeaderView(0);
+
+        // Find the TextView for the username
+        TextView headerUsername = headerView.findViewById(R.id.headerUsername);
+
+        // Set the username
+        headerUsername.setText(username);
+    }
+
     private void updateBackgroundAndSwitchColor(Switch switchToggle, RelativeLayout layout, boolean isChecked) {
         if (isChecked) {
             layout.setBackgroundColor(getResources().getColor(android.R.color.black));  // Dark mode (black)
@@ -113,15 +122,5 @@ public class AfterLoginActivity extends AppCompatActivity {
             switchToggle.setThumbTintList(getResources().getColorStateList(android.R.color.black));  // Black color for unchecked state
             switchToggle.setTrackTintList(getResources().getColorStateList(android.R.color.black));  // Black color for unchecked state
         }
-    }
-    private void setUsernameInNavHeader(String username) {
-        // Access the header view
-        View headerView = navView.getHeaderView(0);
-
-        // Find the TextView for the username
-        TextView headerUsername = headerView.findViewById(R.id.headerUsername);
-
-        // Set the username
-        headerUsername.setText(username);
     }
 }

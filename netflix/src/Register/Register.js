@@ -11,10 +11,11 @@ const SignUp = () => {
         phoneNumber: '',
         userName: '',
         passWord: '',
+        repeatPassWord: '',
         fullName: '',
         image: null,
     });
-
+    const [imagePreview, setImagePreview] = useState(null);
     const [passwordVisible, setPasswordVisible] = useState(false); // New state for password visibility
     const [errors, setErrors] = useState({});
     const navigate = useNavigate();
@@ -31,16 +32,26 @@ const SignUp = () => {
     const handleChange = (e) => {
         const { name, value, files } = e.target;
 
-        setFormData((prev) => ({
-            ...prev,
-            [name]: name === 'picture' && files ? files[0] : value,
-        }));
+        if (name === 'picture' && files && files[0]) {
+            const file = files[0];
+            setFormData((prev) => ({ ...prev, image: file }));
+
+            // Generate a preview URL
+            const imageUrl = URL.createObjectURL(file);
+            setImagePreview(imageUrl);
+        } else {
+            setFormData((prev) => ({
+                ...prev,
+                [name]: value,
+            }));
+        }
 
         setErrors((prev) => ({
             ...prev,
-            [name]: '', // Clear error message for the field being edited
+            [name]: '',
         }));
     };
+
 
     const validateForm = () => {
         const newErrors = {};
@@ -56,6 +67,9 @@ const SignUp = () => {
         if (!formData.fullName) newErrors.fullName = 'Full name is required.';
         if (!formData.passWord || formData.passWord.length < 4 || formData.passWord.length > 60) {
             newErrors.passWord = 'Password must be between 4 and 60 characters.';
+        }
+        if (formData.passWord !== formData.repeatPassWord) {
+            newErrors.repeatPassWord = 'Passwords do not match.';
         }
         return newErrors;
     };
@@ -140,6 +154,17 @@ const SignUp = () => {
                             </button>
                             {errors.passWord && <span className="sign-up-error-message">{errors.passWord}</span>}
                         </div>
+                        <div className="sign-up-form-group password-wrapper">
+                            <input
+                                type={passwordVisible ? 'text' : 'password'}
+                                name="repeatPassWord"
+                                className={`sign-up-input ${errors.repeatPassWord ? 'sign-up-input-error' : ''}`}
+                                placeholder="Repeat Password"
+                                value={formData.repeatPassWord}
+                                onChange={handleChange}
+                            />
+                            {errors.repeatPassWord && <span className="sign-up-error-message">{errors.repeatPassWord}</span>}
+                        </div>
                         <div className="sign-up-form-group">
                             <input
                                 type="file"
@@ -147,7 +172,16 @@ const SignUp = () => {
                                 className="sign-up-input"
                                 onChange={handleChange}
                             />
+                            {imagePreview && (
+                                <img
+                                    src={imagePreview}
+                                    alt="Preview"
+                                    className="image-preview"
+                                    style={{ width: '100px', height: '100px', marginTop: '10px', borderRadius: '5px' }}
+                                />
+                            )}
                         </div>
+
                         <button type="submit" className="sign-up-button">
                             Sign Up
                         </button>

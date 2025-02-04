@@ -3,7 +3,8 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 
-export const port = 5000;
+export const port = process.env.REACT_APP_WEB_PORT;
+console.log(port);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

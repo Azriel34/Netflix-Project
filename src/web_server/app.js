@@ -12,7 +12,7 @@ const path = require('path');
 
 
 //the configrution should include a RECOMMENDATION_IP and a RECOMMENDATION_PORT
-require('custom-env').env(process.env.NODE_ENV, './config');
+//require('custom-env').env(process.env.NODE_ENV, './config');
 
 mongoose.connect(process.env.CONNECTION_STRING)
     .then(() => console.log('Connected to MongoDB!'))
@@ -24,7 +24,7 @@ mongoose.connect(process.env.CONNECTION_STRING)
 const app = express();
 
 app.use(cors({
-    origin: 'http://localhost:3000', // Frontend URL
+    origin: `http://localhost:${process.env.REACT_PORT}`, // Frontend URL
     credentials: true,             // Allow cookies/credentials
 }));
 

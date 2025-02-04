@@ -1,0 +1,27 @@
+# Use a Node.js image
+FROM node:18-alpine
+
+# Set the working directory
+WORKDIR /app
+
+# Copy package.json and install dependencies
+COPY package.json package-lock.json ./
+RUN npm install
+
+# Copy the rest of the app
+COPY . .
+
+# Pass environment variables
+ARG REACT_APP_REACT_PORT
+ARG REACT_APP_WEB_PORT
+ENV REACT_APP_REACT_PORT=${REACT_APP_REACT_PORT}
+ENV REACT_APP_WEB_PORT=${REACT_APP_WEB_PORT}
+
+# Build the React app with the environment variable
+RUN PORT=${REACT_APP_REACT_PORT} npm run build
+
+# Expose the port dynamically
+EXPOSE ${REACT_APP_REACT_PORT}
+
+# Start the application
+CMD ["sh", "-c", "PORT=${REACT_APP_REACT_PORT} npm start"]

@@ -1,0 +1,75 @@
+services:
+  mongo:
+    image: mongo:latest
+    container_name: mongodb
+    ports:
+      - "27017:27017"  # <mongo_port: mongo_port>
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - app_network
+    restart: always
+
+  recommendation-server:
+    build:
+      context: .  
+      dockerfile: Dockerfile.main  
+    container_name: recommendation-server
+    ports:
+      - "8000:8000"  # "<RECO_PORT>:<RECO_PORT>"
+    stdin_open: true
+    tty: true
+    depends_on:
+      - mongo
+    volumes:
+      - ./data:/app/data  
+    networks:
+      - app_network
+    command: ["8000"]  # "<RECO_PORT>"
+
+  web-server:
+    build:
+      context: .  
+      dockerfile: Dockerfile.webServer  
+    container_name: web-server
+    stdin_open: true
+    tty: true
+    ports:
+      - "7000:7000"  # "<WEB_PORT>:<WEB_PORT>"
+    depends_on:
+      - recommendation-server
+      - mongo
+    networks:
+      - app_network
+    environment:
+      CONNECTION_STRING: mongodb://host.docker.internal:27017/config  # mongodb://mongo:27017/<DATABASE>
+      PORT: 7000  # <WEB_PORT>
+      RECOMMENDATION_IP: recommendation-server
+      RECOMMENDATION_PORT: 8000  # <RECO_PORT>
+      REACT_PORT: 3100  # <REACT_PORT>
+
+  react-app:
+    build:
+      context: ./netflix  
+      dockerfile: Dockerfile.react  
+      args:
+        REACT_APP_WEB_PORT: 7000  # <WEB_PORT>
+        REACT_APP_REACT_PORT: 3100 # <REACT_PORT>
+    container_name: react-app
+    stdin_open: true
+    tty: true
+    ports:
+      - "3100:3100"  # "<REACT_PORT>:<REACT_PORT>""
+    depends_on:
+      - web-server
+    networks:
+      - app_network
+    environment:
+      REACT_APP_WEB_PORT: 7000  # <WEB_PORT>
+
+networks:
+  app_network:
+    driver: bridge  
+
+volumes:
+  mongo_data:  

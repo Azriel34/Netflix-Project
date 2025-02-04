@@ -22,22 +22,20 @@ function HomeScreen({ isDarkMode, toggleMode }) {
           Authorization: `Bearer ${jwt}`,
         },
       })
-        .then((response) => {
+        .then(async (response) => {
           if (!response.ok) {
-            return response.json().then((err) => {
-              setPermissionError(
-                err.message || "You don't have permission to be here, please sign in"
-              );
-            });
+            const err = await response.json();
+            setPermissionError(
+              err.message || "You don't have permission to be here, please sign in"
+            );
           }
           setPermissionError(null);
           const decodedToken = jwtDecode(jwt);
           const userId = decodedToken.userId;
-          return fetch(`http://localhost:${port}/api/users/${userId}`)
-            .then((userResponse) => userResponse.json())
-            .then((userData) => {
-              setUserName(userData.userName || "Unknown User");
-            });
+          console.log(decodedToken)
+          const userResponse = await fetch(`http://localhost:${port}/api/users/${userId}`);
+          const userData = await userResponse.json();
+          setUserName(userData.userName || "Unknown User");
         })
         .catch(() => {
           setPermissionError("An error occurred while checking your permission.");

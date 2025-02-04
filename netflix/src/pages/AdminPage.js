@@ -3,7 +3,7 @@ import axios from "./axiosInstance";
 import Navbar from "../Navbar/Navbar";
 import { jwtDecode } from 'jwt-decode';
 import './AdminPage.css';
-
+import { port } from "../index";
 
 
 const AdminPage = ( { isDarkMode, toggleMode } ) => {
@@ -15,6 +15,7 @@ const AdminPage = ( { isDarkMode, toggleMode } ) => {
   const [deleteId, setDeleteId] = useState("");
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [errors, setErrors] = useState({});
+  
 
   const queryJwtParams = new URLSearchParams(window.location.search);
   const jwt = queryJwtParams.get('jwt');
@@ -23,7 +24,7 @@ const AdminPage = ( { isDarkMode, toggleMode } ) => {
     useEffect(() => {
       if (jwt) {
         // Fetch request with the Authorization header
-        fetch(`http://localhost:5000/api/categories/0`, {
+        fetch(`http://localhost:${port}/api/categories/0`, {
           method: 'DELETE',
           headers: {
             'Authorization': `Bearer ${jwt}`

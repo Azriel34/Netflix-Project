@@ -1,5 +1,7 @@
 const express = require('express');
 var router = express.Router();
+const upload = require('../middlewares/upload');
+
 
 //import the "controllers" directory
 const userController = require('../controllers/user');
@@ -13,7 +15,7 @@ router.route('/exists')
 
 //Send api/user to createUser() in controllers
 router.route('/')
-	.post(userController.createUser)
+	.post(upload.single('image'), userController.createUser)
     // Handle all unsupported methods on /api/user
     .all(wrongCommandController.handleWrongCommand);
 
@@ -23,6 +25,9 @@ router.route('/:id')
     // Handle all unsupported methods on /api/user
     .all(wrongCommandController.handleWrongCommand);
 
+//returns profile picture file by id
+router.route('/:id/picture')
+  .get(userController.getProfilePicture)
 
 // Handle any undefined routes
 router.use('*', wrongCommandController.handleWrongPage);

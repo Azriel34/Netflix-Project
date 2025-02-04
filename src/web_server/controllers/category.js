@@ -13,6 +13,7 @@ const createCategory = async (req, res) => {
     }
 
     try {
+        console.log(req.body);
         if (!req.body.name) {
             return res.status(400).json({ error: 'Name is required' });
         }

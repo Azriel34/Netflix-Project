@@ -38,9 +38,9 @@ const User = new Schema({
       ref: 'Movie',
       default: []
     },
-    picture: {
-      type: Number,
-      required: true,
+    image: {
+      type: String,
+      required: false,
       default: 0
     },
     recommendationId: {

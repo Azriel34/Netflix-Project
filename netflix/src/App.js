@@ -9,6 +9,9 @@ import CategoriesScreen from "./CategoriesScreen/CategoriesScreen";
 import ManagerScreen from "./ManagerScreen/ManagerScreen";
 import SearchScreen from "./SearchScreen/SearchScreen";
 import MovieDetails from "./MovieDetails/MovieDetails";
+import AdminPage from "./pages/AdminPage";
+import MovieInformation from './pages/MovieInformation';
+import VideoPage from './pages/VideoPage';
 
 function App() {
 
@@ -39,9 +42,10 @@ function App() {
         <Routes>
           <Route path="/home" element={<HomeScreen isDarkMode={isDarkMode} toggleMode={toggleMode} />} />
           <Route path="/categories" element={<CategoriesScreen isDarkMode={isDarkMode} toggleMode={toggleMode} />} />
-          <Route path="/manager" element={<ManagerScreen isDarkMode={isDarkMode} toggleMode={toggleMode} />} />
+          <Route path="/manager" element={<AdminPage isDarkMode={isDarkMode} toggleMode={toggleMode} />} />
           <Route path="/search" element={<SearchScreen isDarkMode={isDarkMode} toggleMode={toggleMode} />} />
-          <Route path="/movie/:movieId" element={<MovieDetails isDarkMode={isDarkMode} toggleMode={toggleMode} />} /> 
+          <Route path="/movie/:id/info" element={<MovieInformation isDarkMode={isDarkMode} toggleMode={toggleMode} />} /> 
+          <Route path="/movie/:id/watch" element={<VideoPage isDarkMode={isDarkMode} toggleMode={toggleMode} />} />
         </Routes>
       </div>
     </Router>
@@ -49,3 +53,4 @@ function App() {
 }
 
 export default App;
+

@@ -8,6 +8,8 @@ const users = require('./routes/user');
 const tokens = require('./routes/token');
 const movies = require('./routes/movie');
 const wrongCommand = require('./routes/WrongCommand');
+const path = require('path');
+
 
 //the configrution should include a RECOMMENDATION_IP and a RECOMMENDATION_PORT
 require('custom-env').env(process.env.NODE_ENV, './config');
@@ -26,8 +28,13 @@ app.use(cors({
     credentials: true,             // Allow cookies/credentials
 }));
 
+
+
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json({ limit: '50mb' }));
+app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 app.use(express.json());
+app.use('uploads', express.static(path.join(__dirname, 'uploads')));
 
 app.use('/api/movies', movies);
 app.use('/api/users', users);

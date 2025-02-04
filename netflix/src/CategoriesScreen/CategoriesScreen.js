@@ -113,7 +113,7 @@ function CategoriesScreen({ isDarkMode, toggleMode }) {
                   {category.movies.map((movie) => (
                     <Link
                       key={movie._id}
-                      to={`/movie/${movie._id}?jwt=${jwt}`} // Correctly passes the JWT as a query parameter
+                      to={`/movie/${movie._id}/info?jwt=${jwt}`} 
                     >
                       <MovieCard movie={movie} />
                     </Link>

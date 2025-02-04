@@ -11,7 +11,7 @@ function MovieDetails({ isDarkMode, toggleMode }) {
   const jwt = queryParams.get("jwt"); // Retrieve the JWT token from the URL
 
   return (
-    <div className={`MovieDetails ${isDarkMode ? "dark" : "light"}`}>
+    <div className={`MovieDetails ${isDarkMode ? "dark" : "light"}`}> 
       {/* Include Navbar and pass the necessary props */}
       <Navbar isDarkMode={isDarkMode} toggleMode={toggleMode} jwt={jwt} />
 

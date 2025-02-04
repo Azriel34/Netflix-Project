@@ -1,11 +1,15 @@
 const express = require('express'); 
 var router = express.Router(); 
 const movieController = require('../controllers/movie'); 
+const upload = require('../middlewares/upload');
 const wrongCommandController = require('../controllers/WrongCommand');
 
 router.route('/')
   .get(movieController.getMovies)
-  .post(movieController.createMovie)
+  .post(upload.fields([
+    { name: 'video', maxCount: 1 },  
+    { name: 'poster', maxCount: 1 },  
+  ]), movieController.createMovie)
   // Handle all unsupported methods on /api/user
   .all(wrongCommandController.handleWrongCommand);
 
@@ -28,6 +32,14 @@ router.route('/search/:query')
   .get(movieController.getSearchedMovies)
   // Handle all unsupported methods on /api/user
   .all(wrongCommandController.handleWrongCommand);
+
+//returns movie file by id
+router.route('/:id/file')
+  .get(movieController.getMovieFile);
+
+//returns movie poster by id
+  router.route('/:id/poster')
+  .get(movieController.getMoviePoster)
 
 // Handle any undefined routes
 router.use('*', wrongCommandController.handleWrongPage);

@@ -16,10 +16,11 @@ const Movie = new Schema({
         type: String,
         default: ""
     },
-    picture: {
+    poster: {
         type: String,
-        required: false
+        required: true
     },
+    path: { type: String, required: true },
     categories: {
         type: [Schema.Types.ObjectId],
         ref: 'Category',

@@ -1,12 +1,18 @@
 const userService = require('../services/user');
-const Counter = require('../models/counter');
+const Counter = require('../models/counter'); 
+const path = require('path');
+const mongoose = require('mongoose');
+const net = require('net');
+
 
 //call the createUser func from the servicese directory 
 const createUser = async (req, res) => {
+    
     try {
         // Creating a new user using the data from the request body
-        const { email, phoneNumber, fullName, passWord, userName, picture} = req.body;
-        const user = await userService.createUser(email, phoneNumber, fullName, passWord, userName, picture);
+        const { email, phoneNumber, fullName, passWord, userName} = req.body;
+        const image = req.savedImagePath ? req.savedImagePath : null;
+        const user = await userService.createUser(email, phoneNumber, fullName, passWord, userName, image);
         // Send 201 status code, indicating resource creation
         return res.status(201).set('Location', `/api/users/${user._id}`).send();
     } catch (error) {
@@ -50,20 +56,35 @@ const getUser = async (req, res) => {
     } catch (error) {
         // Handle user not found error
         res.status(404).json({error: "User not found"});
-    }};
+    }}; 
 
-const checkUserExists = async (req, res) => {
-    const { userName } = req.body;
+    const getProfilePicture = async (req, res) => {
+        try {
+            const userDetails = await userService.getUser(req.params.id);
+             const path = path.resolve('uploads', 'images', userDetails.image);
+            if (fs.existstSync(path)) {
+                res.sendFile(path);
+            } else {
+                return res.status(404).json({ error: 'profile picture not found' });
+            }
+        } catch (error) {
+            res.status(500).json({ error: 'Error while trying to get profile picture' });
+        }
+    };
+    
 
-    if (!userName) {
-        return res.status(400).json({ message: 'Username is required.' });
-    }
-
-    const userExists = await userService.getUserByUserName(userName);
-    if (userExists) {
-        return res.status(200).json({ exists: true, message: 'User exists.' });
-    } else {
-        return res.status(200).json({ exists: false, message: 'User does not exist.' });
-    }
-};
-module.exports = {createUser, getUser, checkUserExists };
+    const checkUserExists = async (req, res) => {
+        const { userName } = req.body;
+    
+        if (!userName) {
+            return res.status(400).json({ message: 'Username is required.' });
+        }
+    
+        const userExists = await userService.getUserByUserName(userName);
+        if (userExists) {
+            return res.status(200).json({ exists: true, message: 'User exists.' });
+        } else {
+            return res.status(200).json({ exists: false, message: 'User does not exist.' });
+        }
+    };
+module.exports = {createUser, getUser, getProfilePicture, checkUserExists};

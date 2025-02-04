@@ -3,7 +3,7 @@ const User = require('../models/user');
 const counterService = require('./counter');
 
 //call mongoDB server to create new user
-const createUser = async (email, phoneNumber, fullName, passWord, userName, picture) => {
+const createUser = async (email, phoneNumber, fullName, passWord, userName, image) => {
     const user = new User({
         email: email,
         phoneNumber: phoneNumber,
@@ -13,11 +13,11 @@ const createUser = async (email, phoneNumber, fullName, passWord, userName, pict
         //Set the watched movies to an empty array
         watchedMovies: []
     });
-    if(picture){
-        user.picture = picture;
+    if(image){
+        user.image = image;
     }
     else{
-        user.picture = 0;
+        user.image = 0;
     }
     user.recommendationId = await counterService.getNextRecommendationId('userCounter');
     return await user.save();

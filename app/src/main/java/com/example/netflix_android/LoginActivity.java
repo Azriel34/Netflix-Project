@@ -133,7 +133,7 @@ public class LoginActivity extends AppCompatActivity {
 
     public void loginUser(String userName, String password) {
         OkHttpClient client = new OkHttpClient();
-        String url = "http://10.0.2.2:3011/api/tokens/"; // Adjust to your backend port
+        String url = "http://10.0.2.2:5000/api/tokens/"; // Adjust to your backend port
 
         JSONObject jsonObject = new JSONObject();
         try {

@@ -124,17 +124,38 @@ public class AdminActivity extends AppCompatActivity {
         btnMovies.setOnClickListener(v -> {
             layoutMovies.setVisibility(View.VISIBLE);
             layoutCategories.setVisibility(View.GONE);
+
+            btnCreateMovie.setVisibility(View.VISIBLE);
+            btnDeleteMovie.setVisibility(View.VISIBLE);
         });
 
         btnCategories.setOnClickListener(v -> {
             layoutMovies.setVisibility(View.GONE);
             layoutCategories.setVisibility(View.VISIBLE);
-        });
 
-        btnCreateMovie.setOnClickListener(v -> createMovie());
-        btnDeleteMovie.setOnClickListener(v -> deleteMovie());
-        btnCreateCategory.setOnClickListener(v -> createCategory());
-        btnDeleteCategory.setOnClickListener(v -> deleteCategory());
+            btnCreateCategory.setVisibility(View.VISIBLE);
+            btnDeleteCategory.setVisibility(View.VISIBLE);
+        });
+         //create movie listeners
+        btnCreateMovie.setOnClickListener(v -> {
+            formCreateMovie.setVisibility(View.VISIBLE);
+            formDeleteMovie.setVisibility(View.GONE);
+        });
+        //delete movie listeners
+        btnDeleteMovie.setOnClickListener(v -> {
+            formCreateMovie.setVisibility(View.GONE);
+            formDeleteMovie.setVisibility(View.VISIBLE);
+        });
+        ////create category listeners
+        btnCreateCategory.setOnClickListener(v -> {
+            formCreateCategory.setVisibility(View.VISIBLE);
+            formDeleteCategory.setVisibility(View.GONE);
+        });
+        ////delete category listeners
+        btnDeleteCategory.setOnClickListener(v -> {
+            formCreateCategory.setVisibility(View.GONE);
+            formDeleteCategory.setVisibility(View.VISIBLE);
+        });
 
         btnSelectVideo.setOnClickListener(v -> selectMedia(VIDEO_REQUEST_CODE, "video/*"));
         btnSelectPoster.setOnClickListener(v -> selectMedia(POSTER_REQUEST_CODE, "image/*"));

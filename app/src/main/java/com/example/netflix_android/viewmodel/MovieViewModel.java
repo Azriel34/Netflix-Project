@@ -1,56 +1,62 @@
 package com.example.netflix_android.viewmodel;
 
 import android.app.Application;
+import android.content.Context;
+import android.net.Uri;
+
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import com.example.netflix_android.database.MovieRepository;
-import com.example.netflix_android.model.Movie;
+import com.example.netflix_android.model.MovieEntity;
 
 import java.util.List;
 
-public class MovieViewModel extends AndroidViewModel {
-    private final MovieRepository repository;
-    private final LiveData<List<Movie>> allMovies;
 
-    public MovieViewModel(Application application) {
-        super(application);
-        repository = new MovieRepository(application);
-        allMovies = repository.getAllMovies();
+    public class MovieViewModel extends AndroidViewModel {
+        private final MovieRepository movieRepository;
+        private final LiveData<List<MovieEntity>> allMovies;
+        private final MutableLiveData<Boolean> operationSuccess = new MutableLiveData<>();
+
+
+        public MovieViewModel(Application application) {
+            super(application);
+            movieRepository = new MovieRepository(application);
+            allMovies = movieRepository.getAllMovies();
+        }
+
+        //create movie
+        public void createMovie(Context context, String name, List<String> categories, String description, Uri videoPath, Uri posterPath) {
+            MovieEntity newMovie = new MovieEntity(name, description, categories,  videoPath, posterPath);
+            movieRepository.createMovie(newMovie, operationSuccess, context);
+        }
+
+        //delete movie
+        public void deleteMovie(String movieId) {
+            movieRepository.deleteMovie(movieId, operationSuccess);
+        }
+
+        public LiveData<Boolean> getOperationSuccess() {
+            return operationSuccess;
+        }
+
+        public LiveData<List<MovieEntity>> getAllMovies() {
+            return allMovies;
+        }
+
+        public LiveData<MovieEntity> getMovieById(String id) {
+            MutableLiveData<MovieEntity> movieLiveData = new MutableLiveData<>();
+
+            //using the repository in order to get the movie
+            movieRepository.fetchAndSaveMovieIfNotExist(id, movieLiveData);
+
+            return movieLiveData;
+        }
+
+        public void insert(MovieEntity movie) {
+            movieRepository.insert(movie);
+        }
+
+
+
     }
-
-    public LiveData<List<Movie>> getAllMovies() {
-        return allMovies;
-    }
-
-    public LiveData<Movie> getMovieById(String id) {
-        MutableLiveData<Movie> movieLiveData = new MutableLiveData<>();
-
-        // בדוק אם הסרט כבר קיים ב-Room
-        repository.getMovieByIdFromLocal(id).observeForever(movie -> {
-            if (movie != null) {
-                // אם הסרט קיים ב-Room, עדכן את ה-LiveData
-                movieLiveData.postValue(movie);
-            } else {
-                // אם הסרט לא קיים ב-Room, טען אותו מה-API
-                repository.getMovieByIdFromServer(id).observeForever(remoteMovie -> {
-                    if (remoteMovie != null) {
-                        // שמור את הסרט ב-Room ועדכן את ה-LiveData
-                        repository.insert(remoteMovie);
-                        movieLiveData.postValue(remoteMovie);
-                    }
-                });
-            }
-        });
-
-        return movieLiveData;
-    }
-
-    public void insert(Movie movie) {
-        repository.insert(movie);
-    }
-
-    public void deleteAll() {
-        repository.deleteAll();
-    }
-}

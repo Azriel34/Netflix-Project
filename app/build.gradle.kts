@@ -3,11 +3,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.targilon12"
+    namespace = "com.example.netflix_android"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.example.targilon12"
+        applicationId = "com.example.netflix_android"
         minSdk = 24
         targetSdk = 35
         versionCode = 1
@@ -41,6 +41,7 @@ dependencies {
     implementation(libs.constraintlayout)
     implementation(libs.room.common)
     implementation(libs.androidx.room.runtime)
+    implementation(libs.okhttp)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)

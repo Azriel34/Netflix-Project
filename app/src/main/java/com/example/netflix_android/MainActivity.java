@@ -1,5 +1,6 @@
 package com.example.netflix_android;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.activity.EdgeToEdge;
@@ -13,25 +14,17 @@ import android.widget.EditText;
 
 public class MainActivity extends AppCompatActivity {
 
-    public class MainActivity extends AppCompatActivity {
-
-        @Override
-        protected void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            setContentView(R.layout.activity_main);
-
-            EditText movieIdEditText = findViewById(R.id.movieIdEditText);
-            Button nextPageButton = findViewById(R.id.nextPageButton);
-
-            nextPageButton.setOnClickListener(v -> {
-                String movieId = movieIdEditText.getText().toString();
-                if (!movieId.isEmpty()) {
-                    Intent intent = new Intent(MainActivity.this, MovieDetailActivity.class);
-                    intent.putExtra("movie_id", movieId);
-                    startActivity(intent);
-                } else {
-                    movieIdEditText.setError("Please enter a valid movie ID");
-                }
-            });
-        }
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
+        setContentView(R.layout.activity_main);
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
+        });
+        Intent intent = new Intent(MainActivity.this, HomePageActivity.class);
+        startActivity(intent);
     }
+}

@@ -12,7 +12,7 @@ const SignUp = () => {
         userName: '',
         passWord: '',
         fullName: '',
-        picture: null,
+        image: null,
     });
 
     const [passwordVisible, setPasswordVisible] = useState(false); // New state for password visibility

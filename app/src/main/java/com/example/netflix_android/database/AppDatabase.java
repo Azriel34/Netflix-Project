@@ -5,11 +5,12 @@ import android.content.Context;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
-import com.netflix_android.model.MovieEntity;
+import com.example.netflix_android.model.MovieEntity;
 
 //@AppDatabase(entities = {MovieEntity.class}, version = 1)
 public abstract class AppDatabase extends RoomDatabase {
     public abstract MovieDao movieDao();
+    public abstract CategoryDao categoryDao();
 
     private static AppDatabase INSTANCE;
 

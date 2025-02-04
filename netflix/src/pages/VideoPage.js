@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import axios from 'axios';
 import './VideoPage.css'; 
 import { useLocation } from "react-router-dom";
+import { port } from '../index';
 
 
 
@@ -48,7 +49,7 @@ useEffect(() => {
         <div className="video-container">
             <h1>{videoName}</h1>
             <video controls >
-                <source src={`http://localhost:5000/api/movies/${id}/file`} type="video/mp4"/>
+                <source src={`http://localhost:${port}/api/movies/${id}/file`} type="video/mp4"/>
                 Your browser does not support the video tag.
             </video>
         </div>

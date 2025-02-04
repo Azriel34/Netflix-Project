@@ -4,6 +4,7 @@ import axios from "./axiosInstance";
 import './MovieInformation.css';
 import { useLocation } from "react-router-dom";
 import Navbar from "../Navbar/Navbar";
+import { port } from '../index';
 
 
 
@@ -69,7 +70,7 @@ const MovieInformation = ({ isDarkMode, toggleMode }) => {
             <div className="movie-details">
               <div className="movie-poster">
                 <img
-                  src={`http://localhost:5000/api/movies/${id}/poster`}
+                  src={`http://localhost:${port}/api/movies/${id}/poster`}
                   alt={`${videoName} Poster`}
                 />
               </div>
@@ -100,7 +101,7 @@ const MovieInformation = ({ isDarkMode, toggleMode }) => {
               </div>
             </div>
             <h2 className="recommendation-title">Recommended Movies</h2>
-{console.log("RecoMovies:", recoMovies)}  // בדיקה בלוג
+
 {recommendationError && <p className="error">{recommendationError}</p>}
             <div className="recommendations-container">
             {validRecoMovies.length > 0 ? (

@@ -237,6 +237,8 @@ void RecommendCommand::execute(string argumentString) {
         similarityScores = similarityScoresFunc(userid);
     } catch (...) {
         output.sendOutput(StatusCodeCollection::get404());
+        cout << "user not found!" << endl;
+        
         return;
     }
     

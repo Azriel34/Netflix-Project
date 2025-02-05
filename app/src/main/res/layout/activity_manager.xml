@@ -1,272 +1,176 @@
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<androidx.drawerlayout.widget.DrawerLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawerLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="16dp">
+    android:layout_height="match_parent">
 
-    <!-- Netflix Logo -->
-    <ImageView
-        android:id="@+id/netflixLogo"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:adjustViewBounds="true"
-        android:contentDescription="Netflix Logo"
-        android:src="@drawable/netflix_logo"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="16dp" />
-
-    <!-- Manager Text -->
-    <TextView
-        android:id="@+id/textManager"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Manager:"
-        android:textSize="30sp"
-        android:textStyle="bold"
-        android:textColor="#FF0000"
-        app:layout_constraintTop_toBottomOf="@id/netflixLogo"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="8dp" />
-
-    <!-- Movies Manage Button -->
-    <Button
-        android:id="@+id/btnMovies"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="movies manage"
-        android:backgroundTint="#E50914"
-        app:layout_constraintTop_toBottomOf="@id/textManager"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="16dp" />
-
-    <!-- Categories Manage Button -->
-    <Button
-        android:id="@+id/btnCategories"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="category manage"
-        android:backgroundTint="#E50914"
-        app:layout_constraintTop_toBottomOf="@id/btnMovies"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="8dp" />
-
-    <!-- Movies Layout -->
+    <!-- main content -->
     <LinearLayout
-        android:id="@+id/layoutMovies"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:orientation="vertical"
-        android:visibility="gone"
-        android:padding="16dp"
-        app:layout_constraintTop_toBottomOf="@id/btnCategories"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="16dp">
+        android:padding="16dp">
 
-        <!-- Create Movie Button -->
+        <!-- fab button -->
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_margin="16dp"
+            android:src="@drawable/ic_plus"
+            android:contentDescription="Open navigation drawer"
+            app:backgroundTint="@android:color/holo_red_dark"
+            app:tint="@android:color/white"/>
+
+        <!-- navigation-->
         <Button
-            android:id="@+id/btnCreateMovie"
+            android:id="@+id/btnMovies"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="create movie" />
+            android:text="manage movies"/>
 
-        <!-- Delete Movie Button -->
         <Button
-            android:id="@+id/btnDeleteMovie"
+            android:id="@+id/btnCategories"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="delete movie"
-            android:layout_marginTop="8dp" />
+            android:text="manage categories"/>
 
-        <!-- Create Movie Form -->
+        <!--movies form -->
         <LinearLayout
-            android:id="@+id/formCreateMovie"
+            android:id="@+id/layoutMovies"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:visibility="gone"
-            android:padding="16dp">
+            android:visibility="gone">
 
-            <!-- Movie Name -->
-            <EditText
-                android:id="@+id/etMovieName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="movie name" />
-
-            <!-- Movie Category ID -->
-            <EditText
-                android:id="@+id/etMovieCategoryId"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="category id" />
-
-            <!-- Movie Description -->
-            <EditText
-                android:id="@+id/etMovieDescription"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="movie description" />
-
-            <!-- Select Video Button -->
             <Button
-                android:id="@+id/btnSelectVideo"
+                android:id="@+id/btnCreateMovie"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="select video" />
+                android:text="create movie"/>
 
-            <!-- Select Poster Button -->
-            <Button
-                android:id="@+id/btnSelectPoster"
+            <LinearLayout
+                android:id="@+id/formCreateMovie"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="select poster" />
+                android:orientation="vertical"
+                android:visibility="gone">
 
-            <!-- Confirm Create Movie Button -->
+                <EditText
+                    android:id="@+id/etMovieName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="movie name"/>
+
+                <EditText
+                    android:id="@+id/etMovieCategoryId"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="category id"/>
+
+                <EditText
+                    android:id="@+id/etMovieDescription"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="movie dscription"/>
+
+                <Button
+                    android:id="@+id/btnSelectVideo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="select video"/>
+
+                <Button
+                    android:id="@+id/btnSelectPoster"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="select poster"/>
+
+            </LinearLayout>
+
             <Button
-                android:id="@+id/btnConfirmCreateMovie"
+                android:id="@+id/btnDeleteMovie"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="create movie"
-                android:layout_marginTop="8dp" />
+                android:text="delete movie"/>
+
+            <LinearLayout
+                android:id="@+id/formDeleteMovie"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <EditText
+                    android:id="@+id/etMovieId"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="מזהה הסרט למחיקה"/>
+            </LinearLayout>
+
         </LinearLayout>
 
-        <!-- Delete Movie Form -->
+        <!-- categories form -->
         <LinearLayout
-            android:id="@+id/formDeleteMovie"
+            android:id="@+id/layoutCategories"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:visibility="gone"
-            android:padding="16dp">
+            android:visibility="gone">
 
-            <!-- Movie ID -->
-            <EditText
-                android:id="@+id/etMovieId"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="movie id" />
-
-            <!-- Confirm Delete Movie Button -->
             <Button
-                android:id="@+id/btnConfirmDeleteMovie"
+                android:id="@+id/btnCreateCategory"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="delete movie"
-                android:layout_marginTop="8dp" />
+                android:text="create category"/>
+
+            <LinearLayout
+                android:id="@+id/formCreateCategory"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <EditText
+                    android:id="@+id/etCategoryName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="category name"/>
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/btnDeleteCategory"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="delete category"/>
+
+            <LinearLayout
+                android:id="@+id/formDeleteCategory"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <EditText
+                    android:id="@+id/etCategoryId"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="category id"/>
+            </LinearLayout>
+
         </LinearLayout>
+
     </LinearLayout>
 
-    <!-- Categories Layout -->
-    <LinearLayout
-        android:id="@+id/layoutCategories"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:visibility="gone"
-        android:padding="16dp"
-        app:layout_constraintTop_toBottomOf="@id/btnCategories"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="16dp">
-
-        <!-- Create Category Button -->
-        <Button
-            android:id="@+id/btnCreateCategory"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="create category" />
-
-        <!-- Delete Category Button -->
-        <Button
-            android:id="@+id/btnDeleteCategory"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="delete category"
-            android:layout_marginTop="8dp" />
-
-        <!-- Create Category Form -->
-        <LinearLayout
-            android:id="@+id/formCreateCategory"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:visibility="gone"
-            android:padding="16dp">
-
-            <!-- Category Name -->
-            <EditText
-                android:id="@+id/etCategoryName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="category name" />
-
-            <!-- Confirm Create Category Button -->
-            <Button
-                android:id="@+id/btnConfirmCreateCategory"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="create category"
-                android:layout_marginTop="8dp" />
-        </LinearLayout>
-
-        <!-- Delete Category Form -->
-        <LinearLayout
-            android:id="@+id/formDeleteCategory"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:visibility="gone"
-            android:padding="16dp">
-
-            <!-- Category ID -->
-            <EditText
-                android:id="@+id/etCategoryId"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="category id" />
-
-            <!-- Confirm Delete Category Button -->
-            <Button
-                android:id="@+id/btnConfirmDeleteCategory"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="delete category"
-                android:layout_marginTop="8dp" />
-        </LinearLayout>
-    </LinearLayout>
-
-    <!-- Floating Action Button (FAB) -->
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab"
+    <!-- navigation slide -->
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/navView"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:src="@drawable/ic_plus"
-        android:contentDescription="Open navigation drawer"
-        app:backgroundTint="@android:color/holo_red_dark"
-        app:tint="@android:color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        app:headerLayout="@layout/nav_header"
+        app:menu="@menu/nav_menu"/>
 
-    <!-- Switch for Background Toggle -->
-    <Switch
-        android:id="@+id/switch_toggle"
-        android:layout_width="77dp"
-        android:layout_height="79dp"
-        android:layout_marginEnd="48dp"
-        android:layout_marginBottom="16dp"
-        android:text=""
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/fab" />
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.drawerlayout.widget.DrawerLayout>

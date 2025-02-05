@@ -1,47 +1,29 @@
 package com.example.netflix_android.pages;
-import com.example.netflix_android.R;
+
 import android.content.Intent;
-import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.Switch;
-import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.TextView;
+
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.netflix_android.AfterLoginActivity;
-import com.example.netflix_android.CategoriesActivity;
-import com.example.netflix_android.HomePageActivity;
-import com.example.netflix_android.network.ApiService;
-import com.example.netflix_android.network.RetrofitInstance;
-import com.example.netflix_android.model.MovieEntity;
-import com.example.netflix_android.model.CategoryEntity;
 import com.example.netflix_android.viewmodel.MovieViewModel;
 import com.example.netflix_android.viewmodel.CategoryViewModel;
-import okhttp3.MultipartBody;
-import android.database.Cursor;
-import android.net.Uri;
-import android.provider.MediaStore;
-import java.io.File;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
-import androidx.drawerlayout.widget.DrawerLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
+import androidx.drawerlayout.widget.DrawerLayout;
 
-import okhttp3.MediaType;
-
-import okhttp3.MediaType;
-import okhttp3.RequestBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import java.util.Arrays;
+import java.util.List;
 
 public class AdminActivity extends AppCompatActivity {
     private Button btnMovies, btnCategories;
@@ -111,10 +93,12 @@ public class AdminActivity extends AppCompatActivity {
 
     private void setupNavigationDrawer(String username) {
         fab.setOnClickListener(view -> {
-            if (drawerLayout.isDrawerOpen(navView)) {
-                drawerLayout.closeDrawer(navView);
-            } else {
+            if (navView.getVisibility() == View.GONE) {
+                navView.setVisibility(View.VISIBLE);
                 drawerLayout.openDrawer(navView);
+            } else {
+                drawerLayout.closeDrawer(navView);
+                navView.setVisibility(View.GONE);
             }
         });
         setUsernameInNavHeader(username);
@@ -136,22 +120,26 @@ public class AdminActivity extends AppCompatActivity {
             btnCreateCategory.setVisibility(View.VISIBLE);
             btnDeleteCategory.setVisibility(View.VISIBLE);
         });
-         //create movie listeners
+
+        // Create Movie Listener
         btnCreateMovie.setOnClickListener(v -> {
             formCreateMovie.setVisibility(View.VISIBLE);
             formDeleteMovie.setVisibility(View.GONE);
         });
-        //delete movie listeners
+
+        // Delete Movie Listener
         btnDeleteMovie.setOnClickListener(v -> {
             formCreateMovie.setVisibility(View.GONE);
             formDeleteMovie.setVisibility(View.VISIBLE);
         });
-        ////create category listeners
+
+        // Create Category Listener
         btnCreateCategory.setOnClickListener(v -> {
             formCreateCategory.setVisibility(View.VISIBLE);
             formDeleteCategory.setVisibility(View.GONE);
         });
-        ////delete category listeners
+
+        // Delete Category Listener
         btnDeleteCategory.setOnClickListener(v -> {
             formCreateCategory.setVisibility(View.GONE);
             formDeleteCategory.setVisibility(View.VISIBLE);
@@ -170,6 +158,8 @@ public class AdminActivity extends AppCompatActivity {
             Toast.makeText(this, "Please select both video and poster", Toast.LENGTH_SHORT).show();
             return;
         }
+
+        // Call ViewModel method to create a movie
         movieViewModel.createMovie(this, name, categories, description, videoUri, posterUri);
     }
 
@@ -213,4 +203,3 @@ public class AdminActivity extends AppCompatActivity {
         headerUsername.setText(username);
     }
 }
-

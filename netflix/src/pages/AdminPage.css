@@ -1,13 +1,18 @@
 /* General styling for the Admin Page */
-.admin-page {
+
+
+body {
+  margin: 0;
   font-family: Arial, sans-serif;
   background: url('../../public/netflix_background.jpg') no-repeat center center fixed;
   background-size: cover;
   color: #fff;
+  
   overflow-y: auto;
 }
 
-.admin-page::after {
+
+body::after {
   content: "";
   position: absolute;
   top: 0;
@@ -19,89 +24,96 @@
   position: fixed;
 }
 
-/* Forms */
-.admin-page form {
+form {
   display: inline-block;
+ 
+}
+.sign-up-form-group.password-wrapper {
+  position: relative; 
 }
 
-.admin-page .sign-up-form-group.password-wrapper {
-  position: relative;
-}
-
-.admin-page .password-toggle {
+.password-toggle {
   position: absolute;
   top: 20%;
   right: 10px;
-  transform: translateY(-50%);
+  transform: translateY(-50%); 
   background: transparent;
   border: none;
   cursor: pointer;
   font-size: 20px;
-  color: #555;
-  width: 20px;
-  height: 20px;
-  padding: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  color: #555; 
+  width: 20px; 
+  height: 20px; 
+  padding: 0; 
+  display: flex; 
+  justify-content: center; 
+  align-items: center; 
 }
 
-.admin-page .password-toggle:hover {
-  background: transparent;
+.password-toggle:hover {
+  background: transparent; 
 }
 
-.admin-page .password-toggle:focus {
-  outline: none;
+.password-toggle:focus {
+  outline: none; 
 }
 
-/* Headings */
-.admin-page h1 {
+h1 {
   text-align: center;
   font-size: 3rem;
   margin-top: 20px;
 }
 
-.admin-page h2 {
+h2 {
   text-align: center;
   font-size: 2rem;
   margin-top: 10px;
 }
 
-/* Buttons */
-.admin-page .manage-button {
-  margin: 10px;
-  padding: 15px 30px;
-  font-size: 16px;
-  background-color: #e50914;
-  color: white;
+.manage-button{
+  margin: 10px; 
+  padding: 15px 30px; 
+  font-size: 16px; 
+  background-color: #e50914; 
+  color: white; 
   border: none;
-  border-radius: 5px;
-  cursor: pointer;
+  border-radius: 5px; 
+  cursor: pointer; 
 }
 
-.admin-page .manage-button:hover {
+.manage-button:hover {
   background-color: #180404;
 }
-
-.admin-page .button1-container,
-.admin-page .button2-container {
+.button1-container {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-  flex-direction: row;
+  justify-content: center;  
+  align-items: center;      
+  gap: 10px;                
+  flex-direction: row;      
 }
 
-/* File Inputs */
-.admin-page .file-input-wrapper,
-.admin-page .video-input-wrapper {
+.button2-container {
+  display: flex;
+  justify-content: center;  
+  align-items: center;      
+  gap: 10px;                
+  flex-direction: row;      
+}
+
+.file-input-wrapper {
   position: relative;
   display: inline-block;
-  width: 300px;
+  width: 300px; 
   margin-top: 10px;
 }
 
-.admin-page .remove-file-btn {
+.video-input-wrapper {
+  position: relative;
+  display: inline-block;
+  width: 300px; 
+}
+
+.remove-file-btn {
   position: absolute;
   top: 50%;
   right: 10px;
@@ -111,39 +123,77 @@
   cursor: pointer;
   color: #888;
   font-size: 16px;
-  padding: 0;
-  line-height: 1;
-  width: auto;
+  padding: 0; 
+  line-height: 1; 
+  width: auto; 
+  height: auto; 
+}
+
+
+
+form {
+  display: flex;
+  flex-direction: column;   
+  align-items: center;    
+  justify-content: center;  
+  max-height: 80vh; 
+  overflow-y: auto;
   height: auto;
 }
 
-/* Centered Container */
-.admin-page .container {
+
+/* Center the content */
+.container {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   min-height: 100vh;
   padding: 20px;
+  height: auto;
 }
 
-/* Form Styles */
-.admin-page form {
+/* Buttons */
+button {
+  background-color: #e50914;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  font-size: 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 10px;
+  transition: background-color 0.3s ease;
+}
+
+
+button:hover {
+  background-color: #f40612;
+  transform: scale(1.05);
+}
+
+
+
+
+/* Form container */
+form {
   background: rgba(0, 0, 0, 0.8);
   padding: 30px;
   border-radius: 10px;
   width: 90%;
   max-width: 400px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-  display: flex;
-  flex-direction: column;
-  margin: 0 auto;
-  align-items: center;
   justify-content: center;
+  display: flex;
+  flex-direction: column; 
+  margin: 0 auto; 
+
 }
 
-.admin-page form input,
-.admin-page form textarea {
+ 
+   
+form input,
+form textarea {
   width: 100%;
   padding: 12px;
   margin: 12px 0;
@@ -153,111 +203,171 @@
   box-sizing: border-box;
 }
 
-.admin-page form input[type="file"] {
+form input[type="file"] {
   padding: 5px;
 }
 
-/* Checkbox */
-.admin-page form input[type="checkbox"] {
-  width: 20px;
-  height: 20px;
-  appearance: none;
-  border: 2px solid #fff;
+
+
+form button {
+  width: 100%;
+  padding: 12px;
+  margin-top: 20px;
+  background-color: #e50914;
+  color: white;
+  border: none;
   border-radius: 5px;
-  background-color: #333;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+form input[type="checkbox"] {
+  width: 20px; 
+  height: 20px;
+  appearance: none; 
+  border: 2px solid #fff; 
+  border-radius: 5px; 
+  background-color: #333; 
   position: relative;
   cursor: pointer;
-  transition: background-color 0.3s, transform 0.3s;
+  transition: background-color 0.3s, transform 0.3s; 
 }
 
-.admin-page form input[type="checkbox"]:checked {
-  background-color: #e50914;
-  border-color: #e50914;
+form input[type="checkbox"]:checked {
+  background-color: #e50914; 
+  border-color: #e50914; 
 }
 
-.admin-page form input[type="checkbox"]:checked::before {
-  content: '';
+form input[type="checkbox"]:checked::before {
+  content: ''; 
   position: absolute;
   top: 2px;
   left: 2px;
   width: 12px;
   height: 12px;
-  background-color: #fff;
-  clip-path: polygon(0% 50%, 25% 100%, 100% 0%, 75% 25%);
+  background-color: #fff; 
+  clip-path: polygon(0% 50%, 25% 100%, 100% 0%, 75% 25%); 
 }
 
-.admin-page form input[type="checkbox"]:hover {
-  transform: scale(1.1);
+form input[type="checkbox"]:hover {
+  transform: scale(1.1); 
 }
 
-/* File Input */
-.admin-page form input[type="file"] {
-  width: 100%;
-  padding: 15px;
-  border: 2px solid #fff;
-  border-radius: 10px;
-  background-color: #333;
-  cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.3s ease;
+
+
+form input[type="file"] {
+  width: 100%; 
+  padding: 15px; 
+  border: 2px solid #fff; 
+  border-radius: 10px; 
+  background-color: #333; 
+  cursor: pointer; 
+  transition: background-color 0.3s ease, transform 0.3s ease; 
   font-size: 1.2rem;
+
 }
 
-.admin-page form input[type="file"]:hover {
-  transform: scale(1.05);
+form input[type="file"]:hover {
+  transform: scale(1.05); 
 }
 
-.admin-page form input[type="file"]::file-selector-button:hover {
-  background-color: #f40612;
+
+form input[type="file"]::file-selector-button:hover {
+  background-color: #f40612; 
 }
 
-/* Delete Section */
-.admin-page .delete-section {
+
+form input[type="file"]::before {
+  content: ""; 
+  color: #fff;
+  font-size: 1rem;
+  text-align: center;
+  display: block;
+  margin-bottom: 10px;
+  border: 2px dashed #fff; 
+  padding: 15px;
+  border-radius: 10px;
+  cursor: pointer;
+  opacity: 0.5;
+}
+
+form input[type="file"]::-webkit-file-upload-button {
+  visibility: hidden;
+}
+
+
+
+
+.delete-section {
   background: rgba(0, 0, 0, 0.8);
   padding: 20px;
   border-radius: 10px;
   width: 90%;
   max-width: 400px;
-  margin: 20px auto;
+  margin: 20px auto; 
   display: flex;
-  flex-direction: column;
+  flex-direction: column; 
   justify-content: center;
-  align-items: center;
+  align-items: center; 
 }
 
-.admin-page .delete-section input {
+.delete-section input {
   width: 100%;
   padding: 10px;
   margin: 10px 0;
   border: none;
   border-radius: 5px;
   font-size: 1rem;
-  box-sizing: border-box;
+  box-sizing: border-box; 
 }
 
-.admin-page .delete-section button:hover {
+.delete-section button:hover {
   background-color: #f40612;
   transform: scale(1.05);
 }
 
 /* Entity Management Buttons */
-.admin-page .entity-buttons {
+.entity-buttons {
   display: flex;
   justify-content: center;
   gap: 15px;
   margin-top: 20px;
 }
 
+/* Delete Section */
+.delete-section {
+  background: rgba(0, 0, 0, 0.8);
+  padding: 20px;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 400px;
+  margin: 20px auto;
+}
+
+.delete-section input {
+  width: calc(100% - 20px);
+  padding: 10px;
+  margin: 10px 0;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+}
+
+.delete-section button {
+  width: 100%;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
-  .admin-page h1 {
+  h1 {
     font-size: 2.5rem;
   }
 
-  .admin-page h2 {
+  h2 {
     font-size: 1.5rem;
   }
 
-  .admin-page button {
+  button {
     font-size: 0.9rem;
     padding: 8px 15px;
   }

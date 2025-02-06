@@ -7,5 +7,4 @@
     if the user name exists it will go to [sign-in screen](sign-in_screen)
 * Clicking on the [sign-up screen](sign-up_screen)
 * Clicking on the [sign-in screen](sign-in_screen)
-### You can 
 

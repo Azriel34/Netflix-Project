@@ -3,7 +3,7 @@ There is a switch to change the design from a light mode to dark mode, a search 
 * Clicking on View Details button will go to the specific [Details screen](details_screen.md) for every movie
 * Clicking the Category button will go to the [Category screen](category_screen.md)
 * Clicking the Manager button will go to the [Manager screen](manager_screen.md)
-* Clicking the Home button will go to the [Home screen](home_screen.md)
+* Clicking the Home button will go to the [Home page](Home_Page.md)
 * Clicking the logout button will go to the [Starting screen](Android_Start.md)
 
 ![צילום מסך 2025-02-06 210611](https://github.com/user-attachments/assets/19b42664-80b2-4da1-9a03-b44e9bdeef54)

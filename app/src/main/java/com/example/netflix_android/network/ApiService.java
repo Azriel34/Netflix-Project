@@ -1,5 +1,7 @@
 package com.example.netflix_android.network;
 
+import android.util.Log;
+
 import com.example.netflix_android.model.MovieEntity;
 import com.example.netflix_android.model.CategoryEntity;
 
@@ -9,6 +11,7 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
 import retrofit2.http.Multipart;
 import retrofit2.http.PATCH;
 import retrofit2.http.POST;
@@ -19,6 +22,7 @@ public interface ApiService {
 
     @GET("movies/{id}")
     Call<MovieEntity> getMovie(@Path("id") String movieId);
+
 
     @Multipart
     @POST("movies/")
@@ -37,11 +41,10 @@ public interface ApiService {
     Call<Void> deleteMovie(@Path("id") String movieId);
 
 
-    @Multipart
+
     @POST("categories/")
     Call<Void> createCategory(
-            @Part("name") RequestBody name,
-            @Part("promoted") RequestBody promoted
+            @Body CategoryEntity category
     );
 
     @GET("categories/{id}")

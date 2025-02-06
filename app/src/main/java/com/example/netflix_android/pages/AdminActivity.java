@@ -1,4 +1,6 @@
 package com.example.netflix_android.pages;
+import com.example.netflix_android.R;
+
 
 import android.content.Intent;
 import android.net.Uri;
@@ -170,7 +172,7 @@ public class AdminActivity extends AppCompatActivity {
 
     private void createCategory() {
         String categoryName = etCategoryName.getText().toString();
-        categoryViewModel.createCategory(categoryName, "true");
+        categoryViewModel.createCategory(categoryName, true);
     }
 
     private void deleteCategory() {

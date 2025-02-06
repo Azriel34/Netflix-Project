@@ -1,6 +1,8 @@
 package com.example.netflix_android.viewmodel;
 
 import android.app.Application;
+import android.util.Log;
+
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -25,7 +27,8 @@ public class CategoryViewModel extends AndroidViewModel {
     }
 
     //create category
-    public void createCategory(String categoryName, String promoted) {
+    public void createCategory(String categoryName, boolean promoted) {
+        Log.d("categoryCreation", "Create category viewmodel!");
         categoryRepository.createCategory(categoryName, promoted, operationSuccess);
     }
 

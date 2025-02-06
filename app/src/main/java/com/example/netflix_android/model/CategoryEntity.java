@@ -1,9 +1,14 @@
 package com.example.netflix_android.model;
 
+import androidx.annotation.NonNull;
 import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
 
 @Entity(tableName = "categories")
 public class CategoryEntity {
+    @PrimaryKey
+    @NonNull
     private String id;
     private String name;
 
@@ -15,12 +20,20 @@ public class CategoryEntity {
         this.promoted = promoted;
     }
 
+    public CategoryEntity( String name, boolean promoted) {
+        this.name = name;
+        this.promoted = promoted;
+    }
+
 
     public CategoryEntity() {
     }
 
     public String getId() {
         return id;
+    }
+    public void setId(String id) {
+         this.id = id;
     }
 
     public String getName() {

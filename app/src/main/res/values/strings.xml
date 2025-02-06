@@ -23,4 +23,6 @@
     <string name="show_toolbar">Show Toolbar</string>
     <string name="fab_description">Floating Action Button</string>
     <string name="play_movie">Play Movie</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
 </resources>

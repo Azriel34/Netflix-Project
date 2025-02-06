@@ -1,13 +1,19 @@
 package com.example.netflix_android.model;
 import android.net.Uri;
+
+import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 import androidx.room.Ignore;
 import java.util.List;
+import com.google.gson.Gson;
+import androidx.room.TypeConverters;
+
 
 @Entity(tableName = "movies")
 public class MovieEntity {
     @PrimaryKey
+    @NonNull
     private String id;
     private String name;
     private String description;
@@ -25,7 +31,7 @@ public class MovieEntity {
     private Uri posterUri;
 
     // constructor for getting new movie from api server
-    public MovieEntity(String id, String name, String description, List<String> categories, String path, String poster) {
+    public MovieEntity(String id, String name, String description, List categories, String path, String poster) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -57,8 +63,12 @@ public class MovieEntity {
     public String getDescription() { return description; }
     public void setDescription(String description) { this.description = description; }
 
-    public List<String> getCategories() { return categories; }
-    public void setCategories(List<String> categories) { this.categories = categories; }
+    public List<String> getCategories() {
+        return categories;
+    }
+    public void setCategories(List<String> categories) {
+        this.categories = categories;
+    }
 
     public int getRecommendationId() { return recommendationId; }
     public void setRecommendationId(int recommendationId) { this.recommendationId = recommendationId; }

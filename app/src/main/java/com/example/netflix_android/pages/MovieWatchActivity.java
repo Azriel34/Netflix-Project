@@ -21,11 +21,11 @@ public class MovieWatchActivity extends AppCompatActivity {
         movieWebView = findViewById(R.id.movieWebView);
 
 
-        int movieId = getIntent().getIntExtra("movie_id", -1);
+        String movieId = getIntent().getStringExtra("movie_id");
+       // String movieId = "67a4a32ca4e8bd32e76ba4cc";
+        if (movieId != null) {
 
-        if (movieId != -1) {
-
-            String videoUrl = "http://localhost:5000/api/movies/" + movieId + "/file";
+            String videoUrl = "http://10.0.2.2:5000/api/movies/" + movieId + "/file";
 
 
             WebSettings webSettings = movieWebView.getSettings();

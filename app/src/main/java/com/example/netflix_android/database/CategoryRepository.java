@@ -1,6 +1,7 @@
 package com.example.netflix_android.database;
 
 import android.app.Application;
+import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -93,11 +94,13 @@ public class CategoryRepository {
         }
 
         //create category
-        public void createCategory(String categoryName, String promoted, MutableLiveData<Boolean> operationSuccess) {
+        public void createCategory(String categoryName, boolean promoted, MutableLiveData<Boolean> operationSuccess) {
+            Log.d("categoryCreation", "Create category repository");
             RequestBody nameBody = RequestBody.create(MediaType.parse("text/plain"), categoryName);
-            RequestBody promotedBody = RequestBody.create(MediaType.parse("text/plain"), promoted);
-
-            apiService.createCategory(nameBody, promotedBody).enqueue(new Callback<Void>() {
+          //  RequestBody promotedBody = RequestBody.create(MediaType.parse("text/plain"), promoted);
+            String contentType = "application/json";
+            CategoryEntity category = new CategoryEntity(categoryName, promoted);
+            apiService.createCategory(category).enqueue(new Callback<Void>() {
                 @Override
                 public void onResponse(Call<Void> call, Response<Void> response) {
                     operationSuccess.postValue(response.isSuccessful());
@@ -108,6 +111,7 @@ public class CategoryRepository {
                     operationSuccess.postValue(false);
                 }
             });
+            Log.d("categoryCreation", "Create category repository after api!");
         }
 
         //delete category

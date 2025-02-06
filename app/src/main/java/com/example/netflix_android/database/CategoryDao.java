@@ -23,7 +23,7 @@ public interface CategoryDao {
 
 
 
-    @Query("SELECT * FROM movies")
+    @Query("SELECT * FROM categories")
     LiveData<List<CategoryEntity>> getAllCategories();
 }
 

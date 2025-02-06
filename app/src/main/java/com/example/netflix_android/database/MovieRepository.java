@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 import android.net.Uri;
 import android.text.TextUtils;
+import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -11,6 +12,7 @@ import androidx.lifecycle.MutableLiveData;
 import com.example.netflix_android.model.MovieEntity;
 import com.example.netflix_android.network.ApiService;
 import com.example.netflix_android.network.RetrofitInstance;
+import com.google.gson.Gson;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -118,6 +120,14 @@ public class MovieRepository {
 
             outputStream.close();
             inputStream.close();
+
+            Log.d("UPLOAD", "Temp file created: " + tempFile.getAbsolutePath());
+            Log.d("UPLOAD", "File name: " + tempFile.getName());
+            Log.d("UPLOAD", "MIME type: " + context.getContentResolver().getType(uri));
+            Log.d("UPLOAD", "File size: " + tempFile.length() + " bytes");
+
+
+
             return tempFile;
         } catch (IOException e) {
             e.printStackTrace();
@@ -130,9 +140,9 @@ public class MovieRepository {
         RequestBody name = RequestBody.create(MediaType.parse("text/plain"), movie.getName());
         RequestBody description = RequestBody.create(MediaType.parse("text/plain"), movie.getDescription());
 
-
-        String categoriesString = TextUtils.join(",", movie.getCategories());
-        RequestBody categoriesBody = RequestBody.create(MediaType.parse("text/plain"), categoriesString);
+        Gson gson = new Gson();
+        String categoriesJson = gson.toJson(movie.getCategories());
+        RequestBody categoriesBody = RequestBody.create(MediaType.parse("application/json"), categoriesJson);
 
         MultipartBody.Part videoPart = null, posterPart = null;
 
@@ -152,7 +162,12 @@ public class MovieRepository {
                 RequestBody posterRequestBody = RequestBody.create(MediaType.parse("image/*"), posterFile);
                 posterPart = MultipartBody.Part.createFormData("poster", posterFile.getName(), posterRequestBody);
             }
+            Log.d("MovieCreationlog", "In createMovie function repository");
         }
+        Log.d("MovieCreationLog", "VideoPart: " + (videoPart != null ? videoPart.getClass().getName() : "null"));
+        Log.d("MovieCreationLog", "PosterPart: " + (posterPart != null ? posterPart.getClass().getName() : "null"));
+
+
 
         apiService.createMovie(name, description, categoriesBody, videoPart, posterPart)
                 .enqueue(new Callback<Void>() {

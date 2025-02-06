@@ -178,7 +178,7 @@ public class RegisterActivity extends AppCompatActivity {
     }
     public void registerUser(JSONObject formData) {
         OkHttpClient client = new OkHttpClient();
-        String url = "http://10.0.0.2:4000/api/users/"; // Adjust for your backend
+        String url = "http://10.0.2.2:5000/api/users/"; // Adjust for your backend
 
         RequestBody body = RequestBody.create(formData.toString(), MediaType.get("application/json; charset=utf-8"));
 

@@ -133,7 +133,7 @@ public class LoginActivity extends AppCompatActivity {
 
     public void loginUser(String userName, String password) {
         OkHttpClient client = new OkHttpClient();
-        String url = "http://10.0.0.2:4000/api/tokens/"; // Adjust to your backend port
+        String url = "http://10.0.2.2:5000/api/tokens/"; // Adjust to your backend port
 
         JSONObject jsonObject = new JSONObject();
         try {
@@ -168,16 +168,16 @@ public class LoginActivity extends AppCompatActivity {
                         JSONObject jsonResponse = new JSONObject(responseData);
                         String token = jsonResponse.getString("token");
 
-                        // Navigate to home screen with JWT token
-                        runOnUiThread(() ->
-                                Toast.makeText(LoginActivity.this, "Login success.", Toast.LENGTH_LONG).show()
-                        );
-                        /*
-                        Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-                        intent.putExtra("jwt", token);
-                        startActivity(intent);
-                        finish();
-                        */
+                        runOnUiThread(() -> {
+                            Toast.makeText(LoginActivity.this, "Login success.", Toast.LENGTH_LONG).show();
+                            Intent intent = new Intent(LoginActivity.this, AfterLoginActivity.class);
+                            intent.putExtra("jwt", token);
+                            intent.putExtra("USERNAME", userName);
+                            startActivity(intent);
+
+                            startActivity(intent);
+                            finish();
+                        });
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }

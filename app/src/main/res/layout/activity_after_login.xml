@@ -1,0 +1,111 @@
+<androidx.drawerlayout.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawerLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AfterLoginActivity">
+
+    <RelativeLayout
+        android:id="@+id/layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/netflixLogo"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="107dp"
+            android:layout_marginTop="1dp"
+            android:layout_marginEnd="104dp"
+            android:layout_marginBottom="647dp"
+            android:adjustViewBounds="true"
+            android:contentDescription="Netflix Logo"
+            android:src="@drawable/netflix_logo"
+            android:textSize="26sp" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="169dp"
+            android:layout_height="77dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="35dp"
+            android:layout_marginTop="151dp"
+            android:layout_marginEnd="206dp"
+            android:layout_marginBottom="503dp"
+            android:text="Home:"
+            android:textColor="#FF0000"
+            android:textSize="30sp"
+            android:textStyle="bold" />
+
+        <!-- Bottom section with search bar, switch, and button in a single row -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:padding="16dp">
+
+            <!-- Grouping Search Bar, Switch, and Button -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <!-- Floating Action Button -->
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/fab"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="Open navigation drawer"
+                    android:src="@drawable/ic_plus"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="8dp"
+                    app:backgroundTint="@android:color/holo_red_dark"
+                    app:tint="@android:color/white" />
+
+                <!-- Search Bar -->
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/searchBox"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:hint="Search..."
+                    android:padding="10dp"
+                    android:background="@drawable/button_background"
+                    android:textColor="#000000"/>
+
+                <!-- Switch -->
+                <Switch
+                    android:id="@+id/switch_toggle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="2dp"
+                    android:text=""
+                    android:textSize="20sp"
+                    android:layout_marginStart="16dp"/>
+
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/navView"
+        android:layout_width="280dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        style="@style/RedNavigationView"
+        app:headerLayout="@layout/nav_header"
+        app:menu="@menu/nav_menu" />
+</androidx.drawerlayout.widget.DrawerLayout>

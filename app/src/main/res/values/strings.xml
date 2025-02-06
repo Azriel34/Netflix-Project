@@ -18,4 +18,11 @@
     <string name="sign_in_now">Sign in now.</string>
     <string name="choose_profile_picture">Choose Profile Picture</string>
     <string name="repeat_password">repeat password</string>
+    <string name="loading_jwt">Loading JWT...</string>
+    <string name="jwt_will_appear_here">JWT will appear here</string>
+    <string name="show_toolbar">Show Toolbar</string>
+    <string name="fab_description">Floating Action Button</string>
+    <string name="play_movie">Play Movie</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
 </resources>

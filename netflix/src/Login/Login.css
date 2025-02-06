@@ -54,6 +54,17 @@
   margin-bottom: 20px;
 }
 
+.login-form-container form {
+  all: unset !important;  /* Resets all inherited styles */
+  display: block; /* Ensures the form is visible */
+  width: 100%;  /* Set it as needed */
+  background: transparent;
+  box-shadow: none;
+  padding: 0;
+  margin: 0;
+  border: none;
+}
+
 .floating-label {
   position: absolute;
   top: 50%;

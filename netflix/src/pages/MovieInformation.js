@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import axios from "./axiosInstance";
 import './MovieInformation.css';
 import { useLocation } from "react-router-dom";
-import Navbar from "../Navbar/Navbar";
+//import Navbar from "../Navbar/Navbar";
 import { port } from '../index';
 
 
@@ -18,7 +18,7 @@ const MovieInformation = ({ isDarkMode, toggleMode }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
-  const searchQuery = queryParams.get("query"); 
+  //const searchQuery = queryParams.get("query"); 
   const jwt = queryParams.get("jwt"); 
 
   useEffect(() => {

@@ -1,18 +1,13 @@
 /* General styling for the Admin Page */
-
-
-body {
-  margin: 0;
+.admin-page {
   font-family: Arial, sans-serif;
   background: url('../../public/netflix_background.jpg') no-repeat center center fixed;
   background-size: cover;
   color: #fff;
-  
   overflow-y: auto;
 }
 
-
-body::after {
+.admin-page::after {
   content: "";
   position: absolute;
   top: 0;
@@ -24,96 +19,89 @@ body::after {
   position: fixed;
 }
 
-form {
+/* Forms */
+.admin-page form {
   display: inline-block;
- 
-}
-.sign-up-form-group.password-wrapper {
-  position: relative; 
 }
 
-.password-toggle {
+.admin-page .sign-up-form-group.password-wrapper {
+  position: relative;
+}
+
+.admin-page .password-toggle {
   position: absolute;
   top: 20%;
   right: 10px;
-  transform: translateY(-50%); 
+  transform: translateY(-50%);
   background: transparent;
   border: none;
   cursor: pointer;
   font-size: 20px;
-  color: #555; 
-  width: 20px; 
-  height: 20px; 
-  padding: 0; 
-  display: flex; 
-  justify-content: center; 
-  align-items: center; 
+  color: #555;
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.password-toggle:hover {
-  background: transparent; 
+.admin-page .password-toggle:hover {
+  background: transparent;
 }
 
-.password-toggle:focus {
-  outline: none; 
+.admin-page .password-toggle:focus {
+  outline: none;
 }
 
-h1 {
+/* Headings */
+.admin-page h1 {
   text-align: center;
   font-size: 3rem;
   margin-top: 20px;
 }
 
-h2 {
+.admin-page h2 {
   text-align: center;
   font-size: 2rem;
   margin-top: 10px;
 }
 
-.manage-button{
-  margin: 10px; 
-  padding: 15px 30px; 
-  font-size: 16px; 
-  background-color: #e50914; 
-  color: white; 
+/* Buttons */
+.admin-page .manage-button {
+  margin: 10px;
+  padding: 15px 30px;
+  font-size: 16px;
+  background-color: #e50914;
+  color: white;
   border: none;
-  border-radius: 5px; 
-  cursor: pointer; 
+  border-radius: 5px;
+  cursor: pointer;
 }
 
-.manage-button:hover {
+.admin-page .manage-button:hover {
   background-color: #180404;
 }
-.button1-container {
+
+.admin-page .button1-container,
+.admin-page .button2-container {
   display: flex;
-  justify-content: center;  
-  align-items: center;      
-  gap: 10px;                
-  flex-direction: row;      
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  flex-direction: row;
 }
 
-.button2-container {
-  display: flex;
-  justify-content: center;  
-  align-items: center;      
-  gap: 10px;                
-  flex-direction: row;      
-}
-
-.file-input-wrapper {
+/* File Inputs */
+.admin-page .file-input-wrapper,
+.admin-page .video-input-wrapper {
   position: relative;
   display: inline-block;
-  width: 300px; 
+  width: 300px;
   margin-top: 10px;
 }
 
-.video-input-wrapper {
-  position: relative;
-  display: inline-block;
-  width: 300px; 
-}
-
-.remove-file-btn {
+.admin-page .remove-file-btn {
   position: absolute;
   top: 50%;
   right: 10px;
@@ -123,77 +111,39 @@ h2 {
   cursor: pointer;
   color: #888;
   font-size: 16px;
-  padding: 0; 
-  line-height: 1; 
-  width: auto; 
-  height: auto; 
-}
-
-
-
-form {
-  display: flex;
-  flex-direction: column;   
-  align-items: center;    
-  justify-content: center;  
-  max-height: 80vh; 
-  overflow-y: auto;
+  padding: 0;
+  line-height: 1;
+  width: auto;
   height: auto;
 }
 
-
-/* Center the content */
-.container {
+/* Centered Container */
+.admin-page .container {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   min-height: 100vh;
   padding: 20px;
-  height: auto;
 }
 
-/* Buttons */
-button {
-  background-color: #e50914;
-  color: #fff;
-  border: none;
-  padding: 10px 20px;
-  font-size: 1rem;
-  border-radius: 5px;
-  cursor: pointer;
-  margin: 10px;
-  transition: background-color 0.3s ease;
-}
-
-
-button:hover {
-  background-color: #f40612;
-  transform: scale(1.05);
-}
-
-
-
-
-/* Form container */
-form {
+/* Form Styles */
+.admin-page form {
   background: rgba(0, 0, 0, 0.8);
   padding: 30px;
   border-radius: 10px;
   width: 90%;
   max-width: 400px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-  justify-content: center;
   display: flex;
-  flex-direction: column; 
-  margin: 0 auto; 
-
+  flex-direction: column;
+  margin: 0 auto;
+  align-items: center;
+  justify-content: center;
 }
 
- 
-   
-form input,
-form textarea {
+.admin-page form input,
+.admin-page form textarea {
   width: 100%;
   padding: 12px;
   margin: 12px 0;
@@ -203,171 +153,111 @@ form textarea {
   box-sizing: border-box;
 }
 
-form input[type="file"] {
+.admin-page form input[type="file"] {
   padding: 5px;
 }
 
-
-
-form button {
-  width: 100%;
-  padding: 12px;
-  margin-top: 20px;
-  background-color: #e50914;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.3s ease;
-}
-
-form input[type="checkbox"] {
-  width: 20px; 
+/* Checkbox */
+.admin-page form input[type="checkbox"] {
+  width: 20px;
   height: 20px;
-  appearance: none; 
-  border: 2px solid #fff; 
-  border-radius: 5px; 
-  background-color: #333; 
+  appearance: none;
+  border: 2px solid #fff;
+  border-radius: 5px;
+  background-color: #333;
   position: relative;
   cursor: pointer;
-  transition: background-color 0.3s, transform 0.3s; 
+  transition: background-color 0.3s, transform 0.3s;
 }
 
-form input[type="checkbox"]:checked {
-  background-color: #e50914; 
-  border-color: #e50914; 
+.admin-page form input[type="checkbox"]:checked {
+  background-color: #e50914;
+  border-color: #e50914;
 }
 
-form input[type="checkbox"]:checked::before {
-  content: ''; 
+.admin-page form input[type="checkbox"]:checked::before {
+  content: '';
   position: absolute;
   top: 2px;
   left: 2px;
   width: 12px;
   height: 12px;
-  background-color: #fff; 
-  clip-path: polygon(0% 50%, 25% 100%, 100% 0%, 75% 25%); 
+  background-color: #fff;
+  clip-path: polygon(0% 50%, 25% 100%, 100% 0%, 75% 25%);
 }
 
-form input[type="checkbox"]:hover {
-  transform: scale(1.1); 
+.admin-page form input[type="checkbox"]:hover {
+  transform: scale(1.1);
 }
 
-
-
-form input[type="file"] {
-  width: 100%; 
-  padding: 15px; 
-  border: 2px solid #fff; 
-  border-radius: 10px; 
-  background-color: #333; 
-  cursor: pointer; 
-  transition: background-color 0.3s ease, transform 0.3s ease; 
-  font-size: 1.2rem;
-
-}
-
-form input[type="file"]:hover {
-  transform: scale(1.05); 
-}
-
-
-form input[type="file"]::file-selector-button:hover {
-  background-color: #f40612; 
-}
-
-
-form input[type="file"]::before {
-  content: ""; 
-  color: #fff;
-  font-size: 1rem;
-  text-align: center;
-  display: block;
-  margin-bottom: 10px;
-  border: 2px dashed #fff; 
-  padding: 15px;
-  border-radius: 10px;
-  cursor: pointer;
-  opacity: 0.5;
-}
-
-form input[type="file"]::-webkit-file-upload-button {
-  visibility: hidden;
-}
-
-
-
-
-.delete-section {
-  background: rgba(0, 0, 0, 0.8);
-  padding: 20px;
-  border-radius: 10px;
-  width: 90%;
-  max-width: 400px;
-  margin: 20px auto; 
-  display: flex;
-  flex-direction: column; 
-  justify-content: center;
-  align-items: center; 
-}
-
-.delete-section input {
+/* File Input */
+.admin-page form input[type="file"] {
   width: 100%;
-  padding: 10px;
-  margin: 10px 0;
-  border: none;
-  border-radius: 5px;
-  font-size: 1rem;
-  box-sizing: border-box; 
+  padding: 15px;
+  border: 2px solid #fff;
+  border-radius: 10px;
+  background-color: #333;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  font-size: 1.2rem;
 }
 
-.delete-section button:hover {
-  background-color: #f40612;
+.admin-page form input[type="file"]:hover {
   transform: scale(1.05);
 }
 
-/* Entity Management Buttons */
-.entity-buttons {
-  display: flex;
-  justify-content: center;
-  gap: 15px;
-  margin-top: 20px;
+.admin-page form input[type="file"]::file-selector-button:hover {
+  background-color: #f40612;
 }
 
 /* Delete Section */
-.delete-section {
+.admin-page .delete-section {
   background: rgba(0, 0, 0, 0.8);
   padding: 20px;
   border-radius: 10px;
   width: 90%;
   max-width: 400px;
   margin: 20px auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
-.delete-section input {
-  width: calc(100% - 20px);
+.admin-page .delete-section input {
+  width: 100%;
   padding: 10px;
   margin: 10px 0;
   border: none;
   border-radius: 5px;
   font-size: 1rem;
+  box-sizing: border-box;
 }
 
-.delete-section button {
-  width: 100%;
+.admin-page .delete-section button:hover {
+  background-color: #f40612;
+  transform: scale(1.05);
+}
+
+/* Entity Management Buttons */
+.admin-page .entity-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 20px;
 }
 
 /* Responsive Design */
 @media (max-width: 768px) {
-  h1 {
+  .admin-page h1 {
     font-size: 2.5rem;
   }
 
-  h2 {
+  .admin-page h2 {
     font-size: 1.5rem;
   }
 
-  button {
+  .admin-page button {
     font-size: 0.9rem;
     padding: 8px 15px;
   }

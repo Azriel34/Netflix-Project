@@ -358,7 +358,7 @@ const validateForm = () => {
   
 
   return (
-    <div className={`ManagerScreen ${isDarkMode ? "dark" : "light"}`}>
+    <div className={`ManagerScreen admin-page ${isDarkMode ? "dark" : "light"}`}>
        {/* Include Navbar and pass the necessary props */}
        <Navbar isDarkMode={isDarkMode} toggleMode={toggleMode} jwt={jwt} />
       

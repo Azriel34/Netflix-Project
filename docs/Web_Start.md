@@ -1,5 +1,5 @@
 ### This is our main screen:
-   you have 3 buttons:<br>
+   you have 2 buttons:<br>
 * Typing some userName:  
     if the user name doesn't exist it will go to [sign-up screen](sign-up_screen_web.md)  
     if the user name exists it will go to [sign-in screen](sign-in_screen_web.md)

@@ -73,7 +73,7 @@ docker-compose up -d
 ```
 
 After that, you can browse our web service at the URL **http://localhost:<REACT_PORT>**.  
-For the Android studio, change inside app/src/main/java/com/example/netflix_android/Constants.java to youe port number, and then run with the Emulator 
+For the Android studio, change inside app/src/main/java/com/example/netflix_android/Constants.java to your port number, and then run with the Emulator 
 ---
 
 ### **Additional Notes** 📌

@@ -1,6 +1,4 @@
 # Welcome to our Wiki
 
-### [Web_Start](Web_Start)
-### [Android_Start](Android_Start)
-
-
+- ### [Click here to see the Web Application! ](Web_Start)
+- ### [Click here to see the Android Application!](Android_Start)

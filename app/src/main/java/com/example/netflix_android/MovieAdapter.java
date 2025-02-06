@@ -28,7 +28,7 @@ import java.util.List;
         @NonNull
         @Override
         public MovieViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_movie, parent, false);
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_recomovie, parent, false);
             return new MovieViewHolder(view);
         }
 

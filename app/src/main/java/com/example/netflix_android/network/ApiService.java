@@ -5,6 +5,8 @@ import android.util.Log;
 import com.example.netflix_android.model.MovieEntity;
 import com.example.netflix_android.model.CategoryEntity;
 
+import java.util.List;
+
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Call;
@@ -39,6 +41,13 @@ public interface ApiService {
 
     @DELETE("movies/{id}")
     Call<Void> deleteMovie(@Path("id") String movieId);
+
+    @POST("movies/{id}/recommend")
+    Call<Void> watchedMovie(@Path("id") String movieId);
+
+    @GET("api/movies/{id}/recommend")
+    Call<List<MovieEntity>> getRecommendedMovies(@Path("id") String movieId, @Header("Authorization") String authHeader);
+
 
 
 

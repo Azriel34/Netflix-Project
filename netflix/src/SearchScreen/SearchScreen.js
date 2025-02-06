@@ -76,7 +76,7 @@ function SearchScreen({ isDarkMode, toggleMode }) {
           setLoading(false); // Stop loading if there's an error
         });
     }
-  }, [userName, searchQuery]); // Only fetch when userName and searchQuery are available
+  }, [userName, searchQuery, jwt]); // Only fetch when userName and searchQuery are available
 
   return (
 <div className={`SearchScreen ${isDarkMode ? "dark" : "light"}`}>

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "./axiosInstance";
 import Navbar from "../Navbar/Navbar";
-import { jwtDecode } from 'jwt-decode';
+//import { jwtDecode } from 'jwt-decode';
 import './AdminPage.css';
 import { port } from "../index";
 
@@ -97,12 +97,13 @@ const validateForm = () => {
     };
       const headers = selectedEntity ==="movies"? headers2:headers1;
       let response;
+      /*
       const filteredData = Object.fromEntries(
         Object.entries(formData).filter(([_, value]) => 
           Array.isArray(value) ? value.length > 0 : value
         )
       );
-      
+      */
       if (actionType === "create") {
         response = await axios.post(`/api/${selectedEntity}`, formData, { headers });
       } else if (actionType === "edit") {
@@ -225,7 +226,7 @@ const validateForm = () => {
   <div className="file-input-wrapper" style={{ marginTop: '10px' }}>
     <img
       src={formData.imagePreview}
-      alt="profile picture preview"
+      alt="profile preview"
       style={{ width: '150px', height: 'auto' }}
     />
     <button type="button" aria-label="Remove file" onClick={() => handleRemoveFile('image')}  className="remove-file-btn" style={{ marginLeft: '10px' }}>❌</button>

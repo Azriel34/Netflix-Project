@@ -16,10 +16,19 @@ const SignUp = () => {
         image: null,
     });
     const [imagePreview, setImagePreview] = useState(null);
-    const [passwordVisible, setPasswordVisible] = useState(false); // New state for password visibility
     const [errors, setErrors] = useState({});
     const navigate = useNavigate();
     const location = useLocation();
+    const [passwordVisible1, setPasswordVisible1] = useState(false);
+    const [passwordVisible2, setPasswordVisible2] = useState(false);
+
+    const togglePasswordVisibility = (field) => {
+        if (field === "passWord") {
+            setPasswordVisible1(!passwordVisible1);
+        } else if (field === "repeatPassWord") {
+            setPasswordVisible2(!passwordVisible2);
+        }
+    };
 
     useEffect(() => {
         const params = new URLSearchParams(location.search);
@@ -99,10 +108,6 @@ const SignUp = () => {
             });
     };
 
-    const togglePasswordVisibility = () => {
-        setPasswordVisible(!passwordVisible);
-    };
-
     return (
         <div className="sign-up-page">
             <div className="sign-up-navbar">
@@ -138,7 +143,7 @@ const SignUp = () => {
                         ))}
                         <div className="sign-up-form-group password-wrapper">
                             <input
-                                type={passwordVisible ? 'text' : 'password'}
+                                type={passwordVisible1 ? 'text' : 'password'}
                                 name="passWord"
                                 className={`sign-up-input ${errors.passWord ? 'sign-up-input-error' : ''}`}
                                 placeholder="Password"
@@ -148,21 +153,29 @@ const SignUp = () => {
                             <button
                                 type="button"
                                 className="password-toggle"
-                                onClick={togglePasswordVisibility}
+                                onClick={() => togglePasswordVisibility("passWord")}
                             >
-                                {passwordVisible ? '🚫' : '👁️'}
+                                {passwordVisible1 ? '🚫' : '👁️'}
                             </button>
                             {errors.passWord && <span className="sign-up-error-message">{errors.passWord}</span>}
                         </div>
+
                         <div className="sign-up-form-group password-wrapper">
                             <input
-                                type={passwordVisible ? 'text' : 'password'}
+                                type={passwordVisible2 ? 'text' : 'password'}
                                 name="repeatPassWord"
                                 className={`sign-up-input ${errors.repeatPassWord ? 'sign-up-input-error' : ''}`}
                                 placeholder="Repeat Password"
                                 value={formData.repeatPassWord}
                                 onChange={handleChange}
                             />
+                            <button
+                                type="button"
+                                className="password-toggle"
+                                onClick={() => togglePasswordVisibility("repeatPassWord")}
+                            >
+                                {passwordVisible2 ? '🚫' : '👁️'}
+                            </button>
                             {errors.repeatPassWord && <span className="sign-up-error-message">{errors.repeatPassWord}</span>}
                         </div>
                         <div className="sign-up-form-group">

@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import axios from 'axios';
 import './VideoPage.css'; 
 import { useLocation } from "react-router-dom";
@@ -11,10 +11,10 @@ const  VideoPage = () => {
     const {id} = useParams();
     const[videoName, setVideoName] = useState('');
     const [error, serError] = useState('')
-    const navigate = useNavigate();
+    //const navigate = useNavigate();
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
-    const searchQuery = queryParams.get("query"); 
+    //const searchQuery = queryParams.get("query"); 
     const jwt = queryParams.get("jwt"); 
 
 
@@ -34,7 +34,7 @@ useEffect(() => {
 
         };
         getmovieName();
-    }, [id]);
+    }, [id, jwt]);
 
     if (error) {
         return <div className="error-message">{error}</div>;

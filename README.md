@@ -2,17 +2,31 @@
 #### By Nati Laufer & Azriel Erenkrantz & Elad Houri  
 Jira: [Project Jira](https://clickazr-1731359928155.atlassian.net/jira/software/projects/AN/boards/3/timeline)
 
-This project introduces a **Movie Watch System**, a web application similar to platforms like Netflix. It allows users to search for movies, receive personalized recommendations, authenticate, and manage data via a **RESTful API**. Data is stored in a **MongoDB** database.
+## **Movie Watch System** 🎬
+This project is a **Movie Watch System**, a web-based movie streaming and recommendation platform inspired by services like Netflix. It allows users to:
+- **Search for movies** 🔎
+- **Receive personalized recommendations** 🎥✨
+- **Authenticate and manage user accounts** 🔐
+- **Interact with a RESTful API** for seamless data handling 🌐
 
-## How to Run the System  
+The system is built using a **microservices architecture** and consists of four core components:
+1. **MongoDB (Database)** - Stores user and movie data 🗄️
+2. **Recommendation Server** - Generates movie suggestions 🎞️
+3. **Web Server** - Handles user authentication and API requests 🚀
+4. **React Frontend** - Provides the user interface 🖥️
 
+The system is containerized using **Docker Compose**, making it easy to deploy and manage all services.
+
+---
+
+## **How to Run the System** 🛠️
 The system consists of **four services**:  
 1. **MongoDB (Database)**  
 2. **Recommendation Server**  
 3. **Web Server**  
 4. **React Frontend**  
 
-### 📌 Setup Instructions  
+### 📌 **Setup Instructions**  
 
 #### 1️⃣ **Update the `docker-compose.yml` file**  
 Modify the following values in `docker-compose.yml` (lines with comments) to configure your environment:  
@@ -45,17 +59,28 @@ services:
       - "3100:3100"  # "<REACT_PORT>:<REACT_PORT>"
     environment:
       REACT_APP_WEB_PORT: 7000  # <WEB_PORT>
-
-#### 2. Run the project ####
+```
+#### 2️⃣ **Build the project**  
 Once the docker-compose.yml file is updated, simply run:
 ```bash
-docker-compose up --build
+docker-compose build
 ```
 
+#### 3️⃣ **Run the project**  
+Once the containers are built, simply run them with this command:
+```bash
+docker-compose up -d
+```
 
-   
-### Notes:
-* **Communication Protocol:** The system uses a client-server model with the HTTP protocol over a TCP connection to handle communication. The client sends commands to the server, which processes the requests and sends appropriate responses. This design ensures reliable and efficient data transfer between the client and server.
-* **Unrecognized/Not Possible Commands:** The system handles cases where the command is unrecognized or not possible, returning a status code of 400 or 404 along with a JSON explanation. This ensures that the user is informed of the error and can take appropriate action.
-* **SOLID Principles:** In this code, we adhered to the SOLID principles, focusing on writing modular and maintainable code. This approach ensures that the system is both flexible and scalable, allowing for easy modification and extension in the future.
-* **Documentation and Task Management on JIRA:** All content documentation, stand-up meeting summaries, and task distribution have been managed on JIRA. This platform has been used to track progress, assign tasks, and document important decisions and updates throughout the development process.
+After that, you can browse our web service at the URL **http://localhost:<REACT_PORT>**  
+
+---
+
+### **Additional Notes** 📌
+- **Communication Protocol:** The system uses a client-server model with the HTTP protocol over a TCP connection to handle communication. The client sends commands to the server, which processes the requests and sends appropriate responses. This design ensures reliable and efficient data transfer between the client and server.
+- **Error Handling:** The system handles cases where the command is unrecognized or not possible, returning a status code of `400` or `404` along with a JSON explanation. This ensures that the user is informed of the error and can take appropriate action.
+- **SOLID Principles:** The code follows **SOLID** principles, ensuring modularity and maintainability. This makes the system flexible and scalable for future updates.
+- **Documentation and Task Management on JIRA:** All documentation, stand-up meeting summaries, and task distribution have been managed on **JIRA**. This platform has been used to track progress, assign tasks, and document key decisions throughout development.
+
+🚀 **Enjoy watching movies with our system!** 🎬
+

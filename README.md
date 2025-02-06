@@ -1,7 +1,7 @@
 # AP Project Exercise 4
 #### By Nati Laufer & Azriel Erenkrantz & Elad Houri  
-Jira: [Project Jira](https://clickazr-1731359928155.atlassian.net/jira/software/projects/AN/boards/3/timeline)
-
+Jira: [Project Jira](https://clickazr-1731359928155.atlassian.net/jira/software/projects/AN/boards/3/timeline) <br>
+Wiki: [Wiki](docs/wiki.md)
 ## **Movie Watch System** 🎬
 This project is a **Movie Watch System**, a web-based movie streaming and recommendation platform inspired by services like Netflix. It allows users to:
 - **Search for movies** 🔎
@@ -13,7 +13,7 @@ The system is built using a **microservices architecture** and consists of four 
 1. **MongoDB (Database)** - Stores user and movie data 🗄️
 2. **Recommendation Server** - Generates movie suggestions 🎞️
 3. **Web Server** - Handles user authentication and API requests 🚀
-4. **React Frontend** - Provides the user interface 🖥️
+4. **React Frontend/Android Frontend** - Provides the user interface 🖥️
 
 The system is containerized using **Docker Compose**, making it easy to deploy and manage all services.
 
@@ -24,7 +24,7 @@ The system consists of **four services**:
 1. **MongoDB (Database)**  
 2. **Recommendation Server**  
 3. **Web Server**  
-4. **React Frontend**  
+4. **React/Android Frontend**  
 
 ### 📌 **Setup Instructions**  
 
@@ -72,8 +72,8 @@ Once the containers are built, simply run them with this command:
 docker-compose up -d
 ```
 
-After that, you can browse our web service at the URL **http://localhost:<REACT_PORT>**  
-
+After that, you can browse our web service at the URL **http://localhost:<REACT_PORT>**.  
+For the Android studio, change inside app/src/main/java/com/example/netflix_android/Constants.java to youe port number, and then run with the Emulator 
 ---
 
 ### **Additional Notes** 📌
